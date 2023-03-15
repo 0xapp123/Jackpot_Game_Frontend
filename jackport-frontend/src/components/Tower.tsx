@@ -84,7 +84,7 @@ export default function Tower(props: {
           POT:&nbsp;{sumPots} SOL
         </p>
       </div>
-      <div className="flex rounded-2xl bg-[#04134C] h-[500px] mx-4">
+      <div className="flex rounded-2xl bg-[#0f0545] h-[500px] mx-4">
         <div className="w-[50px] lg:w-20 flex flex-col justify-around items-center">
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
@@ -105,15 +105,13 @@ export default function Tower(props: {
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
         </div>
       </div>
-      {gameData &&
-        gameData &&
-        gameData.players &&
-        gameData.players.length === 0 ? (
+      {
+        gameData?.players.length === 0 ? (
         <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center">
           {`Noone has entered this room yet... Be the first! :)`}
         </div>
       ) : (
-        <div className="mx-4 xl:mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center flex flex-wrap px-5 xl:gap-4 gap-2">
+        <div className="mx-4 xl:mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center flex flex-wrap px-5 xl:gap-4 gap-2">
           {gameData &&
             gameData.players?.map((item: any, key: number) => (
               <div

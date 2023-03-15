@@ -118,7 +118,7 @@ module.exports = {
       },
       backgroundImage: {
         'dicer': "url(/img/images.jfif)",
-        'bg': "url(/img/bg.jpg)",
+        'bg': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
         'gallery': "url('/img/gallery.png')",
         'ustaking': "url('/img/ustaking.png')",
         'mainstaking': "url('/img/mainstaking.png')",
