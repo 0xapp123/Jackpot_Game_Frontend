@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
+import Sound from "react-sound";
 
 export default function CountdownBar(props: { className?: string }) {
     const { className } = props;
-    const { gameData } = useSocket();
+    const { gameData, setStated } = useSocket();
+    const [isBetSound, setIsBetSound] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState<any>(
         calculateTimeRemaining()
     );
@@ -16,6 +18,20 @@ export default function CountdownBar(props: { className?: string }) {
         return () => clearInterval(intervalId);
     }, [gameData]);
 
+    useEffect(() => {
+        if (gameData) {
+            if (Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0) {
+                if (setStated) {
+                    setStated(true);
+                    setIsBetSound(true);
+                    setTimeout(() => {
+                        setIsBetSound(false);
+                    }, 1500);
+                }
+            }
+        }
+    }, [timeRemaining])
+
     function calculateTimeRemaining() {
         if (gameData?.endTimestamp && gameData?.endTimestamp >= new Date().getTime()) {
             return (
@@ -23,6 +39,10 @@ export default function CountdownBar(props: { className?: string }) {
                     className="absolute bg-[#4c49cc] h-2 rounded-3xl"
                     style={{ width: `${(60000 - (gameData?.endTimestamp - new Date().getTime())) / 1000 / 60 * 100}%` }}
                 >
+                    <Sound
+                        url="/sound/game-start.mp3"
+                        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
+                    />
                 </div>
             )
         }
