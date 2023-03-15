@@ -31,7 +31,6 @@ export default function Selector(props: {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const interval: any = useRef();
   const list = [32, 132, 232, 332, 432];
-  const [isBetSound, setIsBetSound] = useState(false);
   const [isWonSound, setIsWonSound] = useState(false);
 
   const throwConfetti = useCallback(() => {
@@ -45,22 +44,21 @@ export default function Selector(props: {
   const target = useMemo(() => {
     let res = 0;
     if (winner && winner.winner !== "") {
-      const ranCount = Math.round(1 + Math.random()) + 1;
-      console.log("ranCount =>", ranCount);
-      if (ranCount % 2 === 0) {
-        res = winner.resultHeight * 500 + ranCount * 500;
-      } else {
-        res = ranCount * 500 - winner.resultHeight * 500;
-      }
-      if (setStated) setStated(true);
-      setIsBetSound(true);
-      setTimeout(() => {
-        setIsBetSound(false);
-      }, 1500);
+      // const ranCount = Math.round(1 + Math.random()) + 1;
+      // console.log("ranCount =>", ranCount);
+      // if (ranCount % 2 === 0) {
+      //   res = winner.resultHeight * 500 + ranCount * 500;
+      // } else {
+      //   res = ranCount * 500 - winner.resultHeight * 500;
+      // }
+      res = winner.resultHeight * 500 + 1500;
+      // if (setStated) setStated(true);
+
     }
     console.log(winner, Math.ceil(res));
+    console.log(gameData, "gameData")
     return Math.ceil(res);
-  }, [winner]);
+  }, [winner, gameData]);
 
   useEffect(() => {
     function handleTimer() {
@@ -147,7 +145,7 @@ export default function Selector(props: {
       winner?.winner !== "" &&
       gameData
     ) {
-      if (wallet.publicKey?.toBase58() === winner?.winner) {
+      if (wallet.publicKey?.toBase58() === winner?.winner && gameData.players.length !== 0) {
         throwConfetti();
         setConfettiThrown(true);
         const sumBets = gameData.players.reduce(
@@ -178,31 +176,28 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                  }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                  }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? timer % 500
                     : 500 - (timer % 500)
-                }px`,
+                  }px`,
               }}
             ></div>
           </>
@@ -233,10 +228,6 @@ export default function Selector(props: {
         )}
         <Waitboard />
       </div>
-      <Sound
-        url="/sound/game-start.mp3"
-        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
-      />
       <Sound
         url="/sound/success.mp3"
         playStatus={isWonSound ? "PLAYING" : "STOPPED"}

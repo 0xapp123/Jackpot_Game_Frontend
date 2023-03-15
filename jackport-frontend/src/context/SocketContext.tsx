@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import io, { Socket } from "socket.io-client";
 import getConfig from "next/config";
 import { ChatType, ClientToServerEvents, Player, ServerToClientEvents } from "../utils/type";
-import { API_URL } from "../config";
+import { API_URL, SOCKET_URL } from "../config";
 
 const { publicRuntimeConfig } = getConfig();
 export type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
@@ -94,7 +94,7 @@ const SocketProvider = (props: { children: any }) => {
     }
 
     useEffect(() => {
-        const socket = io(API_URL, {
+        const socket = io(SOCKET_URL, {
             transports: ["websocket"],
         });
         socket.on("connect", async () => {
