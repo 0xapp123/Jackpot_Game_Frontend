@@ -57,7 +57,7 @@ export default function Sidebar() {
                 className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
                   }`}
               >
-                Tower Of Power
+                The Tower
               </p>
             </div>
           </a>

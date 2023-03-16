@@ -12,6 +12,7 @@ import Selector from "./Selector";
 export default function Tower(props: {
   setIsWonWindow: Function;
   setWonValue: Function;
+  isMute: boolean,
 }) {
   const wallet = useWallet();
 
@@ -60,10 +61,14 @@ export default function Tower(props: {
 
   useEffect(() => {
     if (gameData && gameData.players.length) {
-      setIsBetSound(true);
-      setTimeout(() => {
+      if (props.isMute) {
+        setIsBetSound(true);
+        setTimeout(() => {
+          setIsBetSound(false);
+        }, 1500);
+      } else {
         setIsBetSound(false);
-      }, 1500);
+      }
     }
   }, [gameData?.players]);
 
@@ -93,6 +98,7 @@ export default function Tower(props: {
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
         </div>
         <Selector
+          isMute={props.isMute}
           className="relative lg:w-[calc(100%-160px)] w-[calc(100%-100px)] h-full rounded-[10px]"
           setIsWonWindow={props.setIsWonWindow}
           setWonValue={props.setWonValue}

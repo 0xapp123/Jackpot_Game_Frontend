@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
 import Sound from "react-sound";
 
-export default function CountdownBar(props: { className?: string }) {
-    const { className } = props;
+export default function CountdownBar(props: { isMute: boolean, className?: string }) {
+    const { className, isMute } = props;
     const { gameData, setStated } = useSocket();
     const [isBetSound, setIsBetSound] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState<any>(
@@ -23,10 +23,14 @@ export default function CountdownBar(props: { className?: string }) {
             if (Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0) {
                 if (setStated) {
                     setStated(true);
-                    setIsBetSound(true);
-                    setTimeout(() => {
+                    if (isMute) {
+                        setIsBetSound(true);
+                        setTimeout(() => {
+                            setIsBetSound(false);
+                        }, 1500);
+                    } else {
                         setIsBetSound(false);
-                    }, 1500);
+                    }
                 }
             }
         }
