@@ -35,7 +35,7 @@ export default function Sidebar() {
             className={`w-full my-6 lg:block ${mobilMenuState ? "hidden" : "block"
               }`}
           >
-            {/* <WalletMultiButton /> */}
+            <WalletMultiButton />
           </div>
         </div>
         <p
@@ -69,7 +69,7 @@ export default function Sidebar() {
           Support
         </p>
         <div className="border-[1px] border-[#ffffff32] mx-4" />
-        <Link href=" https://discord.gg/aejTFT6hKY">
+        <Link href="https://discord.gg/aejTFT6hKY" passhref>
           <a className="">
             <div className="mt-4 flex hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
               <img

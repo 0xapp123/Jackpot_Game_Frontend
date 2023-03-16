@@ -28,6 +28,8 @@ interface Context {
     setStated?: Function,
     messages?: ChatType[],
     onlined?: number,
+    isStarting?: boolean,
+    recentWinners?: any[]
 }
 
 const context = createContext<Context>({});
@@ -39,13 +41,15 @@ const SocketProvider = (props: { children: any }) => {
     const [started, setStated] = useState(false);
     const [messages, setMessages] = useState<ChatType[]>();
     const [onlined, setOnlined] = useState(0);
-
+    const [isStarting, setGameStarting] = useState(false);
     const [gameData, setGameData] = useState<{
         players: Player[],
         endTimestamp: number,
         pda: string,
         gameStarted: boolean
     }>();
+
+    const [recentWinners, setRecentWinner] = useState();
 
     const [gameEnded, setGameEnded] = useState(false);
     const [winner, setWinner] = useState({
@@ -148,6 +152,10 @@ const SocketProvider = (props: { children: any }) => {
             setGameEnded(true)
         });
 
+        socket?.on("gameStarting", async (started) => {
+            setGameStarting(started)
+        });
+
         socket?.on("chatUpdated", async ([...msgs]: ChatType[]) => {
             setMessages(msgs)
         });
@@ -171,9 +179,11 @@ const SocketProvider = (props: { children: any }) => {
             resultHeight,
             setClearGame,
             getFirstGameData,
+            isStarting,
             started,
             setStated,
             messages,
+            recentWinners,
             onlined
         }}>{props.children}</context.Provider>
     );

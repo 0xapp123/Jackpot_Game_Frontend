@@ -105,7 +105,7 @@ export default function Tower(props: {
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
         </div>
       </div>
-      {
+      {gameData &&
         gameData?.players.length === 0 ? (
         <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center">
           {`Noone has entered this room yet... Be the first! :)`}
