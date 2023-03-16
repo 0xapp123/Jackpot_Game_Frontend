@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build_static": "next build && next export",
-    "start": "next start",
+    "start": "next start -p 4578",
     "lint": "next lint"
   },
   "dependencies": {
