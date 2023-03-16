@@ -16,7 +16,10 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import MobileChat from "../components/Chat/MobileChat";
 import Head from "next/head";
 
-export default function Waiting() {
+export default function Waiting(props: {
+  isMute: boolean,
+  setIsMute: Function
+}) {
   const wallet = useWallet();
   const { gameData, winner, isStarting } = useSocket();
   const [betAmount, setBetAmount] = useState(0.1);
@@ -53,10 +56,6 @@ export default function Waiting() {
     setIsWonWindow(false);
   };
 
-  useEffect(() => {
-    console.log("isStarting", isStarting)
-  },[isStarting])
-
   return (
     <>
       <Head>
@@ -82,7 +81,7 @@ export default function Waiting() {
         </button>
         <div className="px-6 mt-[80px] xl:mt-[100px] flex justify-center">
           <div className="md:w-[calc(100%-300px)] w-full xl:w-[480px] mx-auto ml-0 xl:ml-[60px] md:mr-[300px] xl:mr-0">
-            <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center xl:text-left font-bold xl:my-8 my-5">
+            <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
               The Tower
             </p>
             <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6">
@@ -104,7 +103,7 @@ export default function Waiting() {
                     1 SOL
                   </p>
                   <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                    ${(data * 1).toFixed(2)} USD
+                    {typeof data === "number" ? "$" + (data * 1).toFixed(2) + "USD" : "---"}
                   </p>
                 </button>
                 <button
@@ -121,7 +120,7 @@ export default function Waiting() {
                     2 SOL
                   </p>
                   <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                    ${(data * 2).toFixed(2)} USD
+                    {typeof data === "number" ? "$" + (data * 2).toFixed(2) + "USD" : "---"}
                   </p>
                 </button>
                 <button
@@ -138,7 +137,7 @@ export default function Waiting() {
                     3 SOL
                   </p>
                   <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                    ${(data * 3).toFixed(2)} USD
+                    {typeof data === "number" ? "$" + (data * 3).toFixed(2) + "USD" : "---"}
                   </p>
                 </button>
               </div>
@@ -183,7 +182,7 @@ export default function Waiting() {
                       )}
                     </button>
                   ) : (
-                    <div className="playground">
+                    <div className="playground mx-auto">
                       <WalletMultiButton />
                     </div>
                   )}
@@ -205,7 +204,7 @@ export default function Waiting() {
               <WalletMultiButton />
             </div>
           </div>
-          <Tower setIsWonWindow={setIsWonWindow} setWonValue={setWonValue} />
+          <Tower setIsWonWindow={setIsWonWindow} setWonValue={setWonValue} isMute={props.isMute} />
         </div>
         <Chat className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex" />
         {isWonWindow && (

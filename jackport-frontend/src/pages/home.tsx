@@ -9,18 +9,56 @@ import { useSocket } from "../context/SocketContext";
 import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "../config";
 import { useEffect, useState } from "react";
+import { useSolanaPrice } from "../utils/util";
 
-export default function Home() {
+export default function Home(props: {
+  isMute: boolean,
+  setIsMute: Function
+}) {
   const [recentWinnders, setRecentWinners] = useState([]);
+  const [totalWins, setTotalWins] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const { isLoading, isError, data, error } = useSolanaPrice();
+
   const getWinners = async () => {
-    const response = await fetch(API_URL + "getWinners");
-    const data = await response.json();
-    console.log(data?.slice(0, 3));
-    setRecentWinners(data?.slice(0, 3))
+    try {
+      const response = await fetch(API_URL + "getWinners");
+      const data = await response.json();
+      setRecentWinners(data?.slice(0, 3))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getSum = async () => {
+    try {
+      const response = await fetch(API_URL + "getTotalSum");
+      const data = await response.json();
+      if (data) {
+        setTotalWins(data as number)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getTotalCount = async () => {
+    try {
+      const response = await fetch(API_URL + "getBetCount");
+      const data = await response.json();
+      console.log(data)
+      if (data) {
+        setTotalCount(data as number)
+      }
+    } catch (error) {
+
+    }
   }
 
   useEffect(() => {
-    getWinners()
+    getWinners();
+    getSum();
+    getTotalCount();
   }, [])
 
   return (
@@ -43,7 +81,7 @@ export default function Home() {
                 <div className="flex justify-center items-center mt-6 ml-6 bg-[#444CE4] rounded-[8px] w-[46px] h-[46px]">
                 </div>
                 <p className="text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
-                  ${(4300).toLocaleString()}
+                  {typeof data === "number" ? "$" + (totalWins * data * 1.04).toLocaleString() : "---"}
                 </p>
                 <p className="text-md text-white-100 font-normal leading-[26px] mt-[10.73px] ml-6">
                   Amount Wagered
@@ -53,7 +91,7 @@ export default function Home() {
                 <div className="flex justify-center items-center mt-6 ml-6 bg-[#F257A0] rounded-[8px] w-[46px] h-[46px]">
                 </div>
                 <p className="text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
-                  {(123532).toLocaleString()}
+                  {totalCount.toLocaleString()}
                 </p>
                 <p className="text-md text-white-100 font-normal leading-[26px] mt-[10.73px] ml-6">
                   Bets placed All Time
@@ -63,7 +101,7 @@ export default function Home() {
                 <div className="flex justify-center items-center mt-6 ml-6 bg-[#7A5AF8] rounded-[8px] w-[46px] h-[46px]">
                 </div>
                 <p className="text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
-                  ${(12354).toLocaleString()}
+                  {typeof data === "number" ? "$" + (totalWins * data).toLocaleString() : "---"}
                 </p>
                 <p className="text-md text-white-100 font-normal leading-[26px] mt-[10.73px] ml-6">
                   Total Wins
@@ -87,7 +125,7 @@ export default function Home() {
                   recentWinnders.map((item: any, key) => (
                     <Playhistory
                       key={key}
-                      game="Tower of Poser"
+                      game="The Tower"
                       user={item.user.slice(0, 4) + "..." + item.user.slice(-4)}
                       bet={`${item.bet_amount} SOL`}
                       payout={`${item.payout} SOL`}
