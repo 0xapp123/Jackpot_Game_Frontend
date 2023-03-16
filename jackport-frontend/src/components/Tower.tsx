@@ -73,7 +73,7 @@ export default function Tower(props: {
   }, [gameData?.players]);
 
   return (
-    <div className="mx-auto xl:max-w-[600px] flex justify-center flex-col drop-shadow-lg w-full 2xl:w-[calc(100%-100px)] xl:mt-[80px] mt-10 border-[1px] rounded-3xl border-[#FFFFFF73] mb-10">
+    <div className="mx-auto xl:max-w-[500px] flex justify-center flex-col drop-shadow-lg w-full 2xl:w-[calc(100%-100px)] xl:mt-0 mt-10 border-[1px] rounded-3xl border-[#FFFFFF73] mb-10">
       <div className="relative rounded-[10px] bg-[#7e49f051] my-[26px] mx-6">
         <img
           className="absolute  left-[-24px] top-1"
@@ -112,9 +112,10 @@ export default function Tower(props: {
         </div>
       </div>
       {gameData &&
+        gameData?.players &&
         gameData?.players.length === 0 ? (
-        <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center">
-          {`Noone has entered this room yet... Be the first! :)`}
+        <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[25px] text-[14px] text-[#6a71f8] font-bold text-center">
+          {`No one has placed a bet, be the first to start the game!`}
         </div>
       ) : (
         <div className="mx-4 xl:mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center flex flex-wrap px-5 xl:gap-4 gap-2">

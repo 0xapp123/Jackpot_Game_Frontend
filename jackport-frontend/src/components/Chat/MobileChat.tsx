@@ -4,10 +4,16 @@ import axios from "axios";
 import { useState } from "react";
 import { API_URL } from "../../config";
 import { useSocket } from "../../context/SocketContext";
-import { Discordimage, RightSvg } from "../Svglist"
+import { RightSvg } from "../Svglist"
 import ChatItem from "./ChatItem"
 
-export default function MobileChat(props: { opened: boolean, setOpen: Function }) {
+export default function MobileChat(props: {
+    opened: boolean,
+    setOpen: Function,
+    isOpen: boolean,
+    handleCloseModal: Function,
+    handleOpenModal: Function,
+}) {
     const wallet = useWallet();
     const [message, setMessage] = useState("");
     const { messages, onlined } = useSocket();
@@ -63,10 +69,9 @@ export default function MobileChat(props: { opened: boolean, setOpen: Function }
                     placeholder="Say something in chat..."
                 />
                 <div className="flex flex-row my-4 items-center justify-between">
-                    <div className="flex items-center">
-                        <Discordimage />
-                        <p className="uppercase text-[12px] text-white leading-3 ml-1">tearms of sevice & rules</p>
-                    </div>
+                    <button className="flex items-center uppercase text-[12px] text-white leading-3 ml-1" onClick={() => props.handleOpenModal()}>
+                        tearms of sevice
+                    </button>
                     <button
                         className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
                         onClick={() => handleSubmit()}

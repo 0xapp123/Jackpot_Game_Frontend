@@ -4,10 +4,14 @@ import axios from "axios";
 import { useState } from "react";
 import { API_URL } from "../../config";
 import { useSocket } from "../../context/SocketContext";
-import { Discordimage, Downarrow, RightSvg } from "../Svglist"
 import ChatItem from "./ChatItem"
 
-export default function Chat(props: { className: string }) {
+export default function Chat(props: {
+    className: string,
+    isOpen: boolean,
+    handleCloseModal: Function,
+    handleOpenModal: Function,
+}) {
     const wallet = useWallet();
     const { messages, onlined } = useSocket();
     const [message, setMessage] = useState("");
@@ -38,9 +42,9 @@ export default function Chat(props: { className: string }) {
     return (
         <div className={props.className}>
             <div className="flex flex-row justify-between items-center">
-                <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">Welcome!</p>
+                {/* <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">Welcome!</p> */}
             </div>
-            <p className="text-[12px] text-[#ffffff] font-normal pb-3 mt-3 leading-[29px] border-b-[1.33px] border-[#FFFFFF0F]">{onlined} Players Online</p>
+            <p className="text-[12px] text-[#ffffff] font-normal pb-3 pt-9 mt-3 leading-[29px] border-b-[1.33px] border-[#FFFFFF0F]">{onlined} Players Online</p>
             <div className="h-[calc(100vh-270px)] overflow-auto scrollbar mt-2 flex flex-col-reverse">
                 {messages && messages.length !== 0 &&
                     messages.map((item, key) => (
@@ -58,10 +62,9 @@ export default function Chat(props: { className: string }) {
                     placeholder="Say something in chat..."
                 />
                 <div className="flex flex-row my-4 items-center justify-between">
-                    <div className="flex items-center">
-                        <Discordimage />
-                        <p className="uppercase text-[12px] text-white leading-3 ml-1">tearms of sevice & rules</p>
-                    </div>
+                    <button className="flex items-center uppercase text-[12px] text-white leading-3 ml-1" onClick={() => props.handleOpenModal()}>
+                        tearms of sevice
+                    </button>
                     <button
                         className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
                         onClick={() => handleSubmit()}
