@@ -27,6 +27,12 @@ export interface ServerToClientEvents {
     chatUpdated: (
         msgs: ChatType[]
     ) => void;
+    gameStarting: (
+        isStarting: boolean
+    ) => void;
+    getWinners: (
+        winners: any[]
+    ) => void;
 }
 
 export interface ClientToServerEvents {

@@ -41,4 +41,5 @@
 
 .wallet-adapter-button.wallet-adapter-button-trigger {
   white-space: nowrap !important;
+  width: 220px !important;
 }

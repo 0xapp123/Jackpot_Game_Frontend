@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatIcon, Leftarrow } from "../components/Svglist";
 import { useSolanaPrice } from "../utils/util";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -18,7 +18,7 @@ import Head from "next/head";
 
 export default function Waiting() {
   const wallet = useWallet();
-  const { gameData, winner } = useSocket();
+  const { gameData, winner, isStarting } = useSocket();
   const [betAmount, setBetAmount] = useState(0.1);
   const [isBetLoading, setIsBetLoading] = useState(false);
   const { isLoading, isError, data, error } = useSolanaPrice();
@@ -52,6 +52,10 @@ export default function Waiting() {
   const handleEndGame = () => {
     setIsWonWindow(false);
   };
+
+  useEffect(() => {
+    console.log("isStarting", isStarting)
+  },[isStarting])
 
   return (
     <>
@@ -164,23 +168,34 @@ export default function Waiting() {
                   2x
                 </button>
               </div>
-              {wallet.publicKey ? (
+              {!isStarting ?
+                <>
+                  {wallet.publicKey ? (
+                    <button
+                      className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
+                      onClick={handleBet}
+                      disabled={isBetLoading || isStarting}
+                    >
+                      {isBetLoading ? (
+                        <>Waiting...</>
+                      ) : (
+                        <>Add {betAmount} SOL to bet</>
+                      )}
+                    </button>
+                  ) : (
+                    <div className="playground">
+                      <WalletMultiButton />
+                    </div>
+                  )}
+                </>
+                :
                 <button
                   className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
-                  onClick={handleBet}
-                  disabled={isBetLoading}
+                  disabled
                 >
-                  {isBetLoading ? (
-                    <>Waiting...</>
-                  ) : (
-                    <>Add {betAmount} SOL to bet</>
-                  )}
+                  Waiting...
                 </button>
-              ) : (
-                <div className="playground">
-                  <WalletMultiButton />
-                </div>
-              )}
+              }
             </div>
           </div>
         </div>
