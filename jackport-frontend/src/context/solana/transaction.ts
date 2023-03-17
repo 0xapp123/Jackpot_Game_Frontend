@@ -75,7 +75,7 @@ export const enterGame = async (
     if (wallet.publicKey === null) return;
     const now = new Date().getTime();
     console.log((endTimestamp - now), "(endTimestamp - now)", endTimestamp)
-    if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 15) {
+    if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 6) {
         errorAlert("This transaction may fail. Please try on the next version.")
         return;
     }
