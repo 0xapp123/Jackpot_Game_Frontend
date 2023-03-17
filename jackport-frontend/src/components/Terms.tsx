@@ -4,7 +4,7 @@ export default function Terms(props: {
 }) {
     return (
         <div
-            className="fixed left-0 top-0 w-full h-[100vh] z-[10000] backdrop-blur-md flex items-center justify-center flex-col bg-[#171649]"
+            className="fixed left-0 top-0 w-full h-[100vh] z-[10000] backdrop-blur-md flex-col bg-[#171649] grid place-content-center"
         >
             <div className="m-6 w-[calc(100%-48px)]">
                 <h2 className="text-center text-xl font-bold text-[#fff] mb-2 m-6 w-[calc(100%-48px)]">Terms of service</h2>
