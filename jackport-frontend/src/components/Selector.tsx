@@ -146,7 +146,7 @@ export default function Selector(props: {
       winner?.winner !== "" &&
       gameData
     ) {
-      if (wallet.publicKey?.toBase58() === winner?.winner && gameData.players.length !== 0) {
+      if (wallet.publicKey?.toBase58() === winner?.winner && gameData.players?.length !== 0) {
         throwConfetti();
         setConfettiThrown(true);
         const sumBets = gameData.players.reduce(
