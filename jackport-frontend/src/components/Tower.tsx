@@ -36,7 +36,7 @@ export default function Tower(props: {
       gameData &&
       gameData &&
       gameData.players &&
-      gameData.players.length === 0
+      gameData.players?.length === 0
     ) {
       return 0;
     } else if (gameData) {
@@ -60,7 +60,7 @@ export default function Tower(props: {
   }, [gameData?.players, wallet.publicKey, wallet.connected]);
 
   useEffect(() => {
-    if (gameData && gameData.players.length) {
+    if (gameData && gameData.players && gameData.players.length) {
       if (props.isMute) {
         setIsBetSound(true);
         setTimeout(() => {
