@@ -41,7 +41,7 @@ export default function CountdownBar(props: { isMute: boolean, className?: strin
             return (
                 <div
                     className="absolute bg-[#4c49cc] h-2 rounded-3xl"
-                    style={{ width: `${(60000 - (gameData?.endTimestamp - new Date().getTime())) / 1000 / 60 * 100}%` }}
+                    style={{ width: `${(35000 - (gameData?.endTimestamp - new Date().getTime())) / 1000 / 60 * 100}%` }}
                 >
                     <Sound
                         url="/sound/game-start.mp3"
