@@ -72,6 +72,7 @@ const SocketProvider = (props: { children: any }) => {
         try {
             const response = await fetch(`${API_URL}getRecentGame`);
             const data = await response.json();
+            console.log("game data:", data)
             if (data?.players) {
                 setGameData({
                     players: data.players,
@@ -84,6 +85,10 @@ const SocketProvider = (props: { children: any }) => {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        getFirstGameData();
+    },[gameData?.endTimestamp])
 
     const getFirstMessages = async () => {
         try {
