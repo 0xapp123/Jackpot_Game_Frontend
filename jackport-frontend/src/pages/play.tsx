@@ -24,7 +24,7 @@ export default function Waiting(props: {
     setIsMute: Function
 }) {
     const wallet = useWallet();
-    const { gameData, winner, isStarting } = useSocket();
+    const { gameData, winner, isStarting, getFirstGameData } = useSocket();
     const [betAmount, setBetAmount] = useState(0.1);
     const [isBetLoading, setIsBetLoading] = useState(false);
     const { isLoading, isError, data, error } = useSolanaPrice();
@@ -51,10 +51,11 @@ export default function Waiting(props: {
                     new PublicKey(gameData.pda),
                     betAmount,
                     setIsBetLoading,
-                    gameData.endTimestamp
+                    gameData.endTimestamp,
+                    getFirstGameData
                 );
             } else {
-                await playGame(wallet, betAmount, setIsBetLoading);
+                await playGame(wallet, betAmount, setIsBetLoading, getFirstGameData);
             }
         } catch (error) {
             console.log(error);
