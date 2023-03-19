@@ -14,6 +14,7 @@ import { BET3_WALLET, CODY_WALLET, EXPER_WALLET, GamePool, GAME_SEED, JACKPOT_PR
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { API_URL, RPC_URL } from '../../config';
 import { errorAlert } from '../../components/ToastGroup';
+import { useSocket } from '../SocketContext';
 
 export const solConnection = new web3.Connection(RPC_URL);
 
@@ -22,7 +23,8 @@ const programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
 export const playGame = async (
     wallet: WalletContextState,
     amount: number,
-    setLoading: Function
+    setLoading: Function,
+    getFirstGameData: undefined | Function
 ) => {
     if (wallet.publicKey === null) return;
     const cloneWindow: any = window;
@@ -58,6 +60,9 @@ export const playGame = async (
             })
             console.log("Signature:", txId)
             setLoading(false);
+            if (getFirstGameData) {
+                getFirstGameData()
+            }
         }
     } catch (error) {
         console.log(error);
@@ -69,13 +74,14 @@ export const enterGame = async (
     pda: PublicKey,
     amount: number,
     setLoading: Function,
-    endTimestamp: number
+    endTimestamp: number,
+    getFirstGameData: undefined | Function,
 ) => {
 
     if (wallet.publicKey === null) return;
     const now = new Date().getTime();
     console.log((endTimestamp - now), "(endTimestamp - now)", endTimestamp)
-    if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 6) {
+    if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 5) {
         errorAlert("This transaction may fail. Please try on the next version.")
         return;
     }
@@ -113,6 +119,10 @@ export const enterGame = async (
             })
             console.log("Signature:", txId)
             setLoading(false);
+
+            if (getFirstGameData) {
+                getFirstGameData()
+            }
         }
         setLoading(false);
     } catch (error) {
@@ -179,25 +189,25 @@ export const createEnterGameTx = async (
         programId
     );
     console.log(solVault.toBase58())
-    
+
     const tx = new Transaction();
 
     tx.add(program.instruction.enterGame(
         new anchor.BN(amount * LAMPORTS_PER_SOL), {
-            accounts: {
-                admin: userAddress,
-                gamePool,
-                solVault,
-                codyWallet: CODY_WALLET,
-                bet3Wallet: BET3_WALLET,
-                jerzyWallet: JERZY_WALLET,
-                experWallet: EXPER_WALLET,
-                teamWallet: TEAM_WALLET,
-                systemProgram: SystemProgram.programId,
-            },
-            instructions: [],
-            signers: [],
-        }));
+        accounts: {
+            admin: userAddress,
+            gamePool,
+            solVault,
+            codyWallet: CODY_WALLET,
+            bet3Wallet: BET3_WALLET,
+            jerzyWallet: JERZY_WALLET,
+            experWallet: EXPER_WALLET,
+            teamWallet: TEAM_WALLET,
+            systemProgram: SystemProgram.programId,
+        },
+        instructions: [],
+        signers: [],
+    }));
 
     return tx;
 
