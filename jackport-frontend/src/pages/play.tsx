@@ -42,6 +42,10 @@ export default function Waiting(props: {
         setIsOpen(false);
     }
 
+    useEffect(() => {
+        console.log("isStarting", isStarting)
+    }, [isStarting])
+
 
     const handleBet = async () => {
         try {
@@ -239,13 +243,13 @@ export default function Waiting(props: {
                                     2x
                                 </button>
                             </div>
-                            {!isStarting ?
+                            {(gameData && gameData.players && gameData.players.length > 0) ?
                                 <>
                                     {wallet.publicKey ? (
                                         <button
                                             className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
                                             onClick={handleBet}
-                                            disabled={isBetLoading || isStarting}
+                                            disabled={isBetLoading}
                                         >
                                             {isBetLoading ? (
                                                 <>Waiting...</>
@@ -260,12 +264,35 @@ export default function Waiting(props: {
                                     )}
                                 </>
                                 :
-                                <button
-                                    className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
-                                    disabled
-                                >
-                                    Waiting...
-                                </button>
+                                (
+                                    isStarting !== 0 ?
+                                        <>
+                                            {wallet.publicKey ? (
+                                                <button
+                                                    className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
+                                                    onClick={handleBet}
+                                                    disabled={isBetLoading}
+                                                >
+                                                    {isBetLoading ? (
+                                                        <>Waiting...</>
+                                                    ) : (
+                                                        <>Add {betAmount} SOL to bet</>
+                                                    )}
+                                                </button>
+                                            ) : (
+                                                <div className="playground mx-auto">
+                                                    <WalletMultiButton />
+                                                </div>
+                                            )}
+                                        </>
+                                        :
+                                        <button
+                                            className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
+                                            disabled
+                                        >
+                                            Waiting...
+                                        </button>
+                                )
                             }
                         </div>
                     </div>
