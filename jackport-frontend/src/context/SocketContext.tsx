@@ -28,7 +28,7 @@ interface Context {
     setStated?: Function,
     messages?: ChatType[],
     onlined?: number,
-    isStarting?: boolean,
+    isStarting?: number,
     recentWinners?: any[]
 }
 
@@ -41,7 +41,7 @@ const SocketProvider = (props: { children: any }) => {
     const [started, setStated] = useState(false);
     const [messages, setMessages] = useState<ChatType[]>();
     const [onlined, setOnlined] = useState(0);
-    const [isStarting, setGameStarting] = useState(false);
+    const [isStarting, setGameStarting] = useState<number>(1);
     const [gameData, setGameData] = useState<{
         players: Player[],
         endTimestamp: number,
@@ -158,7 +158,18 @@ const SocketProvider = (props: { children: any }) => {
             setGameEnded(true)
         });
 
+        socket?.on("newGameReady", async (time, players) => {
+            // setGameData({
+            //     players: [],
+            //     endTimestamp: 0,
+            //     pda: "",
+            //     gameStarted: false
+            // });
+            setGameStarting(1);
+        });
+
         socket?.on("gameStarting", async (started) => {
+            console.log("creating a bet:", started)
             setGameStarting(started)
         });
 
