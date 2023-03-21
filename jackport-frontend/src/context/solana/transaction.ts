@@ -57,7 +57,14 @@ export const playGame = async (
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
       const signedTx = await wallet.signTransaction(tx);
-      await axios.post(`${API_URL}requestCreate/`);
+      try {
+        await axios.post(`${API_URL}requestCreate/`);
+      } catch (e) {
+        console.error("=-----====> Failed due to creating conflict");
+        errorAlert("Something went wrong. Reload page and try again!");
+        setLoading(false);
+        return;
+      }
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -79,6 +86,7 @@ export const playGame = async (
   } catch (error) {
     console.log(error);
     errorAlert("Something went wrong. Reload page and try again!");
+    await axios.post(`${API_URL}endRequest/`);
     setLoading(false);
   }
 };
@@ -118,7 +126,16 @@ export const enterGame = async (
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
       const signedTx = await wallet.signTransaction(tx);
-      await axios.post(`${API_URL}requestEnter/`);
+      try {
+        await axios.post(`${API_URL}requestEnter/`);
+      } catch (e) {
+        console.error(
+          "=-----====> Failed due to entering and setting winner conflict"
+        );
+        errorAlert("Something went wrong. Reload page and try again!");
+        setLoading(false);
+        return;
+      }
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -140,7 +157,9 @@ export const enterGame = async (
     }
     setLoading(false);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    errorAlert("Something went wrong. Reload page and try again!");
+    await axios.post(`${API_URL}endEnterRequest/`);
     setLoading(false);
   }
 };
