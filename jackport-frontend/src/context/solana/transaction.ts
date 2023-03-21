@@ -41,6 +41,7 @@ export const playGame = async (
     );
     try {
         setLoading(true);
+        await axios.post(`${API_URL}requestCreate/`);
         const tx = await createPlayGameTx(userAddress, amount, program);
         const { blockhash } = await solConnection.getLatestBlockhash();
         tx.feePayer = userAddress;
@@ -66,6 +67,7 @@ export const playGame = async (
         }
     } catch (error) {
         console.log(error);
+        await axios.post(`${API_URL}endRequest/`).catch(() => {});
         setLoading(false);
     }
 }
