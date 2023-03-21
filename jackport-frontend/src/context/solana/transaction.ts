@@ -60,6 +60,7 @@ export const playGame = async (
                 txId: txId
             })
             console.log("Signature:", txId)
+            await axios.post(`${API_URL}endRequest/`).catch(() => {});
             setLoading(false);
             if (getFirstGameData) {
                 getFirstGameData()
