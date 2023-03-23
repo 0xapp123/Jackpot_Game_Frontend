@@ -21,7 +21,8 @@ export default function Selector(props: {
   isMute: boolean;
 }) {
   const wallet = useWallet();
-  const { winner, gameData, setClearGame, started, setStarted } = useSocket();
+  const { winner, gameData, setClearGame, started, setStarted, gameEnded } =
+    useSocket();
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const interval: any = useRef();
@@ -166,15 +167,20 @@ export default function Selector(props: {
         } else {
           setIsWonSound(false);
         }
-        if (setClearGame) setClearGame();
-        if (setStarted) setStarted(false);
+        // if (setClearGame) setClearGame();
+        // if (setStarted) setStarted(false);
       } else {
         // console.log("++++++++++++++++++++++++++++++++++++")
-        if (setClearGame) setClearGame();
-        if (setStarted) setStarted(false);
+        // if (setClearGame) setClearGame();
+        // if (setStarted) setStarted(false);
       }
     }
   }, [timer, wallet, gameData]);
+
+  useEffect(() => {
+    if (setClearGame) setClearGame();
+    if (setStarted) setStarted(false);
+  }, [gameEnded, setClearGame, setStarted]);
 
   return (
     <>

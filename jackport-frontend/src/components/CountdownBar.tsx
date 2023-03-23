@@ -8,7 +8,7 @@ export default function CountdownBar(props: {
   className?: string;
 }) {
   const { className, isMute } = props;
-  const { gameData, setStarted, gameEnded } = useSocket();
+  const { gameData, setStarted } = useSocket();
   const [isBetSound, setIsBetSound] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<any>(
     calculateTimeRemaining()
@@ -24,9 +24,7 @@ export default function CountdownBar(props: {
   useEffect(() => {
     if (gameData) {
       if (
-        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) <=
-          0 &&
-        gameEnded
+        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) <= 0
       ) {
         if (setStarted) {
           setStarted(true);
