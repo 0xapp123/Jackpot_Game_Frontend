@@ -33,9 +33,8 @@ const programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
 export const playGame = async (
   wallet: WalletContextState,
   amount: number,
-  setLoading: Function,
+  setLoading: Function
 ) => {
-  
   if (wallet.publicKey === null) return;
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;
@@ -57,10 +56,11 @@ export const playGame = async (
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
       const signedTx = await wallet.signTransaction(tx);
+      // check if creating room conflicts
       try {
         await axios.post(`${API_URL}requestCreate/`);
       } catch (e) {
-        console.error("=-----====> Failed due to creating conflict");
+        console.error(" --> playGame: Failed due to creating conflict");
         errorAlert("Something went wrong. Please try again!");
         setLoading(false);
         return;
@@ -70,19 +70,21 @@ export const playGame = async (
         {
           skipPreflight: true,
           maxRetries: 3,
-          preflightCommitment: "finalized",
+          preflightCommitment: "confirmed",
         }
       );
       await axios.post(`${API_URL}createGame/`, {
         txId: txId,
       });
       console.log("Signature:", txId);
+      // release mutex for processing request if success
       await axios.post(`${API_URL}endRequest/`);
       setLoading(false);
     }
   } catch (error) {
-    console.log(error);
+    console.log(" --> playGame:", error);
     errorAlert("Something went wrong. Please try again!");
+    // release mutex for processing request if failed
     await axios.post(`${API_URL}endRequest/`);
     setLoading(false);
   }
@@ -92,15 +94,17 @@ export const enterGame = async (
   pda: PublicKey,
   amount: number,
   setLoading: Function,
-  endTimestamp: number,
+  endTimestamp: number
 ) => {
   if (wallet.publicKey === null) return;
-  const now = new Date().getTime();
-  console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
-  if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 10) {
-    errorAlert("This transaction may fail. Please try on the next version.");
-    return;
-  }
+
+  /// Comment this because backend is processed such conflict
+  // const now = new Date().getTime();
+  // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
+  // if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 10) {
+  //   errorAlert("This transaction may fail. Please try on the next version.");
+  //   return;
+  // }
 
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;
@@ -122,11 +126,12 @@ export const enterGame = async (
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
       const signedTx = await wallet.signTransaction(tx);
+      // check if creating room conflicts
       try {
         await axios.post(`${API_URL}requestEnter/`);
       } catch (e) {
         console.error(
-          "=-----====> Failed due to entering and setting winner conflict"
+          " --> enterGame: Failed due to entering and setting winner conflict"
         );
         errorAlert("Something went wrong. Please try again!");
         setLoading(false);
@@ -137,21 +142,22 @@ export const enterGame = async (
         {
           skipPreflight: true,
           maxRetries: 3,
-          preflightCommitment: "finalized",
+          preflightCommitment: "confirmed",
         }
       );
       await axios.post(`${API_URL}enterGame/`, {
         txId: txId,
       });
       console.log("Signature:", txId);
+      // release mutex for processing request if success
       await axios.post(`${API_URL}endEnterRequest/`);
       setLoading(false);
-
     }
     setLoading(false);
   } catch (error) {
-    console.error(error);
+    console.error(" --> enterGame:", error);
     errorAlert("Something went wrong. Please try again!");
+    // release mutex for processing request if failed
     await axios.post(`${API_URL}endEnterRequest/`);
     setLoading(false);
   }
@@ -243,27 +249,28 @@ export const createEnterGameTx = async (
   return tx;
 };
 
-export const getStateByKey = async (
-  wallet: WalletContextState,
-  gameKey: PublicKey
-): Promise<GamePool | null> => {
-  if (wallet.publicKey === null) return null;
-  const cloneWindow: any = window;
-  const userAddress = wallet.publicKey;
-  const provider = new anchor.AnchorProvider(
-    solConnection,
-    cloneWindow["solana"],
-    anchor.AnchorProvider.defaultOptions()
-  );
-  const program = new anchor.Program(
-    IDL as anchor.Idl,
-    JACKPOT_PROGRAM_ID,
-    provider
-  );
-  try {
-    const gameState = await program.account.gamePool.fetch(gameKey);
-    return gameState as unknown as GamePool;
-  } catch {
-    return null;
-  }
-};
+/// Comment this because no need to read PDA data from FE side directly
+// export const getStateByKey = async (
+//   wallet: WalletContextState,
+//   gameKey: PublicKey
+// ): Promise<GamePool | null> => {
+//   if (wallet.publicKey === null) return null;
+//   const cloneWindow: any = window;
+//   const userAddress = wallet.publicKey;
+//   const provider = new anchor.AnchorProvider(
+//     solConnection,
+//     cloneWindow["solana"],
+//     anchor.AnchorProvider.defaultOptions()
+//   );
+//   const program = new anchor.Program(
+//     IDL as anchor.Idl,
+//     JACKPOT_PROGRAM_ID,
+//     provider
+//   );
+//   try {
+//     const gameState = await program.account.gamePool.fetch(gameKey);
+//     return gameState as unknown as GamePool;
+//   } catch {
+//     return null;
+//   }
+// };
