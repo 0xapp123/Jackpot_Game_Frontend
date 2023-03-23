@@ -72,7 +72,7 @@ export default function Waiting(props: {
 
   const handleBet = async () => {
     try {
-      if ((gameData?.players ?? []).length !== 0) {
+      if (gameData && (gameData?.players ?? []).length !== 0) {
         await enterGame(
           wallet,
           new PublicKey(gameData.pda),
