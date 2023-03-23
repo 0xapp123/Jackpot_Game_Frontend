@@ -24,7 +24,7 @@ export default function CountdownBar(props: {
   useEffect(() => {
     if (gameData) {
       if (
-        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) <= 0
+        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
         if (setStarted) {
           setStarted(true);
