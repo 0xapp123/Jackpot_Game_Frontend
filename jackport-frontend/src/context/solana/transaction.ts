@@ -55,7 +55,6 @@ export const playGame = async (
     tx.feePayer = userAddress;
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
-      const signedTx = await wallet.signTransaction(tx);
       // check if creating room conflicts
       try {
         await axios.post(`${API_URL}requestCreate/`);
@@ -65,6 +64,7 @@ export const playGame = async (
         setLoading(false);
         return;
       }
+      const signedTx = await wallet.signTransaction(tx);
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -125,7 +125,6 @@ export const enterGame = async (
     tx.feePayer = userAddress;
     tx.recentBlockhash = blockhash;
     if (wallet.signTransaction) {
-      const signedTx = await wallet.signTransaction(tx);
       // check if creating room conflicts
       try {
         await axios.post(`${API_URL}requestEnter/`);
@@ -137,6 +136,7 @@ export const enterGame = async (
         setLoading(false);
         return;
       }
+      const signedTx = await wallet.signTransaction(tx);
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
