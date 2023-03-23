@@ -58,7 +58,7 @@ export default function Waiting(props: {
   }, []);
 
   useEffect(() => {
-    console.log(gameData, winner);
+    // console.log(gameData, winner);
     // if (setStarted && gameData && winner) {
     //     if (gameData.players.length > 1 && winner.winner !== "") {
     //         setStarted(true);
