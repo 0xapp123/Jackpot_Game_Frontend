@@ -141,7 +141,7 @@ const SocketProvider = (props: { children: any }) => {
     });
 
     socket?.on("connectionUpdated", async (counter) => {
-      console.log(" --@ connectionUpdated:", counter);
+      //   console.log(" --@ connectionUpdated:", counter);
       setOnlined(counter);
     });
 
@@ -169,12 +169,15 @@ const SocketProvider = (props: { children: any }) => {
     // TODO: need to check if this fresh round is working
     socket?.on("newGameReady", async (time, players) => {
       console.log(" --@ newGameReady:", time, players);
-      setGameData({
-        players: [],
-        endTimestamp: 0,
-        pda: "",
-        gameStarted: false,
-      });
+      setTimeout(() => {
+        if (isStarting)
+          setGameData({
+            players: [],
+            endTimestamp: 0,
+            pda: "",
+            gameStarted: false,
+          });
+      }, 2000);
       // reset game starting
       setGameStarting(1);
     });
