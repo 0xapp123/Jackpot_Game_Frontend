@@ -3,72 +3,93 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
 import Sound from "react-sound";
 
-export default function CountdownBar(props: { isMute: boolean, className?: string }) {
-    const { className, isMute } = props;
-    const { gameData, setStarted } = useSocket();
-    const [isBetSound, setIsBetSound] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState<any>(
-        calculateTimeRemaining()
-    );
+export default function CountdownBar(props: {
+  isMute: boolean;
+  className?: string;
+}) {
+  const { className, isMute } = props;
+  const { gameData, setStarted, gameEnded } = useSocket();
+  const [isBetSound, setIsBetSound] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState<any>(
+    calculateTimeRemaining()
+  );
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setTimeRemaining(calculateTimeRemaining());
-        }, 1000);
-        return () => clearInterval(intervalId);
-    }, [gameData]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [gameData]);
 
-    useEffect(() => {
-        if (gameData) {
-            if (Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0) {
-                if (setStarted) {
-                    setStarted(true);
-                    if (!isMute) {
-                        setIsBetSound(true);
-                        setTimeout(() => {
-                            setIsBetSound(false);
-                        }, 1500);
-                    } else {
-                        setIsBetSound(false);
-                    }
-                }
-            }
+  useEffect(() => {
+    if (gameData) {
+      if (
+        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) <=
+          0 &&
+        gameEnded
+      ) {
+        if (setStarted) {
+          setStarted(true);
+          if (!isMute) {
+            setIsBetSound(true);
+            setTimeout(() => {
+              setIsBetSound(false);
+            }, 1500);
+          } else {
+            setIsBetSound(false);
+          }
         }
-    }, [timeRemaining]);
-
-    useEffect(() => {
-        if (gameData && setStarted && gameData.players) {
-            if (!gameData.players.length || gameData.players.length < 2) {
-                setStarted(false)
-            }
-        }
-    }, [gameData])
-
-    function calculateTimeRemaining() {
-        if (gameData?.endTimestamp && gameData?.endTimestamp >= new Date().getTime()) {
-            return (
-                <div
-                    className="absolute bg-[#4c49cc] h-2 rounded-3xl"
-                    style={{ width: `${(35000 - (gameData?.endTimestamp - new Date().getTime())) / 1000 / 35 * 100}%` }}
-                >
-                    <Sound
-                        url="/sound/game-start.mp3"
-                        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
-                    />
-                </div>
-            )
-        }
+      }
     }
+  }, [timeRemaining]);
 
-    return (
-        <div className={`${className ? className : ""} w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}>
-            <p className="text-white font-semibold ">Countdown</p>
-            <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">
-                {timeRemaining}
-                {/* {gameData && (gameData.endTimestamp <= 0 || gameData.endTimestamp < new Date().getTime()) &&
+  useEffect(() => {
+    if (gameData && setStarted && gameData.players) {
+      if (!gameData.players.length || gameData.players.length < 2) {
+        setStarted(false);
+      }
+    }
+  }, [gameData]);
+
+  function calculateTimeRemaining() {
+    if (
+      gameData?.endTimestamp &&
+      gameData?.endTimestamp >= new Date().getTime()
+    ) {
+      return (
+        <div
+          className="absolute bg-[#4c49cc] h-2 rounded-3xl"
+          style={{
+            width: `${
+              ((35000 - (gameData?.endTimestamp - new Date().getTime())) /
+                1000 /
+                35) *
+              100
+            }%`,
+          }}
+        >
+          <Sound
+            url="/sound/game-start.mp3"
+            playStatus={isBetSound ? "PLAYING" : "STOPPED"}
+          />
+        </div>
+      );
+    }
+  }
+
+  return (
+    <div
+      className={`${
+        className ? className : ""
+      } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
+    >
+      <p className="text-white font-semibold ">Countdown</p>
+      <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">
+        {timeRemaining}
+        {/* {gameData && (gameData.endTimestamp <= 0 || gameData.endTimestamp < new Date().getTime()) &&
                     <div className="absolute bg-blue-600 h-2 rounded-3xl"></div>
                 } */}
-            </div>
-        </div>
-    )
+      </div>
+    </div>
+  );
 }
