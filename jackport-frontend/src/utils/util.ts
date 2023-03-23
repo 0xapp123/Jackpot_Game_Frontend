@@ -2,13 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { SOL_PRICE_API } from "../config";
 
 export const useSolanaPrice = () => {
-    const { isLoading, isError, data, error } = useQuery(["solanaPrice"], async () => {
-        const response = await fetch(SOL_PRICE_API);
-        const data = await response.json();
-        return data.solana?.usd;
-    });
+    try {
+        const { isLoading, isError, data, error } = useQuery(["solanaPrice"], async () => {
+            const response = await fetch(SOL_PRICE_API);
+            const data = await response.json();
+            return data.solana?.usd;
+        });
 
-    return { isLoading, isError, data, error };
+        return { isLoading, isError, data, error };
+    } catch (error) {
+        console.log(error)
+        return {};
+    }
 };
 
 

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSocket } from "../context/SocketContext";
 import { base58ToGradient } from "../utils/util";
 

@@ -34,8 +34,8 @@ export const playGame = async (
   wallet: WalletContextState,
   amount: number,
   setLoading: Function,
-  getFirstGameData: undefined | Function
 ) => {
+  
   if (wallet.publicKey === null) return;
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;
@@ -61,7 +61,7 @@ export const playGame = async (
         await axios.post(`${API_URL}requestCreate/`);
       } catch (e) {
         console.error("=-----====> Failed due to creating conflict");
-        errorAlert("Something went wrong. Reload page and try again!");
+        errorAlert("Something went wrong. Please try again!");
         setLoading(false);
         return;
       }
@@ -79,13 +79,10 @@ export const playGame = async (
       console.log("Signature:", txId);
       await axios.post(`${API_URL}endRequest/`);
       setLoading(false);
-      if (getFirstGameData) {
-        getFirstGameData();
-      }
     }
   } catch (error) {
     console.log(error);
-    errorAlert("Something went wrong. Reload page and try again!");
+    errorAlert("Something went wrong. Please try again!");
     await axios.post(`${API_URL}endRequest/`);
     setLoading(false);
   }
@@ -96,7 +93,6 @@ export const enterGame = async (
   amount: number,
   setLoading: Function,
   endTimestamp: number,
-  getFirstGameData: undefined | Function
 ) => {
   if (wallet.publicKey === null) return;
   const now = new Date().getTime();
@@ -132,7 +128,7 @@ export const enterGame = async (
         console.error(
           "=-----====> Failed due to entering and setting winner conflict"
         );
-        errorAlert("Something went wrong. Reload page and try again!");
+        errorAlert("Something went wrong. Please try again!");
         setLoading(false);
         return;
       }
@@ -151,14 +147,11 @@ export const enterGame = async (
       await axios.post(`${API_URL}endEnterRequest/`);
       setLoading(false);
 
-      if (getFirstGameData) {
-        getFirstGameData();
-      }
     }
     setLoading(false);
   } catch (error) {
     console.error(error);
-    errorAlert("Something went wrong. Reload page and try again!");
+    errorAlert("Something went wrong. Please try again!");
     await axios.post(`${API_URL}endEnterRequest/`);
     setLoading(false);
   }

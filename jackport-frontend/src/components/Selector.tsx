@@ -26,7 +26,7 @@ export default function Selector(props: {
     gameData,
     setClearGame,
     started,
-    setStated,
+    setStarted,
   } = useSocket();
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -44,7 +44,7 @@ export default function Selector(props: {
 
   const target = useMemo(() => {
     let res = 0;
-    if (winner && winner.winner !== "") {
+    if (gameData && gameData.players.length > 1 && winner && winner.winner !== "") {
       // const ranCount = Math.round(1 + Math.random()) + 1;
       // console.log("ranCount =>", ranCount);
       // if (ranCount % 2 === 0) {
@@ -53,15 +53,16 @@ export default function Selector(props: {
       //   res = ranCount * 500 - winner.resultHeight * 500;
       // }
       res = winner.resultHeight * 500 + 1500;
-      // if (setStated) setStated(true);
+      // if (setStarted) setStarted(true);
 
     }
-    console.log(winner, Math.ceil(res));
-    console.log(gameData, "gameData")
+    // console.log(winner, Math.ceil(res));
+    // console.log(gameData, "gameData")
     return Math.ceil(res);
   }, [winner, gameData]);
 
   useEffect(() => {
+    let targetValue = target;
     function handleTimer() {
       interval.current = setInterval(() => {
         setTimer((count) => count + 2);
@@ -69,14 +70,14 @@ export default function Selector(props: {
       setIsTimerRunning(true);
     }
     if (winner && winner.winner !== "") {
-      if (timer >= target - 400 && isTimerRunning) {
+      if (timer >= targetValue - 400 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
           setTimer((count) => count + 1.9);
         }, 1);
       }
-      if (timer >= target - 350 && isTimerRunning) {
+      if (timer >= targetValue - 350 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
@@ -84,14 +85,14 @@ export default function Selector(props: {
         }, 1);
       }
 
-      if (timer >= target - 300 && isTimerRunning) {
+      if (timer >= targetValue - 300 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
           setTimer((count) => count + 1.1);
         }, 1);
       }
-      if (timer >= target - 250 && isTimerRunning) {
+      if (timer >= targetValue - 250 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
@@ -99,14 +100,14 @@ export default function Selector(props: {
         }, 1);
       }
 
-      if (timer >= target - 200 && isTimerRunning) {
+      if (timer >= targetValue - 200 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
           setTimer((count) => count + 0.5);
         }, 1);
       }
-      if (timer >= target - 150 && isTimerRunning) {
+      if (timer >= targetValue - 150 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
@@ -114,14 +115,14 @@ export default function Selector(props: {
         }, 1);
       }
 
-      if (timer >= target - 100 && isTimerRunning) {
+      if (timer >= targetValue - 100 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
           setTimer((count) => count + 0.1);
         }, 1);
       }
-      if (timer >= target - 50 && isTimerRunning) {
+      if (timer >= targetValue - 50 && isTimerRunning) {
         clearInterval(interval.current);
 
         interval.current = setInterval(() => {
@@ -129,7 +130,7 @@ export default function Selector(props: {
         }, 1);
       }
 
-      if (timer >= target) {
+      if (timer >= targetValue) {
         clearInterval(interval.current);
       }
       if (timer === 0) {
@@ -141,13 +142,14 @@ export default function Selector(props: {
   const [confettiThrown, setConfettiThrown] = useState(false);
   useEffect(() => {
     if (
-      target - timer < 1 &&
+      Math.ceil(target) - Math.ceil(timer) < 1 &&
       !confettiThrown &&
       winner?.winner !== "" &&
       gameData
     ) {
       if (wallet.publicKey?.toBase58() === winner?.winner && gameData.players?.length !== 0) {
         throwConfetti();
+
         setConfettiThrown(true);
         const sumBets = gameData.players.reduce(
           (sum: number, item: any) => sum + item.amount,
@@ -155,7 +157,7 @@ export default function Selector(props: {
         );
         props.setIsWonWindow(true);
         props.setWonValue(sumBets / LAMPORTS_PER_SOL);
-        if (props.isMute) {
+        if (!props.isMute) {
           setIsWonSound(true);
           setTimeout(() => {
             setIsWonSound(false);
@@ -163,15 +165,15 @@ export default function Selector(props: {
         } else {
           setIsWonSound(false);
         }
-      }
-      if (setClearGame) {
-        setTimeout(() => {
-          setClearGame();
-          if (setStated) setStated(false);
-        }, 3000);
+        if (setClearGame) setClearGame();
+        if (setStarted) setStarted(false);
+      } else {
+        console.log("++++++++++++++++++++++++++++++++++++")
+        if (setClearGame) setClearGame();
+        if (setStarted) setStarted(false);
       }
     }
-  }, [timer, wallet]);
+  }, [timer, wallet, gameData]);
 
   return (
     <>
