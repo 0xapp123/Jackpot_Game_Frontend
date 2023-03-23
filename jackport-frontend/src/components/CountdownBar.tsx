@@ -5,7 +5,7 @@ import Sound from "react-sound";
 
 export default function CountdownBar(props: { isMute: boolean, className?: string }) {
     const { className, isMute } = props;
-    const { gameData, setStated } = useSocket();
+    const { gameData, setStarted } = useSocket();
     const [isBetSound, setIsBetSound] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState<any>(
         calculateTimeRemaining()
@@ -21,9 +21,9 @@ export default function CountdownBar(props: { isMute: boolean, className?: strin
     useEffect(() => {
         if (gameData) {
             if (Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0) {
-                if (setStated) {
-                    setStated(true);
-                    if (isMute) {
+                if (setStarted) {
+                    setStarted(true);
+                    if (!isMute) {
                         setIsBetSound(true);
                         setTimeout(() => {
                             setIsBetSound(false);
@@ -37,9 +37,9 @@ export default function CountdownBar(props: { isMute: boolean, className?: strin
     }, [timeRemaining]);
 
     useEffect(() => {
-        if (gameData && setStated && gameData.players) {
+        if (gameData && setStarted && gameData.players) {
             if (!gameData.players.length || gameData.players.length < 2) {
-                setStated(false)
+                setStarted(false)
             }
         }
     }, [gameData])

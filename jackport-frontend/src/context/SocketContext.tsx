@@ -25,7 +25,7 @@ interface Context {
     getFirstGameData?: Function,
     setClearGame?: Function,
     started?: boolean,
-    setStated?: Function,
+    setStarted?: Function,
     messages?: ChatType[],
     onlined?: number,
     isStarting?: number,
@@ -38,7 +38,7 @@ export const useSocket = () => useContext(context);
 
 const SocketProvider = (props: { children: any }) => {
     const [socket, setSocket] = useState<SocketType>();
-    const [started, setStated] = useState(false);
+    const [started, setStarted] = useState(false);
     const [messages, setMessages] = useState<ChatType[]>();
     const [onlined, setOnlined] = useState(0);
     const [isStarting, setGameStarting] = useState<number>(1);
@@ -72,7 +72,7 @@ const SocketProvider = (props: { children: any }) => {
         try {
             const response = await fetch(`${API_URL}getRecentGame`);
             const data = await response.json();
-            if (data?.players) {
+            if (data?.pda && data?.pda !== "") {
                 setGameData({
                     players: data.players,
                     endTimestamp: data.endTimestamp,
@@ -177,13 +177,13 @@ const SocketProvider = (props: { children: any }) => {
             setMessages(msgs)
         });
 
-        return () => {
-            socket?.off("connectionUpdated");
-            socket?.off("startGame");
-            socket?.off("endTimeUpdated")
-            socket?.off("chatUpdated")
-            socket?.off("gameEnded")
-        }
+        // return () => {
+        //     socket?.off("connectionUpdated");
+        //     socket?.off("startGame");
+        //     socket?.off("endTimeUpdated")
+        //     socket?.off("chatUpdated")
+        //     socket?.off("gameEnded")
+        // }
 
     }, [socket])
 
@@ -195,10 +195,9 @@ const SocketProvider = (props: { children: any }) => {
             winner,
             resultHeight,
             setClearGame,
-            getFirstGameData,
             isStarting,
             started,
-            setStated,
+            setStarted,
             messages,
             recentWinners,
             onlined

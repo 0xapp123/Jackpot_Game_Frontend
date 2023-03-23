@@ -2,7 +2,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { ChatIcon, Leftarrow } from "../components/Svglist";
-import { useSolanaPrice } from "../utils/util";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
     enterGame,
@@ -16,18 +15,26 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import MobileChat from "../components/Chat/MobileChat";
 import Head from "next/head";
 import Playhistory from "../components/Playhistory";
-import { API_URL } from "../config";
+import { API_URL, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Waiting(props: {
     isMute: boolean,
     setIsMute: Function
 }) {
     const wallet = useWallet();
-    const { gameData, winner, isStarting, getFirstGameData } = useSocket();
+    const { gameData, winner, isStarting, setStarted } = useSocket();
     const [betAmount, setBetAmount] = useState(0.1);
     const [isBetLoading, setIsBetLoading] = useState(false);
-    const { isLoading, isError, data, error } = useSolanaPrice();
+
+    const data = 21.2
+
+    // const { data } = useQuery(["solanaPrice"], async () => {
+    //     const response = await fetch(SOL_PRICE_API);
+    //     const data = await response.json();
+    //     return data.solana?.usd;
+    // });
     const [isWonWindow, setIsWonWindow] = useState(false);
     const [wonValue, setWonValue] = useState(0);
     const [isMobileChat, setIsMobileChat] = useState(false);
@@ -42,10 +49,29 @@ export default function Waiting(props: {
         setIsOpen(false);
     }
 
-    useEffect(() => {
-        console.log("isStarting", isStarting)
-    }, [isStarting])
+    const [force, setForce] = useState(false);
 
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            console.log("heartbeat");
+            setForce(!force);
+        }, 1000);
+        // Clear interval if the component unmounts or when dependencies change.
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        console.log(gameData, winner);
+        // if (setStarted && gameData && winner) {
+        //     if (gameData.players.length > 1 && winner.winner !== "") {
+        //         setStarted(true);
+        //         setForce(!force);
+        //     } else {
+        //         setStarted(false);
+        //         setForce(!force);
+        //     }
+        // }
+    }, [gameData, winner])
 
     const handleBet = async () => {
         try {
@@ -56,10 +82,9 @@ export default function Waiting(props: {
                     betAmount,
                     setIsBetLoading,
                     gameData.endTimestamp,
-                    getFirstGameData
                 );
             } else {
-                await playGame(wallet, betAmount, setIsBetLoading, getFirstGameData);
+                await playGame(wallet, betAmount, setIsBetLoading);
             }
         } catch (error) {
             console.log(error);

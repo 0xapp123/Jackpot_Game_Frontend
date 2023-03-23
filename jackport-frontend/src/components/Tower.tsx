@@ -61,7 +61,7 @@ export default function Tower(props: {
 
   useEffect(() => {
     if (gameData && gameData.players && gameData.players.length) {
-      if (props.isMute) {
+      if (!props.isMute) {
         setIsBetSound(true);
         setTimeout(() => {
           setIsBetSound(false);
