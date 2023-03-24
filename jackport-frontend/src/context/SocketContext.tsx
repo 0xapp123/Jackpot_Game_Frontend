@@ -169,15 +169,15 @@ const SocketProvider = (props: { children: any }) => {
     // TODO: need to check if this fresh round is working
     socket?.on("newGameReady", async (time, players) => {
       console.log(" --@ newGameReady:", time, players);
-      setTimeout(() => {
-        if (isStarting)
-          setGameData({
-            players: [],
-            endTimestamp: 0,
-            pda: "",
-            gameStarted: false,
-          });
-      }, 2000);
+      // setTimeout(() => {
+      //   if (isStarting)
+      //     setGameData({
+      //       players: [],
+      //       endTimestamp: 0,
+      //       pda: "",
+      //       gameStarted: false,
+      //     });
+      // }, 2000);
       // reset game starting
       setGameStarting(1);
     });
