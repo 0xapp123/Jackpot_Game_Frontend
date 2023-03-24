@@ -95,8 +95,14 @@ export default function Selector(props: {
       increment = 0.2;
     } else if (timeDifference >= 100 && isTimerRunning) {
       increment = 0.1;
-    } else if (timeDifference >= 50 && isTimerRunning) {
-      increment = 0.1;
+    } else if (timeDifference >= 80 && isTimerRunning) {
+      increment = 0.08;
+    } else if (timeDifference >= 60 && isTimerRunning) {
+      increment = 0.06;
+    } else if (timeDifference >= 40 && isTimerRunning) {
+      increment = 0.04;
+    } else if (timeDifference >= 20 && isTimerRunning) {
+      increment = 0.02;
     }
 
     intervalId = setInterval(() => {
