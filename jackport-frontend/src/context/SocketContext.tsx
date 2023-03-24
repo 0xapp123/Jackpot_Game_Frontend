@@ -161,31 +161,39 @@ const SocketProvider = (props: { children: any }) => {
     });
 
     socket?.on("gameEnded", async (winner) => {
-      console.log(" --@ gameEnded:", winner);
+      console.log(" --@ gameEnded:", new Date().toLocaleTimeString(), winner);
       setWinner(winner);
-      setGameEnded(true);
     });
 
     // TODO: need to check if this fresh round is working
     socket?.on("newGameReady", async (time, players) => {
-      console.log(" --@ newGameReady:", time, players);
-      // setTimeout(() => {
-      //   if (isStarting)
-      //     setGameData({
-      //       players: [],
-      //       endTimestamp: 0,
-      //       pda: "",
-      //       gameStarted: false,
-      //     });
-      // }, 2000);
-      // reset game starting
-      setGameStarting(1);
+      console.log(" --@ newGameReady:", new Date().toLocaleTimeString(), time, players);
+      setTimeout(() => {
+        if (isStarting)
+          setGameData({
+            players: players,
+            endTimestamp: time,
+            pda: "",
+            gameStarted: false,
+          });
+        setGameEnded(true);
+        //   // reset game starting
+        setGameStarting(1);
+        setWinner(
+          {
+            winner: "",
+            resultHeight: 0,
+          }
+        )
+        setStarted(false);
+      }, 2000);
     });
 
     socket?.on("gameStarting", async (started) => {
       console.log(" --@ gameStarting:", started);
       // set game starting flag to prevent conflict
       setGameStarting(started);
+      setGameEnded(false);
     });
 
     socket?.on("chatUpdated", async ([...msgs]: ChatType[]) => {

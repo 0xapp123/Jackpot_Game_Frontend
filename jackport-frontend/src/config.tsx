@@ -8,3 +8,6 @@ export const RPC_URL =
   "https://cool-blissful-patron.solana-mainnet.quiknode.pro/6311bf83d9d8fc79f19f7b249bb50311b31ff25f/";
 export const SOL_PRICE_API =
   "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd";
+
+export const FIRST_COOLDOWN = 35000;
+export const NEXT_COOLDOWN = 6000;

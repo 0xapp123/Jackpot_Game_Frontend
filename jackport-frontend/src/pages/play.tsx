@@ -14,7 +14,6 @@ import Head from "next/head";
 import Playhistory from "../components/Playhistory";
 import { API_URL, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
-import { useQuery } from "@tanstack/react-query";
 
 export default function Waiting(props: {
   isMute: boolean;
@@ -22,8 +21,10 @@ export default function Waiting(props: {
 }) {
   const wallet = useWallet();
   const { gameData, winner, isStarting, setStarted } = useSocket();
-  const [betAmount, setBetAmount] = useState(0.1);
+  const [betAmount, setBetAmount] = useState(0.001);
   const [isBetLoading, setIsBetLoading] = useState(false);
+
+
 
   const data = 21.2;
 
@@ -130,7 +131,14 @@ export default function Waiting(props: {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) {}
+    } catch (error) { }
+  };
+
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleBet();
+    }
   };
 
   useEffect(() => {
@@ -189,9 +197,8 @@ export default function Waiting(props: {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 1 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -209,9 +216,8 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 2 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -229,9 +235,8 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 3 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
@@ -260,6 +265,7 @@ export default function Waiting(props: {
                   onChange={(e) =>
                     handleBetAmount(e.target.value as unknown as number)
                   }
+                  onKeyDown={handleKeyDown}
                   className="w-[calc(100%-118px)] h-12 border-[1px] bg-[#30058c42] pl-5 border-white-10 rounded-xl text-[16px] text-[#FFFFFF]"
                 />
                 <button

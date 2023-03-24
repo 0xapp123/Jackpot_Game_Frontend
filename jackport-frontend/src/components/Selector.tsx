@@ -25,9 +25,9 @@ export default function Selector(props: {
     useSocket();
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const interval: any = useRef();
   const list = [32, 132, 232, 332, 432];
   const [isWonSound, setIsWonSound] = useState(false);
+  const [confettiThrown, setConfettiThrown] = useState(false);
 
   const throwConfetti = useCallback(() => {
     confetti({
@@ -56,91 +56,66 @@ export default function Selector(props: {
       // if (setStarted) setStarted(true);
     }
     // console.log(winner, Math.ceil(res));
-    // console.log(gameData, "gameData")
+    // console.log(gameData, "gameData");
+    console.log(winner, "Result height: ", res)
     return Math.ceil(res);
   }, [winner, gameData]);
 
   useEffect(() => {
-    let targetValue = target;
     if (!target) return;
+    let intervalId: NodeJS.Timeout;
+
     function handleTimer() {
-      interval.current = setInterval(() => {
+      intervalId = setInterval(() => {
         setTimer((count) => count + 2);
       }, 1);
       setIsTimerRunning(true);
+      console.log('targetValue', target);
     }
-    if (winner && winner.winner !== "") {
-      if (timer >= targetValue - 400 && isTimerRunning) {
-        clearInterval(interval.current);
 
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 1.9);
-        }, 1);
-      }
-      if (timer >= targetValue - 350 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 1.3);
-        }, 1);
-      }
-
-      if (timer >= targetValue - 300 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 1.1);
-        }, 1);
-      }
-      if (timer >= targetValue - 250 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 0.8);
-        }, 1);
-      }
-
-      if (timer >= targetValue - 200 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 0.5);
-        }, 1);
-      }
-      if (timer >= targetValue - 150 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 0.2);
-        }, 1);
-      }
-
-      if (timer >= targetValue - 100 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 0.1);
-        }, 1);
-      }
-      if (timer >= targetValue - 50 && isTimerRunning) {
-        clearInterval(interval.current);
-
-        interval.current = setInterval(() => {
-          setTimer((count) => count + 0.1);
-        }, 1);
-      }
-
-      if (timer >= targetValue) {
-        clearInterval(interval.current);
-        setIsTimerRunning(false);
-      }
-      if (timer === 0) {
-        handleTimer();
-      }
+    if (timer === 0) {
+      handleTimer();
+      return () => clearInterval(intervalId);
     }
-  }, [timer, target, winner, isTimerRunning]);
 
-  const [confettiThrown, setConfettiThrown] = useState(false);
+    const timeDifference = target - timer;
+    let increment = 2;
+
+    if (timeDifference >= 400 && isTimerRunning) {
+      increment = 1.9;
+    } else if (timeDifference >= 350 && isTimerRunning) {
+      increment = 1.3;
+    } else if (timeDifference >= 300 && isTimerRunning) {
+      increment = 1.1;
+    } else if (timeDifference >= 250 && isTimerRunning) {
+      increment = 0.8;
+    } else if (timeDifference >= 200 && isTimerRunning) {
+      increment = 0.5;
+    } else if (timeDifference >= 150 && isTimerRunning) {
+      increment = 0.2;
+    } else if (timeDifference >= 100 && isTimerRunning) {
+      increment = 0.1;
+    } else if (timeDifference >= 50 && isTimerRunning) {
+      increment = 0.1;
+    }
+
+    intervalId = setInterval(() => {
+      setTimer((count) => count + increment);
+    }, 1);
+
+    if (timer >= target) {
+      clearInterval(intervalId);
+      setIsTimerRunning(false);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [timer, target, isTimerRunning]);
+
+
+  useEffect(() => {
+    console.log("target :", target);
+  }, [target])
+
   useEffect(() => {
     if (
       Math.ceil(target) - Math.ceil(timer) < 1 &&
@@ -169,20 +144,19 @@ export default function Selector(props: {
         } else {
           setIsWonSound(false);
         }
-        // if (setClearGame) setClearGame();
-        // if (setStarted) setStarted(false);
-      } else {
-        // console.log("++++++++++++++++++++++++++++++++++++")
-        // if (setClearGame) setClearGame();
-        // if (setStarted) setStarted(false);
       }
     }
-  }, [timer, wallet, gameData]);
+  }, [timer, wallet, gameData?.players, gameData?.endTimestamp]);
 
   useEffect(() => {
     if (gameEnded === undefined) return;
     if (setClearGame) setClearGame();
-    if (setStarted) setStarted(false);
+    if (!gameEnded) {
+      setTimer(0);
+      props.setIsWonWindow(false);
+      setConfettiThrown(false)
+    }
+    // if (setStarted) setStarted(false);
   }, [gameEnded]);
 
   return (
@@ -193,31 +167,28 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
-                    ? list[Math.floor(timer / 100) % 5]
-                    : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                top: `${Math.floor(timer / 500) % 2
+                  ? list[Math.floor(timer / 100) % 5]
+                  : list[5 - (Math.floor(timer / 100) % 5)]
+                  }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
-                    ? list[Math.floor(timer / 100) % 5]
-                    : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                top: `${Math.floor(timer / 500) % 2
+                  ? list[Math.floor(timer / 100) % 5]
+                  : list[5 - (Math.floor(timer / 100) % 5)]
+                  }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
-                    ? timer % 500
-                    : 500 - (timer % 500)
-                }px`,
+                top: `${Math.floor(timer / 500) % 2
+                  ? timer % 500
+                  : 500 - (timer % 500)
+                  }px`,
               }}
             ></div>
           </>
@@ -250,6 +221,7 @@ export default function Selector(props: {
       </div>
       <Sound
         url="/sound/success.mp3"
+        debug={false}
         playStatus={isWonSound ? "PLAYING" : "STOPPED"}
       />
     </>
