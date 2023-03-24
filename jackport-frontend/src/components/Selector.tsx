@@ -62,6 +62,7 @@ export default function Selector(props: {
 
   useEffect(() => {
     let targetValue = target;
+    if (!target) return;
     function handleTimer() {
       interval.current = setInterval(() => {
         setTimer((count) => count + 2);
@@ -131,12 +132,13 @@ export default function Selector(props: {
 
       if (timer >= targetValue) {
         clearInterval(interval.current);
+        setIsTimerRunning(false);
       }
       if (timer === 0) {
         handleTimer();
       }
     }
-  }, [timer, target, winner]);
+  }, [timer, target, winner, isTimerRunning]);
 
   const [confettiThrown, setConfettiThrown] = useState(false);
   useEffect(() => {
