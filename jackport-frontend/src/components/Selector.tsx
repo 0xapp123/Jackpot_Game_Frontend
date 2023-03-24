@@ -57,7 +57,7 @@ export default function Selector(props: {
     }
     // console.log(winner, Math.ceil(res));
     // console.log(gameData, "gameData");
-    console.log(winner, "Result height: ", res)
+    console.log(winner, "Result height: ", res);
     return Math.ceil(res);
   }, [winner, gameData]);
 
@@ -70,7 +70,7 @@ export default function Selector(props: {
         setTimer((count) => count + 2);
       }, 1);
       setIsTimerRunning(true);
-      console.log('targetValue', target);
+      console.log("targetValue", target);
     }
 
     if (timer === 0) {
@@ -95,14 +95,14 @@ export default function Selector(props: {
       increment = 0.2;
     } else if (timeDifference >= 100 && isTimerRunning) {
       increment = 0.1;
-    } else if (timeDifference >= 80 && isTimerRunning) {
-      increment = 0.08;
-    } else if (timeDifference >= 60 && isTimerRunning) {
-      increment = 0.06;
-    } else if (timeDifference >= 40 && isTimerRunning) {
-      increment = 0.04;
-    } else if (timeDifference >= 20 && isTimerRunning) {
-      increment = 0.02;
+    } else if (timeDifference >= 70 && isTimerRunning) {
+      increment = 0.07;
+      // } else if (timeDifference >= 60 && isTimerRunning) {
+      //   increment = 0.06;
+    } else if (timeDifference >= 50 && isTimerRunning) {
+      increment = 0.05;
+    } else if (timeDifference >= 30 && isTimerRunning) {
+      increment = 0.03;
     } else if (timeDifference >= 10 && isTimerRunning) {
       increment = 0.01;
     } else if (timeDifference >= 5 && isTimerRunning) {
@@ -121,10 +121,9 @@ export default function Selector(props: {
     return () => clearInterval(intervalId);
   }, [timer, target, isTimerRunning]);
 
-
   useEffect(() => {
     console.log("target :", target);
-  }, [target])
+  }, [target]);
 
   useEffect(() => {
     if (
@@ -164,7 +163,7 @@ export default function Selector(props: {
     if (!gameEnded) {
       setTimer(0);
       props.setIsWonWindow(false);
-      setConfettiThrown(false)
+      setConfettiThrown(false);
     }
     // if (setStarted) setStarted(false);
   }, [gameEnded]);
@@ -177,28 +176,31 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? list[Math.floor(timer / 100) % 5]
-                  : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? list[Math.floor(timer / 100) % 5]
+                    : list[5 - (Math.floor(timer / 100) % 5)]
+                }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? list[Math.floor(timer / 100) % 5]
-                  : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? list[Math.floor(timer / 100) % 5]
+                    : list[5 - (Math.floor(timer / 100) % 5)]
+                }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? timer % 500
-                  : 500 - (timer % 500)
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? timer % 500
+                    : 500 - (timer % 500)
+                }px`,
               }}
             ></div>
           </>
