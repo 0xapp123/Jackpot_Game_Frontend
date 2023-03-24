@@ -5,12 +5,15 @@ import Sidebar from "../components/Sidebar";
 import { API_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useSolanaPrice } from "../utils/util";
+import { useSocket } from "../context/SocketContext";
 
 export default function Home(props: { isMute: boolean; setIsMute: Function }) {
   const [recentWinnders, setRecentWinners] = useState([]);
   const [totalWins, setTotalWins] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const { isLoading, isError, data, error } = useSolanaPrice();
+  const { data } = useSolanaPrice();
+
+  const { gameData } = useSocket();
 
   const getWinners = async () => {
     try {
@@ -51,7 +54,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
     getWinners();
     getSum();
     getTotalCount();
-  }, []);
+  }, [gameData]);
 
   return (
     <div className="flex min-h-[100vh] bg-bg bg-cover bg-no-repeat w-full">
@@ -99,7 +102,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
               </div>
             </div>
             <p className="font-font-mono text-[26.7px] font-normal mt-[29.36px] text-white-100 leading-10">
-              Recent Plays
+              Recent Player
             </p>
 
             <div className="w-full overflow-x-auto">
@@ -109,7 +112,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
                     Game
                   </p>
                   <p className="w-[250px] text-sm text-[#FFFFFFA8] text-center">
-                    Username
+                    Wallet
                   </p>
                   <p className="w-[150px] text-sm text-[#FFFFFFA8] text-center">
                     Bet
