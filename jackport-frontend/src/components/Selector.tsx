@@ -103,6 +103,10 @@ export default function Selector(props: {
       increment = 0.04;
     } else if (timeDifference >= 20 && isTimerRunning) {
       increment = 0.02;
+    } else if (timeDifference >= 10 && isTimerRunning) {
+      increment = 0.01;
+    } else if (timeDifference >= 5 && isTimerRunning) {
+      increment = 0.005;
     }
 
     intervalId = setInterval(() => {
