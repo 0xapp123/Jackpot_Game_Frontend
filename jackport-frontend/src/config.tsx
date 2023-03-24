@@ -11,4 +11,4 @@ export const SOL_PRICE_API =
 
 export const FIRST_COOLDOWN = 35000;
 export const NEXT_COOLDOWN = 6000;
-export const CLEAR_COOLDOWN = 1000;
+export const CLEAR_COOLDOWN = 3000;
