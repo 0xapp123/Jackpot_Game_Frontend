@@ -14,6 +14,7 @@ import Head from "next/head";
 import Playhistory from "../components/Playhistory";
 import { API_URL, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Waiting(props: {
   isMute: boolean;
@@ -24,15 +25,11 @@ export default function Waiting(props: {
   const [betAmount, setBetAmount] = useState(0.001);
   const [isBetLoading, setIsBetLoading] = useState(false);
 
-
-
-  const data = 21.2;
-
-  // const { data } = useQuery(["solanaPrice"], async () => {
-  //     const response = await fetch(SOL_PRICE_API);
-  //     const data = await response.json();
-  //     return data.solana?.usd;
-  // });
+  const { data } = useQuery(["solanaPrice"], async () => {
+    const response = await fetch(SOL_PRICE_API);
+    const data = await response.json();
+    return data.solana?.usd;
+  });
   const [isWonWindow, setIsWonWindow] = useState(false);
   const [wonValue, setWonValue] = useState(0);
   const [isMobileChat, setIsMobileChat] = useState(false);
@@ -57,19 +54,6 @@ export default function Waiting(props: {
     // Clear interval if the component unmounts or when dependencies change.
     return () => clearInterval(intervalId);
   }, []);
-
-  useEffect(() => {
-    // console.log(gameData, winner);
-    // if (setStarted && gameData && winner) {
-    //     if (gameData.players.length > 1 && winner.winner !== "") {
-    //         setStarted(true);
-    //         setForce(!force);
-    //     } else {
-    //         setStarted(false);
-    //         setForce(!force);
-    //     }
-    // }
-  }, [gameData, winner]);
 
   const handleBet = async () => {
     try {
@@ -131,12 +115,11 @@ export default function Waiting(props: {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleBet();
     }
   };
@@ -145,7 +128,7 @@ export default function Waiting(props: {
     getWinners();
     getSum();
     getTotalCount();
-  }, []);
+  }, [gameData]);
 
   return (
     <>
@@ -197,8 +180,9 @@ export default function Waiting(props: {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 1 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -216,8 +200,9 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 2 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -235,8 +220,9 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 3 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
@@ -343,12 +329,14 @@ export default function Waiting(props: {
         <Chat
           className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex"
           isOpen={isOpen}
+          isMute={props.isMute}
           handleCloseModal={handleCloseModal}
           handleOpenModal={handleOpenModal}
         />
         <MobileChat
           opened={isMobileChat}
           setOpen={setIsMobileChat}
+          isMute={props.isMute}
           isOpen={isOpen}
           handleCloseModal={handleCloseModal}
           handleOpenModal={handleOpenModal}
@@ -391,7 +379,7 @@ export default function Waiting(props: {
             </div>
           </div>
           <p className="font-font-mono text-[26.7px] font-normal mt-[29.36px] text-white-100 leading-10">
-            Recent Plays
+            Recent Player
           </p>
 
           <div className="w-full overflow-x-auto">
@@ -401,7 +389,7 @@ export default function Waiting(props: {
                   Game
                 </p>
                 <p className="w-[250px] text-sm text-[#FFFFFFA8] text-center">
-                  Username
+                  Wallet
                 </p>
                 <p className="w-[150px] text-sm text-[#FFFFFFA8] text-center">
                   Bet
