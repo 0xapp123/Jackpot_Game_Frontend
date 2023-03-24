@@ -2,8 +2,6 @@
 import { Roundarrow, Tripledot } from "../components/Svglist";
 import Playhistory from "../components/Playhistory";
 import Sidebar from "../components/Sidebar";
-import { useSocket } from "../context/SocketContext";
-import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useSolanaPrice } from "../utils/util";

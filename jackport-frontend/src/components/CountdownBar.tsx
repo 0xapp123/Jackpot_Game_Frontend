@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
 import Sound from "react-sound";
+import { FIRST_COOLDOWN } from "../config";
 
 export default function CountdownBar(props: {
   isMute: boolean;
@@ -24,6 +25,7 @@ export default function CountdownBar(props: {
   useEffect(() => {
     let timeoutId: NodeJS.Timer;
     if (gameData) {
+      console.log("countdown: ", Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000))
       if (
         Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
@@ -62,16 +64,15 @@ export default function CountdownBar(props: {
         <div
           className="absolute bg-[#4c49cc] h-2 rounded-3xl"
           style={{
-            width: `${
-              ((35000 - (gameData?.endTimestamp - new Date().getTime())) /
-                1000 /
-                35) *
+            width: `${((FIRST_COOLDOWN - (gameData?.endTimestamp - new Date().getTime())) /
+              FIRST_COOLDOWN) *
               100
-            }%`,
+              }%`,
           }}
         >
           <Sound
             url="/sound/game-start.mp3"
+            debug={false}
             playStatus={isBetSound ? "PLAYING" : "STOPPED"}
           />
         </div>
@@ -81,9 +82,8 @@ export default function CountdownBar(props: {
 
   return (
     <div
-      className={`${
-        className ? className : ""
-      } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
+      className={`${className ? className : ""
+        } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
     >
       <p className="text-white font-semibold ">Countdown</p>
       <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">
