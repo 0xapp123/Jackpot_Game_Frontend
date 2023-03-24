@@ -178,9 +178,10 @@ export default function Selector(props: {
   }, [timer, wallet, gameData]);
 
   useEffect(() => {
+    if (gameEnded === undefined) return;
     if (setClearGame) setClearGame();
     if (setStarted) setStarted(false);
-  }, [gameEnded, setClearGame, setStarted]);
+  }, [gameEnded]);
 
   return (
     <>
