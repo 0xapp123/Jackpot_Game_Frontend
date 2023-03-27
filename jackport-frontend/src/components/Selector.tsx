@@ -21,8 +21,7 @@ export default function Selector(props: {
   isMute: boolean;
 }) {
   const wallet = useWallet();
-  const { winner, gameData, setClearGame, started, setStarted, gameEnded } =
-    useSocket();
+  const { winner, gameData, setClearGame, started, gameEnded } = useSocket();
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const list = [32, 132, 232, 332, 432];
@@ -52,7 +51,7 @@ export default function Selector(props: {
       // } else {
       //   res = ranCount * 500 - winner.resultHeight * 500;
       // }
-      res = winner.resultHeight * 500 + 1500;
+      res = winner.resultHeight * 500 + 2500;
       // if (setStarted) setStarted(true);
     }
     // console.log(winner, Math.ceil(res));
@@ -79,33 +78,31 @@ export default function Selector(props: {
     }
 
     const timeDifference = target - timer;
-    let increment = 2;
+    let increment = isTimerRunning ? 3 : 0;
 
-    if (timeDifference >= 400 && isTimerRunning) {
+    if (timeDifference >= 600 && isTimerRunning) {
       increment = 1.9;
-    } else if (timeDifference >= 350 && isTimerRunning) {
-      increment = 1.3;
+    } else if (timeDifference >= 450 && isTimerRunning) {
+      increment = 1.7;
     } else if (timeDifference >= 300 && isTimerRunning) {
-      increment = 1.1;
+      increment = 1.5;
     } else if (timeDifference >= 250 && isTimerRunning) {
-      increment = 0.8;
+      increment = 1.2;
     } else if (timeDifference >= 200 && isTimerRunning) {
-      increment = 0.5;
+      increment = 1;
     } else if (timeDifference >= 150 && isTimerRunning) {
-      increment = 0.2;
+      increment = 0.5;
     } else if (timeDifference >= 100 && isTimerRunning) {
-      increment = 0.1;
+      increment = 0.3;
     } else if (timeDifference >= 70 && isTimerRunning) {
-      increment = 0.07;
-      // } else if (timeDifference >= 60 && isTimerRunning) {
-      //   increment = 0.06;
+      increment = 0.15;
     } else if (timeDifference >= 50 && isTimerRunning) {
-      increment = 0.05;
+      increment = 0.08;
     } else if (timeDifference >= 30 && isTimerRunning) {
-      increment = 0.03;
+      increment = 0.04;
     } else if (timeDifference >= 10 && isTimerRunning) {
       increment = 0.01;
-    } else if (timeDifference >= 5 && isTimerRunning) {
+    } else if (timeDifference >= 1 && isTimerRunning) {
       increment = 0.005;
     }
 
@@ -136,23 +133,29 @@ export default function Selector(props: {
         wallet.publicKey?.toBase58() === winner?.winner &&
         gameData.players?.length !== 0
       ) {
-        throwConfetti();
+        console.log("====>>>> confetti start");
+        setTimeout(() => {
+          throwConfetti();
+          console.log("====>>>> confetti end");
 
-        setConfettiThrown(true);
-        const sumBets = gameData.players.reduce(
-          (sum: number, item: any) => sum + item.amount,
-          0
-        );
-        props.setIsWonWindow(true);
-        props.setWonValue(sumBets / LAMPORTS_PER_SOL);
-        if (!props.isMute) {
-          setIsWonSound(true);
-          setTimeout(() => {
+          setConfettiThrown(true);
+          const sumBets = gameData.players.reduce(
+            (sum: number, item: any) => sum + item.amount,
+            0
+          );
+          props.setIsWonWindow(true);
+          props.setWonValue(sumBets / LAMPORTS_PER_SOL);
+          if (!props.isMute) {
+            console.log("====>>>> sound start");
+            setIsWonSound(true);
+            setTimeout(() => {
+              console.log("====>>>> sound end");
+              setIsWonSound(false);
+            }, 1500);
+          } else {
             setIsWonSound(false);
-          }, 1500);
-        } else {
-          setIsWonSound(false);
-        }
+          }
+        }, 1000);
       }
     }
   }, [timer, wallet, gameData?.players, gameData?.endTimestamp]);
@@ -161,11 +164,13 @@ export default function Selector(props: {
     if (gameEnded === undefined) return;
     if (setClearGame) setClearGame();
     if (!gameEnded) {
+      console.log("====>>>> game start");
       setTimer(0);
       props.setIsWonWindow(false);
       setConfettiThrown(false);
+    } else {
+      console.log("====>>>> game end");
     }
-    // if (setStarted) setStarted(false);
   }, [gameEnded]);
 
   return (
