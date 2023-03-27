@@ -74,6 +74,7 @@ export default function Waiting(props: {
   };
 
   const handleBetAmount = (value: number) => {
+    if (value <= 0) return;
     setBetAmount(value);
   };
 
