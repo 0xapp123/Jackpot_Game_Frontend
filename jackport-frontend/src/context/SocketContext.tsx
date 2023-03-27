@@ -70,6 +70,14 @@ const SocketProvider = (props: { children: any }) => {
       pda: "",
       gameStarted: false,
     });
+    if (gameEnded) {
+      setGameStarting(1);
+      setWinner({
+        winner: "",
+        resultHeight: 0,
+      });
+      setStarted(false);
+    }
   };
 
   const getFirstGameData = async () => {
@@ -174,21 +182,21 @@ const SocketProvider = (props: { children: any }) => {
         players
       );
       setTimeout(() => {
-        if (isStarting)
-          setGameData({
-            players: players,
-            endTimestamp: time,
-            pda: "",
-            gameStarted: false,
-          });
+        // if (isStarting)
+        //   setGameData({
+        //     players: players,
+        //     endTimestamp: time,
+        //     pda: "",
+        //     gameStarted: false,
+        //   });
         setGameEnded(true);
         //   // reset game starting
-        setGameStarting(1);
-        setWinner({
-          winner: "",
-          resultHeight: 0,
-        });
-        setStarted(false);
+        // setGameStarting(1);
+        // setWinner({
+        //   winner: "",
+        //   resultHeight: 0,
+        // });
+        // setStarted(false);
       }, CLEAR_COOLDOWN);
     });
 
