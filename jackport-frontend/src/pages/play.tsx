@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { ChatIcon, Leftarrow } from "../components/Svglist";
+import { ChatIcon, InfiniteIcon, Leftarrow } from "../components/Svglist";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { enterGame, playGame } from "../context/solana/transaction";
 import Chat from "../components/Chat";
@@ -57,7 +57,7 @@ export default function Waiting(props: {
   }, []);
 
   const handleBet = async () => {
-    if(betAmount <= 0) {
+    if(betAmount < 0.05) {
       errorAlert("Please enter the correct amount!")
       return;
     }
@@ -246,8 +246,8 @@ export default function Waiting(props: {
                   </p>
                 </button>
               </div>
-              <p className="text-white-60 text-[16px] leading-[19.32px] mt-7">
-                Custom bet:
+              <p className="text-white-60 text-[16px] leading-[19.32px] mt-7 whitespace-nowrap flex">
+                Custom bet: (Min&nbsp;<span className="font-bold text-[#fff]">0.05 </span>&nbsp;SOL - Max&nbsp;<span><InfiniteIcon /></span>&nbsp;SOL)
               </p>
               <div className="flex flex-row mt-[13px] items-center gap-3">
                 <input
