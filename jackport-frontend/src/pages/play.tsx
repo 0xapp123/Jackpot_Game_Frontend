@@ -22,7 +22,7 @@ export default function Waiting(props: {
 }) {
   const wallet = useWallet();
   const { gameData, winner, isStarting, setStarted } = useSocket();
-  const [betAmount, setBetAmount] = useState(0.001);
+  const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
 
   const { data } = useQuery(["solanaPrice"], async () => {
