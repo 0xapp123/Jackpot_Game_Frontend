@@ -7,10 +7,10 @@ import { FIRST_COOLDOWN } from "../config";
 export default function CountdownBar(props: {
   isMute: boolean;
   className?: string;
+  setIsBetSound: Function,
 }) {
-  const { className, isMute } = props;
+  const { className, isMute, setIsBetSound } = props;
   const { gameData, setStarted } = useSocket();
-  const [isBetSound, setIsBetSound] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<any>(
     calculateTimeRemaining()
   );
@@ -33,7 +33,7 @@ export default function CountdownBar(props: {
           setStarted(true);
           if (!isMute) {
             setIsBetSound(true);
-            timeoutId = setTimeout(() => {
+            setTimeout(() => {
               setIsBetSound(false);
             }, 1500);
           } else {
@@ -70,11 +70,6 @@ export default function CountdownBar(props: {
               }%`,
           }}
         >
-          <Sound
-            url="/sound/game-start.mp3"
-            debug={false}
-            playStatus={isBetSound ? "PLAYING" : "STOPPED"}
-          />
         </div>
       );
     }
@@ -92,6 +87,11 @@ export default function CountdownBar(props: {
                     <div className="absolute bg-blue-600 h-2 rounded-3xl"></div>
                 } */}
       </div>
+      {/* <Sound
+        url="/sound/bet.mp3"
+        debug={false}
+        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
+      /> */}
     </div>
   );
 }

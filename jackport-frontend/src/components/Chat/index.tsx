@@ -103,7 +103,6 @@ export default function Chat(props: {
 
       <Sound
         url="/sound/bet.mp3"
-        debug={false}
         playStatus={isSound ? "PLAYING" : "STOPPED"}
       />
     </div>
