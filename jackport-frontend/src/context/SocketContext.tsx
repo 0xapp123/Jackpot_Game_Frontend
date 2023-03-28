@@ -8,7 +8,7 @@ import {
   Player,
   ServerToClientEvents,
 } from "../utils/type";
-import { API_URL, SOCKET_URL } from "../config";
+import { API_URL, CLEAR_COOLDOWN, SOCKET_URL } from "../config";
 
 const { publicRuntimeConfig } = getConfig();
 export type SocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
@@ -70,6 +70,14 @@ const SocketProvider = (props: { children: any }) => {
       pda: "",
       gameStarted: false,
     });
+    if (gameEnded) {
+      setGameStarting(1);
+      setWinner({
+        winner: "",
+        resultHeight: 0,
+      });
+      setStarted(false);
+    }
   };
 
   const getFirstGameData = async () => {
@@ -167,26 +175,29 @@ const SocketProvider = (props: { children: any }) => {
 
     // TODO: need to check if this fresh round is working
     socket?.on("newGameReady", async (time, players) => {
-      console.log(" --@ newGameReady:", new Date().toLocaleTimeString(), time, players);
+      console.log(
+        " --@ newGameReady:",
+        new Date().toLocaleTimeString(),
+        time,
+        players
+      );
       setTimeout(() => {
-        if (isStarting)
-          setGameData({
-            players: players,
-            endTimestamp: time,
-            pda: "",
-            gameStarted: false,
-          });
+        // if (isStarting)
+        //   setGameData({
+        //     players: players,
+        //     endTimestamp: time,
+        //     pda: "",
+        //     gameStarted: false,
+        //   });
         setGameEnded(true);
         //   // reset game starting
-        setGameStarting(1);
-        setWinner(
-          {
-            winner: "",
-            resultHeight: 0,
-          }
-        )
-        setStarted(false);
-      }, 2000);
+        // setGameStarting(1);
+        // setWinner({
+        //   winner: "",
+        //   resultHeight: 0,
+        // });
+        // setStarted(false);
+      }, CLEAR_COOLDOWN);
     });
 
     socket?.on("gameStarting", async (started) => {
