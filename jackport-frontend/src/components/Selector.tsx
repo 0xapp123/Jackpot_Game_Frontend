@@ -27,6 +27,7 @@ export default function Selector(props: {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const list = [32, 132, 232, 332, 432];
   const [isWonSound, setIsWonSound] = useState(false);
+  const [isBetSound, setIsBetSound] = useState(false);
   const [confettiThrown, setConfettiThrown] = useState(false);
 
   const throwConfetti = useCallback(() => {
@@ -213,7 +214,11 @@ export default function Selector(props: {
                             style={{ top: `${Math.floor(timerInfinite / 500) % 2 ? list[Math.floor((timerInfinite / 100)) % 5] : list[5 - Math.floor((timerInfinite / 100)) % 5]}px` }}
                         >
                         </div> */}
-            <CountdownBar className="" isMute={props.isMute} />
+            <CountdownBar 
+            className="" 
+            isMute={props.isMute} 
+            setIsBetSound={setIsBetSound}
+            />
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-3 after:h-3 lg:after:w-5 lg:after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-2 xl:after:-top-3 lg:before:w-5 lg:before:h-5 before:w-3 before:h-3 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-2 xl:before:-top-3 opacity-20`}
               style={{ top: `0` }}
@@ -233,6 +238,11 @@ export default function Selector(props: {
         url="/sound/success.mp3"
         debug={false}
         playStatus={isWonSound ? "PLAYING" : "STOPPED"}
+      />
+      <Sound
+        url="/sound/game-start.mp3"
+        debug={false}
+        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
       />
     </>
   );
