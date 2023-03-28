@@ -262,6 +262,7 @@ export default function Waiting(props: {
                 />
                 <button
                   className="w-[48px] h-[48px] border-[1px] border-white-10 rounded-xl text-[16px] text-[#FFFFFF54]"
+                  disabled={betAmount / 2 < 0.05}
                   onClick={() => setBetAmount(betAmount / 2)}
                 >
                   1/2
