@@ -21,8 +21,7 @@ export default function Selector(props: {
   isMute: boolean;
 }) {
   const wallet = useWallet();
-  const { winner, gameData, setClearGame, started, setStarted, gameEnded } =
-    useSocket();
+  const { winner, gameData, setClearGame, started, gameEnded } = useSocket();
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const list = [32, 132, 232, 332, 432];
@@ -53,12 +52,12 @@ export default function Selector(props: {
       // } else {
       //   res = ranCount * 500 - winner.resultHeight * 500;
       // }
-      res = winner.resultHeight * 500 + 1500;
+      res = winner.resultHeight * 500 + 2500;
       // if (setStarted) setStarted(true);
     }
     // console.log(winner, Math.ceil(res));
     // console.log(gameData, "gameData");
-    console.log(winner, "Result height: ", res)
+    console.log(winner, "Result height: ", res);
     return Math.ceil(res);
   }, [winner, gameData]);
 
@@ -71,7 +70,7 @@ export default function Selector(props: {
         setTimer((count) => count + 2);
       }, 1);
       setIsTimerRunning(true);
-      console.log('targetValue', target);
+      console.log("targetValue", target);
     }
 
     if (timer === 0) {
@@ -80,33 +79,31 @@ export default function Selector(props: {
     }
 
     const timeDifference = target - timer;
-    let increment = 2;
+    let increment = isTimerRunning ? 3 : 0;
 
-    if (timeDifference >= 400 && isTimerRunning) {
+    if (timeDifference >= 600 && isTimerRunning) {
       increment = 1.9;
-    } else if (timeDifference >= 350 && isTimerRunning) {
-      increment = 1.3;
+    } else if (timeDifference >= 450 && isTimerRunning) {
+      increment = 1.7;
     } else if (timeDifference >= 300 && isTimerRunning) {
-      increment = 1.1;
+      increment = 1.5;
     } else if (timeDifference >= 250 && isTimerRunning) {
-      increment = 0.8;
+      increment = 1.2;
     } else if (timeDifference >= 200 && isTimerRunning) {
-      increment = 0.5;
+      increment = 1;
     } else if (timeDifference >= 150 && isTimerRunning) {
-      increment = 0.2;
+      increment = 0.5;
     } else if (timeDifference >= 100 && isTimerRunning) {
-      increment = 0.1;
-    } else if (timeDifference >= 80 && isTimerRunning) {
+      increment = 0.3;
+    } else if (timeDifference >= 70 && isTimerRunning) {
+      increment = 0.15;
+    } else if (timeDifference >= 50 && isTimerRunning) {
       increment = 0.08;
-    } else if (timeDifference >= 60 && isTimerRunning) {
-      increment = 0.06;
-    } else if (timeDifference >= 40 && isTimerRunning) {
+    } else if (timeDifference >= 30 && isTimerRunning) {
       increment = 0.04;
-    } else if (timeDifference >= 20 && isTimerRunning) {
-      increment = 0.02;
     } else if (timeDifference >= 10 && isTimerRunning) {
       increment = 0.01;
-    } else if (timeDifference >= 5 && isTimerRunning) {
+    } else if (timeDifference >= 1 && isTimerRunning) {
       increment = 0.005;
     }
 
@@ -122,10 +119,9 @@ export default function Selector(props: {
     return () => clearInterval(intervalId);
   }, [timer, target, isTimerRunning]);
 
-
   useEffect(() => {
     console.log("target :", target);
-  }, [target])
+  }, [target]);
 
   useEffect(() => {
     if (
@@ -138,23 +134,29 @@ export default function Selector(props: {
         wallet.publicKey?.toBase58() === winner?.winner &&
         gameData.players?.length !== 0
       ) {
-        throwConfetti();
+        console.log("====>>>> confetti start");
+        setTimeout(() => {
+          throwConfetti();
+          console.log("====>>>> confetti end");
 
-        setConfettiThrown(true);
-        const sumBets = gameData.players.reduce(
-          (sum: number, item: any) => sum + item.amount,
-          0
-        );
-        props.setIsWonWindow(true);
-        props.setWonValue(sumBets / LAMPORTS_PER_SOL);
-        if (!props.isMute) {
-          setIsWonSound(true);
-          setTimeout(() => {
+          setConfettiThrown(true);
+          const sumBets = gameData.players.reduce(
+            (sum: number, item: any) => sum + item.amount,
+            0
+          );
+          props.setIsWonWindow(true);
+          props.setWonValue(sumBets / LAMPORTS_PER_SOL);
+          if (!props.isMute) {
+            console.log("====>>>> sound start");
+            setIsWonSound(true);
+            setTimeout(() => {
+              console.log("====>>>> sound end");
+              setIsWonSound(false);
+            }, 1500);
+          } else {
             setIsWonSound(false);
-          }, 1500);
-        } else {
-          setIsWonSound(false);
-        }
+          }
+        }, 1000);
       }
     }
   }, [timer, wallet, gameData?.players, gameData?.endTimestamp]);
@@ -163,11 +165,13 @@ export default function Selector(props: {
     if (gameEnded === undefined) return;
     if (setClearGame) setClearGame();
     if (!gameEnded) {
+      console.log("====>>>> game start");
       setTimer(0);
       props.setIsWonWindow(false);
-      setConfettiThrown(false)
+      setConfettiThrown(false);
+    } else {
+      console.log("====>>>> game end");
     }
-    // if (setStarted) setStarted(false);
   }, [gameEnded]);
 
   return (
@@ -178,28 +182,31 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? list[Math.floor(timer / 100) % 5]
-                  : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? list[Math.floor(timer / 100) % 5]
+                    : list[5 - (Math.floor(timer / 100) % 5)]
+                }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? list[Math.floor(timer / 100) % 5]
-                  : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? list[Math.floor(timer / 100) % 5]
+                    : list[5 - (Math.floor(timer / 100) % 5)]
+                }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${Math.floor(timer / 500) % 2
-                  ? timer % 500
-                  : 500 - (timer % 500)
-                  }px`,
+                top: `${
+                  Math.floor(timer / 500) % 2
+                    ? timer % 500
+                    : 500 - (timer % 500)
+                }px`,
               }}
             ></div>
           </>
