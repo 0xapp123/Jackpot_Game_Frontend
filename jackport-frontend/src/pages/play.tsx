@@ -15,6 +15,7 @@ import Playhistory from "../components/Playhistory";
 import { API_URL, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
 import { useQuery } from "@tanstack/react-query";
+import { errorAlert } from "../components/ToastGroup";
 
 export default function Waiting(props: {
   isMute: boolean;
@@ -56,6 +57,10 @@ export default function Waiting(props: {
   }, []);
 
   const handleBet = async () => {
+    if(betAmount <= 0) {
+      errorAlert("Please enter the correct amount!")
+      return;
+    }
     try {
       if (gameData && (gameData?.players ?? []).length !== 0) {
         await enterGame(
@@ -74,7 +79,7 @@ export default function Waiting(props: {
   };
 
   const handleBetAmount = (value: number) => {
-    if (value <= 0) return;
+    if (value < 0) return;
     setBetAmount(value);
   };
 
