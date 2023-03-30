@@ -39,7 +39,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getTotalCount = async () => {
     try {
-      const response = await fetch(API_URL + "getBetCount");
+      const response = await fetch(API_URL + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {
