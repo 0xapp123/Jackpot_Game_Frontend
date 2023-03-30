@@ -31,6 +31,8 @@ export default function Waiting(props: {
     const data = await response.json();
     return data.solana?.usd;
   });
+
+
   const [isWonWindow, setIsWonWindow] = useState(false);
   const [wonValue, setWonValue] = useState(0);
   const [isMobileChat, setIsMobileChat] = useState(false);
@@ -57,7 +59,7 @@ export default function Waiting(props: {
   }, []);
 
   const handleBet = async () => {
-    if(betAmount < 0.05) {
+    if (betAmount < 0.05) {
       errorAlert("Please enter the correct amount!")
       return;
     }
@@ -115,14 +117,25 @@ export default function Waiting(props: {
 
   const getTotalCount = async () => {
     try {
-      const response = await fetch(API_URL + "getBetCount");
+      const response = await fetch(API_URL + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
+
+  // const getTimes = useQuery(["getTimes"], async () => {
+  //   fetch(API_URL + "getTimes").then((res) =>
+  //     res.json()
+  //   )
+  // });
+
+
+  // useEffect(() => {
+  //   console.log("getTimes", getTimes)
+  // },[gameData])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -186,9 +199,8 @@ export default function Waiting(props: {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 1 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -206,9 +218,8 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 2 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -226,9 +237,8 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 3 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
