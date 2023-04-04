@@ -12,10 +12,10 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import MobileChat from "../components/Chat/MobileChat";
 import Head from "next/head";
 import Playhistory from "../components/Playhistory";
-import { API_URL, SOL_PRICE_API } from "../config";
+import { API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
 import { useQuery } from "@tanstack/react-query";
-import { errorAlert } from "../components/ToastGroup";
+import { errorAlert, warningAlert } from "../components/ToastGroup";
 
 export default function Waiting(props: {
   isMute: boolean;
@@ -26,18 +26,22 @@ export default function Waiting(props: {
   const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
 
-  const { data } = useQuery(["solanaPrice"], async () => {
-    const response = await fetch(SOL_PRICE_API);
-    const data = await response.json();
-    return data.solana?.usd;
-  });
-
-
   const [isWonWindow, setIsWonWindow] = useState(false);
   const [wonValue, setWonValue] = useState(0);
   const [isMobileChat, setIsMobileChat] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [force, setForce] = useState(false);
+
+  const [recentWinnders, setRecentWinners] = useState([]);
+  const [totalWins, setTotalWins] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const { data } = useQuery(["solanaPrice"], async () => {
+    const response = await fetch(SOL_PRICE_API);
+    const data = await response.json();
+    return data.solana?.usd;
+  });
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -46,8 +50,6 @@ export default function Waiting(props: {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-
-  const [force, setForce] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
@@ -60,11 +62,20 @@ export default function Waiting(props: {
 
   const handleBet = async () => {
     if (betAmount < 0.05) {
-      errorAlert("Please enter the correct amount!")
+      errorAlert("Please enter the correct amount!");
       return;
     }
     try {
       if (gameData && (gameData?.players ?? []).length !== 0) {
+        if (
+          gameData.endTimestamp !== 0 &&
+          gameData.endTimestamp - Date.now() < NEXT_COOLDOWN
+        ) {
+          warningAlert(
+            "This transaction may fail. Please try on the next round."
+          );
+          return;
+        }
         await enterGame(
           wallet,
           new PublicKey(gameData.pda),
@@ -88,10 +99,6 @@ export default function Waiting(props: {
   const handleEndGame = () => {
     setIsWonWindow(false);
   };
-
-  const [recentWinnders, setRecentWinners] = useState([]);
-  const [totalWins, setTotalWins] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
 
   const getWinners = async () => {
     try {
@@ -123,7 +130,7 @@ export default function Waiting(props: {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   // const getTimes = useQuery(["getTimes"], async () => {
@@ -131,7 +138,6 @@ export default function Waiting(props: {
   //     res.json()
   //   )
   // });
-
 
   // useEffect(() => {
   //   console.log("getTimes", getTimes)
@@ -199,8 +205,9 @@ export default function Waiting(props: {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 1 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -218,8 +225,9 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 2 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -237,8 +245,9 @@ export default function Waiting(props: {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 3 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
@@ -257,7 +266,13 @@ export default function Waiting(props: {
                 </button>
               </div>
               <p className="text-white-60 text-[16px] leading-[19.32px] mt-7 whitespace-nowrap flex">
-                Custom bet: (Min&nbsp;<span className="font-bold text-[#fff]">0.05 </span>&nbsp;SOL - Max&nbsp;<span><InfiniteIcon /></span>&nbsp;SOL)
+                Custom bet: (Min&nbsp;
+                <span className="font-bold text-[#fff]">0.05 </span>&nbsp;SOL -
+                Max&nbsp;
+                <span>
+                  <InfiniteIcon />
+                </span>
+                &nbsp;SOL)
               </p>
               <div className="flex flex-row mt-[13px] items-center gap-3">
                 <input
