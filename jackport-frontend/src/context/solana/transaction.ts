@@ -101,10 +101,6 @@ export const enterGame = async (
   /// Comment this because backend is processed such conflict
   const now = new Date().getTime();
   // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
-  if (endTimestamp !== 0 && (endTimestamp - now) / 1000 < 10) {
-    errorAlert("This transaction may fail. Please try on the next version.");
-    return;
-  }
 
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;

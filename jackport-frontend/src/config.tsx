@@ -10,5 +10,5 @@ export const SOL_PRICE_API =
   "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd";
 
 export const FIRST_COOLDOWN = 35000;
-export const NEXT_COOLDOWN = 6000;
+export const NEXT_COOLDOWN = 10000;
 export const CLEAR_COOLDOWN = 6000;
