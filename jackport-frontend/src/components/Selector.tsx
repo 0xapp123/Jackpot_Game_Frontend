@@ -13,6 +13,7 @@ import CountdownBar from "./CountdownBar";
 import confetti from "canvas-confetti";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import Sound from "react-sound";
+import { warningAlert } from "./ToastGroup";
 
 export default function Selector(props: {
   className: string;
@@ -159,13 +160,15 @@ export default function Selector(props: {
           }
         }, 1000);
       }
-      const userUnique = gameData.players.find((item) => item.player === wallet.publicKey?.toBase58());
+      const userUnique = gameData.players.find(
+        (item) => item.player === wallet.publicKey?.toBase58()
+      );
       if (userUnique && wallet.publicKey?.toBase58() !== winner?.winner) {
         setIsLoseSound(true);
-        console.log("======== Lose sound ========")
+        console.log("======== Lose sound ========");
         setTimeout(() => {
           setIsLoseSound(false);
-          console.log("======== Lose sound pause ========")
+          console.log("======== Lose sound pause ========");
         }, 3000);
       }
     }
@@ -184,6 +187,13 @@ export default function Selector(props: {
     }
   }, [gameEnded]);
 
+  useEffect(() => {
+    if (!gameEnded || !gameData?.players) return;
+    if (gameData.players.length === 1) {
+      warningAlert("No another player for 4 mins. Refunding..");
+    }
+  }, [gameEnded, gameData?.players]);
+
   return (
     <>
       <div className={`${props.className}`}>
@@ -192,28 +202,31 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
+                top: `${
+                  Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${Math.floor(timer / 500) % 2
+                top: `${
+                  Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                  }px`,
+                }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${Math.floor(timer / 500) % 2
+                top: `${
+                  Math.floor(timer / 500) % 2
                     ? timer % 500
                     : 500 - (timer % 500)
-                  }px`,
+                }px`,
               }}
             ></div>
           </>
