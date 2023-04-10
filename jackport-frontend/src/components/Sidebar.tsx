@@ -45,7 +45,7 @@ export default function Sidebar() {
           Games
         </p>
         <div className="border-[1px] border-[#ffffff32] mx-4" />
-        <Link href="/play" passHref>
+        <Link href="/room?type=infinite" passHref>
           <a>
             <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
               <img
@@ -57,11 +57,46 @@ export default function Sidebar() {
                 className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
                   }`}
               >
-                The Tower
+                Infinite Room
               </p>
             </div>
           </a>
         </Link>
+        <Link href="/room?type=seaweed" passHref>
+          <a>
+            <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
+              <img
+                src="/img/tower.png"
+                alt=""
+                className="w-6 h-6 mr-4 object-contain"
+              />
+              <p
+                className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
+                  }`}
+              >
+                Seaweed Room
+              </p>
+            </div>
+          </a>
+        </Link>
+        <Link href="/room?type=shrink" passHref>
+          <a>
+            <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
+              <img
+                src="/img/tower.png"
+                alt=""
+                className="w-6 h-6 mr-4 object-contain"
+              />
+              <p
+                className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
+                  }`}
+              >
+                Shrink Room
+              </p>
+            </div>
+          </a>
+        </Link>
+        
         <p
           className={`font-normal text-[#ffffff] mt-6 border-[#ffffff32] pb-3 mx-6 lg:block ${mobilMenuState ? "hidden" : "block"
             }`}
