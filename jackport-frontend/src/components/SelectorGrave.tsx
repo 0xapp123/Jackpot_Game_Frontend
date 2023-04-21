@@ -7,9 +7,9 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import Waitboard from "../components/Waitboard";
+import Waitboard from "../components/WaitboardGrave";
 import { useSocket } from "../context/SocketContextGrave";
-import CountdownBar from "./CountdownBar";
+import CountdownBar from "./CountdownBarGrave";
 import confetti from "canvas-confetti";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import Sound from "react-sound";
@@ -60,6 +60,7 @@ export default function Selector(props: {
     // console.log(winner, Math.ceil(res));
     // console.log(gameData, "gameData");
     console.log(winner, "Result height: ", res);
+    console.log("gameData~~~", gameData)
     return Math.ceil(res);
   }, [winner, gameData]);
 
