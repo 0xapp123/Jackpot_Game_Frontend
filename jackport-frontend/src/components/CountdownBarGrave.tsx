@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContextGrave";
+import Sound from "react-sound";
 import { FIRST_COOLDOWN } from "../config";
 
 export default function CountdownBar(props: {
   isMute: boolean;
   className?: string;
-  setIsBetSound: Function;
+  setIsBetSound: Function,
 }) {
   const { className, isMute, setIsBetSound } = props;
   const { gameData, setStarted } = useSocket();
@@ -24,14 +25,10 @@ export default function CountdownBar(props: {
   useEffect(() => {
     let timeoutId: NodeJS.Timer;
     if (gameData) {
-      console.log(
-        "countdown: ",
-        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000)
-      );
+      console.log("countdown: ", Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000))
       if (
         Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
-        console.log("====>CLOCK<=====");
         if (setStarted) {
           setStarted(true);
           if (!isMute) {
@@ -67,23 +64,21 @@ export default function CountdownBar(props: {
         <div
           className="absolute bg-[#4c49cc] h-2 rounded-3xl"
           style={{
-            width: `${
-              ((FIRST_COOLDOWN -
-                (gameData?.endTimestamp - new Date().getTime())) /
-                FIRST_COOLDOWN) *
+            width: `${((FIRST_COOLDOWN - (gameData?.endTimestamp - new Date().getTime())) /
+              FIRST_COOLDOWN) *
               100
-            }%`,
+              }%`,
           }}
-        ></div>
+        >
+        </div>
       );
     }
   }
 
   return (
     <div
-      className={`${
-        className ? className : ""
-      } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
+      className={`${className ? className : ""
+        } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
     >
       <p className="text-white font-semibold ">Countdown</p>
       <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">

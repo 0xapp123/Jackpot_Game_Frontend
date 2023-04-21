@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
+import Sound from "react-sound";
 import { FIRST_COOLDOWN } from "../config";
 
 export default function CountdownBar(props: {
   isMute: boolean;
   className?: string;
-  setIsBetSound: Function;
+  setIsBetSound: Function,
 }) {
   const { className, isMute, setIsBetSound } = props;
   const { gameData, setStarted } = useSocket();
@@ -16,8 +17,7 @@ export default function CountdownBar(props: {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const timeComp = calculateTimeRemaining();
-      setTimeRemaining(timeComp)
+      setTimeRemaining(calculateTimeRemaining());
     }, 1000);
     return () => clearInterval(intervalId);
   }, [gameData]);
@@ -25,12 +25,7 @@ export default function CountdownBar(props: {
   useEffect(() => {
     let timeoutId: NodeJS.Timer;
     if (gameData) {
-      if (gameData?.endTimestamp !== 0) {
-        console.log(
-          "countdown: ",
-          Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000)
-        );
-      }
+      console.log("countdown: ", Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000))
       if (
         Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
@@ -62,22 +57,21 @@ export default function CountdownBar(props: {
 
   function calculateTimeRemaining() {
     if (
-      gameData
+      gameData?.endTimestamp &&
+      gameData?.endTimestamp >= new Date().getTime()
     ) {
-      const leftTime = gameData?.endTimestamp - new Date().getTime() < 0 ? 0 : gameData?.endTimestamp - new Date().getTime()
-      if (gameData?.endTimestamp !== 0) console.log("leftTime: ", new Date(gameData?.endTimestamp), new Date());
       return (
         <div
           className="absolute bg-[#4c49cc] h-2 rounded-3xl"
           style={{
-            width: `${(leftTime / FIRST_COOLDOWN) * 100}%`,
+            width: `${((FIRST_COOLDOWN - (gameData?.endTimestamp - new Date().getTime())) /
+              FIRST_COOLDOWN) *
+              100
+              }%`,
           }}
-        ></div>
+        >
+        </div>
       );
-    } else {
-      return (
-        <div className="absolute bg-[#4c49cc] h-2 rounded-3xl"></div>
-      )
     }
   }
 
