@@ -12,7 +12,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import MobileChat from "../components/Chat/MobileChat";
 import Head from "next/head";
 import Playhistory from "../components/Playhistory";
-import { API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
+import { API_URL, GRAVE_API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../components/ToastGroup";
@@ -77,15 +77,18 @@ export default function Rooms(props: {
           );
           return;
         }
+        console.log("Router:        ", router.query.type);
+
         await enterGame(
           wallet,
           new PublicKey(gameData.pda),
           betAmount,
           setIsBetLoading,
-          gameData.endTimestamp
+          gameData.endTimestamp,
+          router.query.type as string
         );
       } else {
-        await playGame(wallet, betAmount, setIsBetLoading);
+        await playGame(wallet, betAmount, setIsBetLoading, router.query.type as string);
       }
     } catch (error) {
       console.log(error);
@@ -103,7 +106,10 @@ export default function Rooms(props: {
 
   const getWinners = async () => {
     try {
-      const response = await fetch(API_URL + "getWinners");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getWinners");
       const data = await response.json();
       setRecentWinners(data?.slice(0, 3));
     } catch (error) {
@@ -113,7 +119,10 @@ export default function Rooms(props: {
 
   const getSum = async () => {
     try {
-      const response = await fetch(API_URL + "getTotalSum");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTotalSum");
       const data = await response.json();
       if (data) {
         setTotalWins(data as number);
@@ -125,7 +134,10 @@ export default function Rooms(props: {
 
   const getTotalCount = async () => {
     try {
-      const response = await fetch(API_URL + "getTimes");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {
@@ -162,9 +174,9 @@ export default function Rooms(props: {
       <Head>
         <title>
         {
-        router.query.type==="infinite"?"infinite":
-        router.query.type==="seaweed"?"seaweed":
-        "shrink"
+        router.query.type==="tower"?"Tower":
+        router.query.type==="grave"?"Grave":
+        "Infinite"
         }
         </title>
         <meta
@@ -175,7 +187,7 @@ export default function Rooms(props: {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap 
-      ${router.query.type==="infinite"?"bg-bg":router.query.type==="seaweed"?"bg-[#0069e3]":"bg-[#05064c]"}
+      ${router.query.type==="tower"?"bg-bg":router.query.type==="grave"?"bg-[#0069e3]":"bg-[#05064c]"}
       `}>
         <div className="absolute w-full left-0 top-0">
           <button
@@ -207,7 +219,12 @@ export default function Rooms(props: {
         <div className="px-6 mt-[80px] xl:mt-[40px] flex flex-col xl:flex-row w-full xl:w-[calc(100%-300px)] mr-[300px]">
           <div className="w-full md:w-[calc(100%-300px)] xl:w-[450px] mt-6">
             <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
-              The Tower
+            {
+            router.query.type==="tower"?"The Tower":
+            router.query.type==="grave"?"GraveYard":
+            "Infinite"
+            }
+              
             </p>
             <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6">
               <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">

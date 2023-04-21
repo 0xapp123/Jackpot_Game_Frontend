@@ -3,8 +3,8 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { API_URL } from "../../config";
-import { useSocket } from "../../context/SocketContext";
+import { GRAVE_API_URL } from "../../config";
+import { useSocket } from "../../context/SocketContextGrave";
 import ChatItem from "./ChatItem";
 import Sound from "react-sound";
 
@@ -19,7 +19,7 @@ export default function Chat(props: {
   const { messages, onlined } = useSocket();
   const [message, setMessage] = useState("");
   const [isSound, setIsSound] = useState(false);
-  
+
   const handleMessage = (value: string) => {
     setMessage(value);
   };
@@ -46,7 +46,7 @@ export default function Chat(props: {
   const handleSubmit = async () => {
     if (wallet.publicKey === null || message === "") return;
     try {
-      await axios.post(`${API_URL}writeMessage/`, {
+      await axios.post(`${GRAVE_API_URL}writeMessage/`, {
         user: wallet.publicKey.toBase58(),
         msg: message,
       });

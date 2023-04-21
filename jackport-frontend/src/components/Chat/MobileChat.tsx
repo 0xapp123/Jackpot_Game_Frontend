@@ -44,6 +44,7 @@ export default function MobileChat(props: {
       handleSubmit();
     }
   };
+
   const handleSubmit = async () => {
     if (wallet.publicKey === null) return;
     try {
