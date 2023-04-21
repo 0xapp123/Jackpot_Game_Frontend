@@ -157,7 +157,6 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
     getWinners();
     getSum();
     getTotalCount();
-    console.log("asdfasdf" + router.pathname);
   }, [gameData]);
 
   return (

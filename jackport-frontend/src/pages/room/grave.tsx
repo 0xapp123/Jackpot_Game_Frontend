@@ -16,11 +16,11 @@ import { GRAVE_API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../../config";
 import Terms from "../../components/Terms";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../../components/ToastGroup";
-import { useRouter } from "next/router";
+
 export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
-  const router = useRouter();
+
   const wallet = useWallet();
-  const { gameData, winner, isStarting, setStarted } = useSocket();
+  const { gameData, isStarting } = useSocket();
   const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
 
@@ -48,15 +48,6 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      // console.log("heartbeat");
-      setForce(!force);
-    }, 1000);
-    // Clear interval if the component unmounts or when dependencies change.
-    return () => clearInterval(intervalId);
-  }, []);
 
   const handleBet = async () => {
     if (betAmount < 0.05) {
@@ -130,18 +121,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
-
-  // const getTimes = useQuery(["getTimes"], async () => {
-  //   fetch(API_URL + "getTimes").then((res) =>
-  //     res.json()
-  //   )
-  // });
-
-  // useEffect(() => {
-  //   console.log("getTimes", getTimes)
-  // },[gameData])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -153,7 +134,6 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
     getWinners();
     getSum();
     getTotalCount();
-    console.log("asdfasdf" + gameData);
   }, [gameData]);
 
   return (
@@ -168,7 +148,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
-        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap bg-[#0069e3]`}
+        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap bg-[#08307f]`}
       >
         <div className="absolute w-full left-0 top-0">
           <button
@@ -208,9 +188,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 1 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -228,9 +207,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 2 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -248,9 +226,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 3 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img

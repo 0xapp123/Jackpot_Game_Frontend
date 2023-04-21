@@ -16,7 +16,8 @@ export default function CountdownBar(props: {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTimeRemaining(calculateTimeRemaining());
+      const timeComp = calculateTimeRemaining();
+      setTimeRemaining(timeComp)
     }, 1000);
     return () => clearInterval(intervalId);
   }, [gameData]);
@@ -59,30 +60,29 @@ export default function CountdownBar(props: {
 
   function calculateTimeRemaining() {
     if (
-      gameData?.endTimestamp &&
-      gameData?.endTimestamp >= new Date().getTime()
+      gameData
     ) {
+      const leftTime = gameData?.endTimestamp - new Date().getTime() < 0 ? 0 : gameData?.endTimestamp - new Date().getTime()
+      console.log("leftTime: ", new Date(gameData?.endTimestamp), new Date());
       return (
         <div
           className="absolute bg-[#4c49cc] h-2 rounded-3xl"
           style={{
-            width: `${
-              ((FIRST_COOLDOWN -
-                (gameData?.endTimestamp - new Date().getTime())) /
-                FIRST_COOLDOWN) *
-              100
-            }%`,
+            width: `${(leftTime / FIRST_COOLDOWN) * 100}%`,
           }}
         ></div>
       );
+    } else {
+      return (
+        <div className="absolute bg-[#4c49cc] h-2 rounded-3xl"></div>
+      )
     }
   }
 
   return (
     <div
-      className={`${
-        className ? className : ""
-      } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
+      className={`${className ? className : ""
+        } w-[calc(100%-60px)] mx-[30px] mt-[150px] absolute text-center`}
     >
       <p className="text-white font-semibold ">Countdown</p>
       <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">
