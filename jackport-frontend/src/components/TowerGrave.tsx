@@ -6,12 +6,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import Sound from "react-sound";
 import { useSocket } from "../context/SocketContextGrave";
 import { base58ToGradient } from "../utils/util";
-import Selector from "./Selector";
+import Selector from "./SelectorGrave";
 
 export default function Tower(props: {
   setIsWonWindow: Function;
   setWonValue: Function;
-  isMute: boolean,
+  isMute: boolean;
 }) {
   const wallet = useWallet();
 
@@ -109,7 +109,7 @@ export default function Tower(props: {
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
         </div>
       </div>
-      {(gameData && gameData?.players && gameData?.players.length !== 0) ? (
+      {gameData && gameData?.players && gameData?.players.length !== 0 ? (
         <div className="mx-4 xl:mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#] py-5 mt-[55px] text-[14px] text-[#6a71f8] font-bold text-center flex flex-wrap px-5 xl:gap-4 gap-2">
           {gameData &&
             gameData.players?.map((item: any, key: number) => (
@@ -147,7 +147,6 @@ export default function Tower(props: {
       )}
       <div className="mx-8 rounded-xl py-2 my-6 text-[24px] text-[#6a71f8] font-bold text-center">
         WIN %: {winPercent && (winPercent * 100).toFixed(2)}
-
       </div>
       <Sound
         url="/sound/bet.mp3"

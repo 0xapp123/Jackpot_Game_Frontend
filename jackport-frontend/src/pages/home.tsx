@@ -19,10 +19,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getWinners = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getWinners");
+      const response = await fetch(API_URL + "getWinners");
       const data = await response.json();
       setRecentWinners(data?.slice(0, 3));
     } catch (error) {
@@ -32,10 +29,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getSum = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getTotalSum");
+      const response = await fetch(API_URL + "getTotalSum");
       const data = await response.json();
       if (data) {
         setTotalWins(data as number);
@@ -47,10 +41,7 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getTotalCount = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getTimes");
+      const response = await fetch(API_URL + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {

@@ -23,7 +23,7 @@ import {
   GRAVE_PROGRAM_ID,
 } from "./types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { API_URL, RPC_URL } from "../../config";
+import { API_URL, GRAVE_API_URL, RPC_URL } from "../../config";
 import { errorAlert } from "../../components/ToastGroup";
 import { useSocket } from "../SocketContext";
 
@@ -39,8 +39,15 @@ export const playGame = async (
   if (wallet.publicKey === null) return;
 
   let programId;
-  if (type === "tower")  programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
-  else if (type === "grave")  programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+  let api;
+  if (type === "tower") {
+    programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
+    api = API_URL;
+  } 
+  else if (type === "grave") {
+    programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+    api = GRAVE_API_URL;
+  }
   else return;
 
   const cloneWindow: any = window;
@@ -64,7 +71,7 @@ export const playGame = async (
     if (wallet.signTransaction) {
       // check if creating room conflicts
       try {
-        await axios.post(`${API_URL}requestCreate/`);
+        await axios.post(`${api}requestCreate/`);
       } catch (e) {
         console.error(" --> playGame: Failed due to creating conflict");
         errorAlert("Something went wrong. Please try again!");
@@ -80,19 +87,19 @@ export const playGame = async (
           preflightCommitment: "confirmed",
         }
       );
-      await axios.post(`${API_URL}createGame/`, {
+      await axios.post(`${api}createGame/`, {
         txId: txId,
       });
       console.log("Signature:", txId);
       // release mutex for processing request if success
-      await axios.post(`${API_URL}endRequest/`);
+      await axios.post(`${api}endRequest/`);
       setLoading(false);
     }
   } catch (error) {
     console.log(" --> playGame:", error);
     errorAlert("Something went wrong. Please try again!");
     // release mutex for processing request if failed
-    await axios.post(`${API_URL}endRequest/`);
+    await axios.post(`${api}endRequest/`);
     setLoading(false);
   }
 };
@@ -110,9 +117,16 @@ export const enterGame = async (
   const now = new Date().getTime();
   // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
   let programId;
+  let api;
   console.log("TYYYPPEEE",  type);
-  if (type === "tower")  programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
-  else if (type === "grave")  programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+  if (type === "tower") {
+    programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
+    api = API_URL;
+  } 
+  else if (type === "grave") {
+    programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+    api = GRAVE_API_URL;
+  }
   else return;
 
   const cloneWindow: any = window;
@@ -136,7 +150,7 @@ export const enterGame = async (
     if (wallet.signTransaction) {
       // check if creating room conflicts
       try {
-        await axios.post(`${API_URL}requestEnter/`);
+        await axios.post(`${api}requestEnter/`);
       } catch (e) {
         console.error(
           " --> enterGame: Failed due to entering and setting winner conflict"
@@ -154,12 +168,12 @@ export const enterGame = async (
           preflightCommitment: "confirmed",
         }
       );
-      await axios.post(`${API_URL}enterGame/`, {
+      await axios.post(`${api}enterGame/`, {
         txId: txId,
       });
       console.log("Signature:", txId);
       // release mutex for processing request if success
-      await axios.post(`${API_URL}endEnterRequest/`);
+      await axios.post(`${api}endEnterRequest/`);
       setLoading(false);
     }
     setLoading(false);
@@ -167,7 +181,7 @@ export const enterGame = async (
     console.error(" --> enterGame:", error);
     errorAlert("Something went wrong. Please try again!");
     // release mutex for processing request if failed
-    await axios.post(`${API_URL}endEnterRequest/`);
+    await axios.post(`${api}endEnterRequest/`);
     setLoading(false);
   }
 };

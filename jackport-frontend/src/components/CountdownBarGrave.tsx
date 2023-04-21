@@ -31,6 +31,7 @@ export default function CountdownBar(props: {
       if (
         Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
+        console.log("====>CLOCK<=====");
         if (setStarted) {
           setStarted(true);
           if (!isMute) {

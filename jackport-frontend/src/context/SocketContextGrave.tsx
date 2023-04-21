@@ -13,7 +13,6 @@ import {
   CLEAR_COOLDOWN,
   GRAVE_API_URL,
   GRAVE_SOCKET_URL,
-  SOCKET_URL,
 } from "../config";
 import { useRouter } from "next/router";
 
@@ -144,7 +143,7 @@ const SocketProviderGrave = (props: { children: any }) => {
       socket.off("disconnect");
       setSocket(undefined);
     };
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     socket?.on("endTimeUpdated", async (pda, last_ts, players) => {
