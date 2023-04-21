@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { AppProps } from "next/app";
 import { useState } from "react";
 import { SoundOffIcon, SoundOnIcon } from "../components/Svglist";
+import SocketProviderGrave from "../context/SocketContextGrave";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -14,23 +15,24 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <SocketProvider>
-        <Wallet>
-          <WalletModalProvider>
-            <Component
-              {...pageProps}
-              isMute={isMute}
-              setIsMute={setIsMute}
-            />
-            <ToastContainer
-              style={{ fontSize: 15 }}
-              pauseOnFocusLoss={false}
-            />
-            <button className="fixed bottom-6 left-6 z-50" onClick={() => setIsMute(!isMute)}>
-              {isMute ? <SoundOffIcon /> : <SoundOnIcon />}
-            </button>
-          </WalletModalProvider>
-        </Wallet>
+        <SocketProviderGrave>
+          <Wallet>
+            <WalletModalProvider>
+              <Component {...pageProps} isMute={isMute} setIsMute={setIsMute} />
+              <ToastContainer
+                style={{ fontSize: 15 }}
+                pauseOnFocusLoss={false}
+              />
+              <button
+                className="fixed bottom-6 left-6 z-50"
+                onClick={() => setIsMute(!isMute)}
+              >
+                {isMute ? <SoundOffIcon /> : <SoundOnIcon />}
+              </button>
+            </WalletModalProvider>
+          </Wallet>
+        </SocketProviderGrave>
       </SocketProvider>
     </QueryClientProvider>
-  )
+  );
 }

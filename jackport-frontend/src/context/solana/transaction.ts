@@ -20,6 +20,7 @@ import {
   JERZY_WALLET,
   TEAM_WALLET,
   VAULT_SEED,
+  GRAVE_PROGRAM_ID,
 } from "./types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { API_URL, RPC_URL } from "../../config";
@@ -28,14 +29,20 @@ import { useSocket } from "../SocketContext";
 
 export const solConnection = new web3.Connection(RPC_URL);
 
-const programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
 
 export const playGame = async (
   wallet: WalletContextState,
   amount: number,
-  setLoading: Function
+  setLoading: Function,
+  type: string
 ) => {
   if (wallet.publicKey === null) return;
+
+  let programId;
+  if (type === "tower")  programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
+  else if (type === "grave")  programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+  else return;
+
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;
   const provider = new anchor.AnchorProvider(
@@ -45,7 +52,7 @@ export const playGame = async (
   );
   const program = new anchor.Program(
     IDL as anchor.Idl,
-    JACKPOT_PROGRAM_ID,
+    programId,
     provider
   );
   try {
@@ -94,13 +101,19 @@ export const enterGame = async (
   pda: PublicKey,
   amount: number,
   setLoading: Function,
-  endTimestamp: number
+  endTimestamp: number,
+  type: string
 ) => {
   if (wallet.publicKey === null) return;
 
   /// Comment this because backend is processed such conflict
   const now = new Date().getTime();
   // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
+  let programId;
+  console.log("TYYYPPEEE",  type);
+  if (type === "tower")  programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
+  else if (type === "grave")  programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+  else return;
 
   const cloneWindow: any = window;
   const userAddress = wallet.publicKey;
@@ -111,7 +124,7 @@ export const enterGame = async (
   );
   const program = new anchor.Program(
     IDL as anchor.Idl,
-    JACKPOT_PROGRAM_ID,
+    programId,
     provider
   );
   try {
@@ -162,14 +175,14 @@ export const enterGame = async (
 export const createPlayGameTx = async (
   userAddress: PublicKey,
   amount: number,
-  program: anchor.Program
+  program: anchor.Program,
 ) => {
   let now = new Date();
   let ts = Math.floor(now.getTime() / 1000);
 
   const [solVault, bump] = await PublicKey.findProgramAddress(
     [Buffer.from(VAULT_SEED)],
-    programId
+    program.programId
   );
 
   const [gamePool, gameBump] = await PublicKey.findProgramAddress(
@@ -178,7 +191,7 @@ export const createPlayGameTx = async (
       userAddress.toBuffer(),
       new anchor.BN(ts).toArrayLike(Buffer, "le", 8),
     ],
-    programId
+    program.programId
   );
 
   console.log("Game PDA: ", gamePool.toBase58());
@@ -214,11 +227,11 @@ export const createEnterGameTx = async (
   userAddress: PublicKey,
   gamePool: PublicKey,
   amount: number,
-  program: anchor.Program
+  program: anchor.Program,
 ) => {
   const [solVault, bump] = await PublicKey.findProgramAddress(
     [Buffer.from(VAULT_SEED)],
-    programId
+    program.programId
   );
   console.log(solVault.toBase58());
 

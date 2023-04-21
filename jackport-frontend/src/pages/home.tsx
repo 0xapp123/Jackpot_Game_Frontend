@@ -2,22 +2,27 @@
 import { Roundarrow, Tripledot } from "../components/Svglist";
 import Playhistory from "../components/Playhistory";
 import Sidebar from "../components/Sidebar";
-import { API_URL } from "../config";
+import { API_URL, GRAVE_API_URL } from "../config";
 import { useEffect, useState } from "react";
 import { useSolanaPrice } from "../utils/util";
 import { useSocket } from "../context/SocketContext";
+import { useRouter } from "next/router";
 
 export default function Home(props: { isMute: boolean; setIsMute: Function }) {
   const [recentWinnders, setRecentWinners] = useState([]);
   const [totalWins, setTotalWins] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const { data } = useSolanaPrice();
+  const router = useRouter();
 
   const { gameData } = useSocket();
 
   const getWinners = async () => {
     try {
-      const response = await fetch(API_URL + "getWinners");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getWinners");
       const data = await response.json();
       setRecentWinners(data?.slice(0, 3));
     } catch (error) {
@@ -27,7 +32,10 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getSum = async () => {
     try {
-      const response = await fetch(API_URL + "getTotalSum");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTotalSum");
       const data = await response.json();
       if (data) {
         setTotalWins(data as number);
@@ -39,7 +47,10 @@ export default function Home(props: { isMute: boolean; setIsMute: Function }) {
 
   const getTotalCount = async () => {
     try {
-      const response = await fetch(API_URL + "getTimes");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {

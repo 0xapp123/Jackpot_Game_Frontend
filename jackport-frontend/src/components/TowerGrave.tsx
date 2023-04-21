@@ -4,7 +4,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import React, { useEffect, useMemo, useState } from "react";
 import Sound from "react-sound";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../context/SocketContextGrave";
 import { base58ToGradient } from "../utils/util";
 import Selector from "./Selector";
 

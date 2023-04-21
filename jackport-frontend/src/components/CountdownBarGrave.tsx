@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../context/SocketContextGrave";
 import { FIRST_COOLDOWN } from "../config";
 
 export default function CountdownBar(props: {
