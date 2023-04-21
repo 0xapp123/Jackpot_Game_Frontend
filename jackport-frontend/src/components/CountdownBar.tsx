@@ -25,10 +25,12 @@ export default function CountdownBar(props: {
   useEffect(() => {
     let timeoutId: NodeJS.Timer;
     if (gameData) {
-      console.log(
-        "countdown: ",
-        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000)
-      );
+      if (gameData?.endTimestamp !== 0) {
+        console.log(
+          "countdown: ",
+          Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000)
+        );
+      }
       if (
         Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
       ) {
@@ -63,7 +65,7 @@ export default function CountdownBar(props: {
       gameData
     ) {
       const leftTime = gameData?.endTimestamp - new Date().getTime() < 0 ? 0 : gameData?.endTimestamp - new Date().getTime()
-      console.log("leftTime: ", new Date(gameData?.endTimestamp), new Date());
+      if (gameData?.endTimestamp !== 0) console.log("leftTime: ", new Date(gameData?.endTimestamp), new Date());
       return (
         <div
           className="absolute bg-[#4c49cc] h-2 rounded-3xl"
