@@ -12,16 +12,18 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import MobileChat from "../components/Chat/MobileChat";
 import Head from "next/head";
 import Playhistory from "../components/Playhistory";
-import { API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
+import { API_URL, GRAVE_API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
 import Terms from "../components/Terms";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../components/ToastGroup";
+import { useRouter } from "next/router";
 
 export default function Waiting(props: {
   isMute: boolean;
   setIsMute: Function;
 }) {
   const wallet = useWallet();
+  const router = useRouter()
   const { gameData, winner, isStarting, setStarted } = useSocket();
   const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
@@ -76,15 +78,18 @@ export default function Waiting(props: {
           );
           return;
         }
+        console.log("Router:        ", router.query.type);
+
         await enterGame(
           wallet,
           new PublicKey(gameData.pda),
           betAmount,
           setIsBetLoading,
-          gameData.endTimestamp
+          gameData.endTimestamp,
+          router.query.type as string
         );
       } else {
-        await playGame(wallet, betAmount, setIsBetLoading);
+        await playGame(wallet, betAmount, setIsBetLoading, router.query.type as string);
       }
     } catch (error) {
       console.log(error);
@@ -102,7 +107,10 @@ export default function Waiting(props: {
 
   const getWinners = async () => {
     try {
-      const response = await fetch(API_URL + "getWinners");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getWinners");
       const data = await response.json();
       setRecentWinners(data?.slice(0, 3));
     } catch (error) {
@@ -112,7 +120,10 @@ export default function Waiting(props: {
 
   const getSum = async () => {
     try {
-      const response = await fetch(API_URL + "getTotalSum");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTotalSum");
       const data = await response.json();
       if (data) {
         setTotalWins(data as number);
@@ -124,7 +135,10 @@ export default function Waiting(props: {
 
   const getTotalCount = async () => {
     try {
-      const response = await fetch(API_URL + "getTimes");
+      let api; 
+      if (router.query.type === "tower") api = API_URL;
+      else if (router.query.type === "grave") api = GRAVE_API_URL;
+      const response = await fetch(api + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {

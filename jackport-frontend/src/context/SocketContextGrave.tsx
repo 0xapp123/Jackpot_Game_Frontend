@@ -48,7 +48,7 @@ const context = createContext<Context>({});
 
 export const useSocket = () => useContext(context);
 
-const SocketProvider = (props: { children: any }) => {
+const SocketProviderGrave = (props: { children: any }) => {
   const [socket, setSocket] = useState<SocketType>();
   const [started, setStarted] = useState(false);
   const [messages, setMessages] = useState<ChatType[]>();
@@ -91,7 +91,7 @@ const SocketProvider = (props: { children: any }) => {
 
   const getFirstGameData = async () => {
     try {
-      const response = await fetch(`${API_URL}getRecentGame`);
+      const response = await fetch(`${GRAVE_API_URL}getRecentGame`);
       const data = await response.json();
       if (data?.pda && data?.pda !== "") {
         setGameData({
@@ -113,7 +113,7 @@ const SocketProvider = (props: { children: any }) => {
 
   const getFirstMessages = async () => {
     try {
-      const response = await fetch(`${API_URL}getMessage`);
+      const response = await fetch(`${GRAVE_API_URL}getMessage`);
       const data = await response.json();
       if (data) {
         setMessages(data);
@@ -126,16 +126,16 @@ const SocketProvider = (props: { children: any }) => {
 
   // init socket client object
   useEffect(() => {
-    const socket = io(SOCKET_URL, {
+    const socket = io(GRAVE_SOCKET_URL, {
       transports: ["websocket"],
     });
     socket.on("connect", async () => {
-      console.log(" --@ connected to backend", socket.id);
+      console.log(" --@ connected to backend (grave)", socket.id);
       await getFirstGameData();
       await getFirstMessages();
     });
     socket.on("disconnect", () => {
-      console.log(" --@ disconnected from backend", socket.id);
+      console.log(" --@ disconnected from backend (grave)", socket.id);
     });
     setSocket(socket);
     return () => {
@@ -252,4 +252,4 @@ const SocketProvider = (props: { children: any }) => {
   );
 };
 
-export default SocketProvider;
+export default SocketProviderGrave;
