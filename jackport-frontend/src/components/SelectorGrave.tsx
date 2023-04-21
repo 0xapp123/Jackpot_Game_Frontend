@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import Waitboard from "../components/Waitboard";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../context/SocketContextGrave";
 import CountdownBar from "./CountdownBar";
 import confetti from "canvas-confetti";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";

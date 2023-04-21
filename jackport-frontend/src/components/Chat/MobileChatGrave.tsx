@@ -1,25 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { API_URL } from "../../config";
-import { useSocket } from "../../context/SocketContext";
+import { GRAVE_API_URL } from "../../config";
+import { useSocket } from "../../context/SocketContextGrave";
+import { RightSvg } from "../Svglist";
 import ChatItem from "./ChatItem";
 import Sound from "react-sound";
 
-export default function Chat(props: {
-  className: string;
+export default function MobileChat(props: {
+  opened: boolean;
+  setOpen: Function;
   isOpen: boolean;
   isMute: boolean;
   handleCloseModal: Function;
   handleOpenModal: Function;
 }) {
   const wallet = useWallet();
-  const { messages, onlined } = useSocket();
   const [message, setMessage] = useState("");
+  const { messages, onlined } = useSocket();
+  const { opened, setOpen } = props;
   const [isSound, setIsSound] = useState(false);
-  
+
   const handleMessage = (value: string) => {
     setMessage(value);
   };
@@ -43,10 +45,11 @@ export default function Chat(props: {
       handleSubmit();
     }
   };
+
   const handleSubmit = async () => {
-    if (wallet.publicKey === null || message === "") return;
+    if (wallet.publicKey === null) return;
     try {
-      await axios.post(`${API_URL}writeMessage/`, {
+      await axios.post(`${GRAVE_API_URL}writeMessage/`, {
         user: wallet.publicKey.toBase58(),
         msg: message,
       });
@@ -57,11 +60,23 @@ export default function Chat(props: {
   };
 
   return (
-    <div className={props.className}>
+    <div
+      className={`fixed w-[300px] flex-col px-4 pt-4 border-[1px] flex  transition-transform duration-300 border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:hidden ${
+        !opened ? "translate-x-[320px]" : "translate-x-0"
+      } z-20 bg-[#06104d]`}
+    >
       <div className="flex flex-row justify-between items-center">
-        {/* <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">Welcome!</p> */}
+        <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">
+          Welcome!
+        </p>
+        <button
+          className="flex justify-center w-6 h-6 rounded-[7px] border-[1.34px] border-[#FFFFFF0F] bg-[#03144E] items-center"
+          onClick={() => setOpen(false)}
+        >
+          <RightSvg className="w-2 h-2" />
+        </button>
       </div>
-      <p className="text-[12px] text-[#ffffff] font-normal pb-3 pt-9 mt-3 leading-[29px] border-b-[1.33px] border-[#FFFFFF0F]">
+      <p className="text-[12px] text-[#ffffff] font-normal pb-3 mt-3 leading-[29px] border-b-[1.33px] border-[#FFFFFF0F]">
         {onlined} Players Online
       </p>
       <div className="h-[calc(100vh-270px)] overflow-auto scrollbar mt-2 flex flex-col-reverse">
@@ -101,9 +116,9 @@ export default function Chat(props: {
           </button>
         </div>
       </div>
-
       <Sound
         url="/sound/bet.mp3"
+        debug={false}
         playStatus={isSound ? "PLAYING" : "STOPPED"}
       />
     </div>

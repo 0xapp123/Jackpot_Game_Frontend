@@ -17,13 +17,12 @@ import Terms from "../components/Terms";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../components/ToastGroup";
 import { useRouter } from "next/router";
-
-export default function Waiting(props: {
+export default function Rooms(props: {
   isMute: boolean;
   setIsMute: Function;
 }) {
+  const router=useRouter();
   const wallet = useWallet();
-  const router = useRouter()
   const { gameData, winner, isStarting, setStarted } = useSocket();
   const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
@@ -167,12 +166,19 @@ export default function Waiting(props: {
     getWinners();
     getSum();
     getTotalCount();
+    console.log("asdfasdf"+router.pathname)
   }, [gameData]);
 
   return (
     <>
       <Head>
-        <title>SlowRUG</title>
+        <title>
+        {
+        router.query.type==="tower"?"Tower":
+        router.query.type==="grave"?"Grave":
+        "Infinite"
+        }
+        </title>
         <meta
           name="description"
           content="SlowRUG | Best Crypto PvP Gambling Website"
@@ -180,7 +186,9 @@ export default function Waiting(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col xl:flex-row min-h-[100vh] bg-bg bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap">
+      <div className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap 
+      ${router.query.type==="tower"?"bg-bg":router.query.type==="grave"?"bg-[#0069e3]":"bg-[#05064c]"}
+      `}>
         <div className="absolute w-full left-0 top-0">
           <button
             className="absolute right-6 top-6 z-10 rounded-md border border-[#ffffff80] w-9 h-9 grid place-content-center md:hidden"
@@ -211,7 +219,12 @@ export default function Waiting(props: {
         <div className="px-6 mt-[80px] xl:mt-[40px] flex flex-col xl:flex-row w-full xl:w-[calc(100%-300px)] mr-[300px]">
           <div className="w-full md:w-[calc(100%-300px)] xl:w-[450px] mt-6">
             <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
-              The Tower
+            {
+            router.query.type==="tower"?"The Tower":
+            router.query.type==="grave"?"GraveYard":
+            "Infinite"
+            }
+              
             </p>
             <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6">
               <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">

@@ -1,29 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { ChatIcon, InfiniteIcon, Leftarrow } from "../components/Svglist";
+import { ChatIcon, InfiniteIcon, Leftarrow } from "../../components/Svglist";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { enterGame, playGame } from "../context/solana/transaction";
-import Chat from "../components/Chat";
-import Tower from "../components/Tower";
-import { useSocket } from "../context/SocketContext";
+import { enterGame, playGame } from "../../context/solana/transaction";
+import Chat from "../../components/Chat/grave";
+import Tower from "../../components/TowerGrave";
+import { useSocket } from "../../context/SocketContextGrave";
 import { PublicKey } from "@solana/web3.js";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import MobileChat from "../components/Chat/MobileChat";
+import MobileChat from "../../components/Chat/MobileChatGrave";
 import Head from "next/head";
-import Playhistory from "../components/Playhistory";
-import { API_URL, GRAVE_API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../config";
-import Terms from "../components/Terms";
+import Playhistory from "../../components/Playhistory";
+import { GRAVE_API_URL, NEXT_COOLDOWN, SOL_PRICE_API } from "../../config";
+import Terms from "../../components/Terms";
 import { useQuery } from "@tanstack/react-query";
-import { errorAlert, warningAlert } from "../components/ToastGroup";
+import { errorAlert, warningAlert } from "../../components/ToastGroup";
 import { useRouter } from "next/router";
-
-export default function Waiting(props: {
-  isMute: boolean;
-  setIsMute: Function;
-}) {
+export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
+  const router = useRouter();
   const wallet = useWallet();
-  const router = useRouter()
   const { gameData, winner, isStarting, setStarted } = useSocket();
   const [betAmount, setBetAmount] = useState(0.05);
   const [isBetLoading, setIsBetLoading] = useState(false);
@@ -78,7 +74,6 @@ export default function Waiting(props: {
           );
           return;
         }
-        console.log("Router:        ", router.query.type);
 
         await enterGame(
           wallet,
@@ -86,10 +81,10 @@ export default function Waiting(props: {
           betAmount,
           setIsBetLoading,
           gameData.endTimestamp,
-          router.query.type as string
+          "grave"
         );
       } else {
-        await playGame(wallet, betAmount, setIsBetLoading, router.query.type as string);
+        await playGame(wallet, betAmount, setIsBetLoading, "grave");
       }
     } catch (error) {
       console.log(error);
@@ -107,10 +102,7 @@ export default function Waiting(props: {
 
   const getWinners = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getWinners");
+      const response = await fetch(GRAVE_API_URL + "getWinners");
       const data = await response.json();
       setRecentWinners(data?.slice(0, 3));
     } catch (error) {
@@ -120,10 +112,7 @@ export default function Waiting(props: {
 
   const getSum = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getTotalSum");
+      const response = await fetch(GRAVE_API_URL + "getTotalSum");
       const data = await response.json();
       if (data) {
         setTotalWins(data as number);
@@ -135,10 +124,7 @@ export default function Waiting(props: {
 
   const getTotalCount = async () => {
     try {
-      let api; 
-      if (router.query.type === "tower") api = API_URL;
-      else if (router.query.type === "grave") api = GRAVE_API_URL;
-      const response = await fetch(api + "getTimes");
+      const response = await fetch(GRAVE_API_URL + "getTimes");
       const data = await response.json();
       console.log(data);
       if (data) {
@@ -167,12 +153,13 @@ export default function Waiting(props: {
     getWinners();
     getSum();
     getTotalCount();
+    console.log("asdfasdf" + router.pathname);
   }, [gameData]);
 
   return (
     <>
       <Head>
-        <title>SlowRUG</title>
+        <title>Grave</title>
         <meta
           name="description"
           content="SlowRUG | Best Crypto PvP Gambling Website"
@@ -180,7 +167,9 @@ export default function Waiting(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col xl:flex-row min-h-[100vh] bg-bg bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap">
+      <div
+        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap bg-[#0069e3]`}
+      >
         <div className="absolute w-full left-0 top-0">
           <button
             className="absolute right-6 top-6 z-10 rounded-md border border-[#ffffff80] w-9 h-9 grid place-content-center md:hidden"
@@ -211,7 +200,7 @@ export default function Waiting(props: {
         <div className="px-6 mt-[80px] xl:mt-[40px] flex flex-col xl:flex-row w-full xl:w-[calc(100%-300px)] mr-[300px]">
           <div className="w-full md:w-[calc(100%-300px)] xl:w-[450px] mt-6">
             <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
-              The Tower
+              GraveYard
             </p>
             <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6">
               <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">
