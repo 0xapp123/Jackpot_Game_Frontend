@@ -7,6 +7,7 @@ import { GRAVE_API_URL } from "../../config";
 import { useSocket } from "../../context/SocketContextGrave";
 import ChatItem from "./ChatItem";
 import Sound from "react-sound";
+import { errorAlert } from "../ToastGroup";
 
 export default function Chat(props: {
   className: string;
@@ -44,6 +45,9 @@ export default function Chat(props: {
     }
   };
   const handleSubmit = async () => {
+    if (wallet.publicKey === null) {
+      errorAlert("Please connect wallet.");
+    }
     if (wallet.publicKey === null || message === "") return;
     try {
       await axios.post(`${GRAVE_API_URL}writeMessage/`, {
@@ -83,6 +87,7 @@ export default function Chat(props: {
           className="w-full mt-5 bg-[#03144E] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
           value={message}
           onChange={(e: any) => handleMessage(e.target.value)}
+          disabled={wallet.publicKey === null}
           onKeyDown={handleKeyDown}
           placeholder="Say something in chat..."
         />
@@ -96,6 +101,7 @@ export default function Chat(props: {
           <button
             className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
             onClick={() => handleSubmit()}
+            disabled={wallet.publicKey === null}
           >
             SEND
           </button>

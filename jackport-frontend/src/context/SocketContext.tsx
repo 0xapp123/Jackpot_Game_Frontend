@@ -144,7 +144,7 @@ const SocketProvider = (props: { children: any }) => {
       socket.off("disconnect");
       setSocket(undefined);
     };
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     socket?.on("endTimeUpdated", async (pda, last_ts, players) => {
