@@ -96,7 +96,7 @@ export default function Chat(props: {
             className="flex items-center uppercase text-[12px] text-white leading-3 ml-1"
             onClick={() => props.handleOpenModal()}
           >
-            tearms of sevice
+            terms of service
           </button>
           <button
             className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
