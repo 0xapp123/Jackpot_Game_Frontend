@@ -16,7 +16,6 @@ export default function ChatItem(props: {
     <div className="flex flex-col rounded-[8px] mb-7">
       <div className={`flex flex-row items-start p-4 justify-between rounded-t-lg ${router.asPath !== "/room/grave" ? "bg-[#04134A]" : "bg-[#012326]"}`}>
         <div className="flex items-center">
-          {/* <img className="w-10 h-10" src="/img/bear.png" alt="" /> */}
 
           <UserIcon color={base58ToGradient(props.name).color} />
           <div className="flex flex-col ml-2">
