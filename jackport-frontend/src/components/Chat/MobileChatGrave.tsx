@@ -61,16 +61,15 @@ export default function MobileChat(props: {
 
   return (
     <div
-      className={`fixed w-[300px] flex-col px-4 pt-4 border-[1px] flex  transition-transform duration-300 border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:hidden ${
-        !opened ? "translate-x-[320px]" : "translate-x-0"
-      } z-20 bg-[#06104d]`}
+      className={`fixed w-[300px] flex-col px-4 pt-4 border-[1px] flex  transition-transform duration-300 border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:hidden ${!opened ? "translate-x-[320px]" : "translate-x-0"
+        } z-20 bg-[#000f13]`}
     >
       <div className="flex flex-row justify-between items-center">
         <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">
           Welcome!
         </p>
         <button
-          className="flex justify-center w-6 h-6 rounded-[7px] border-[1.34px] border-[#FFFFFF0F] bg-[#03144E] items-center"
+          className="flex justify-center w-6 h-6 rounded-[7px] border-[1.34px] border-[#FFFFFF0F] bg-[#000f13] items-center"
           onClick={() => setOpen(false)}
         >
           <RightSvg className="w-2 h-2" />
@@ -91,11 +90,11 @@ export default function MobileChat(props: {
             />
           ))}
       </div>
-      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#06104d] border-[#FFFFFF3D]">
+      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#000f13] border-[#FFFFFF3D]">
         <div className="border-t-[1.33px] border-[#FFFFFF0F]"></div>
         <input
           type="text"
-          className="w-full mt-5 bg-[#03144E] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
+          className="w-full mt-5 bg-[#000f13] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
           value={message}
           onChange={(e: any) => handleMessage(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -109,7 +108,7 @@ export default function MobileChat(props: {
             terms of service
           </button>
           <button
-            className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
+            className="bg-[#000f13] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
             onClick={() => handleSubmit()}
           >
             SEND

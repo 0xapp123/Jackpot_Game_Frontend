@@ -154,7 +154,6 @@ export default function Tower(props: {
         debug={false}
         playStatus={isBetSound ? "PLAYING" : "STOPPED"}
       />
-      ;
     </div>
   );
 }

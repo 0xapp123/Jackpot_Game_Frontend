@@ -148,7 +148,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
-        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap bg-[#08307f]`}
+        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap`}
+        style={{ backgroundImage: "url(/img/grave-bg.webp)" }}
       >
         <div className="absolute w-full left-0 top-0">
           <button
@@ -182,7 +183,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
               GraveYard
             </p>
-            <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6">
+            <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6 backdrop-blur-md">
               <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">
                 Place a Bet in SOL
               </p>
@@ -339,7 +340,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
           </div>
         </div>
         <Chat
-          className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex"
+          className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex bg-[#000f13]"
           isOpen={isOpen}
           isMute={props.isMute}
           handleCloseModal={handleCloseModal}
@@ -358,7 +359,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             Statistics
           </p>
           <div className="flex flex-wrap mt-[18px] rounded-[8px] gap-[13px]">
-            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A]">
+            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A] backdrop-blur-sm">
               <div className="mt-6 ml-6 bg-[#444CE4] rounded-[8px] w-[46px] h-[46px]  md:block hidden"></div>
               <p className="text-[24px] md:text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
                 {typeof data === "number"
@@ -369,7 +370,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                 Amount Wagered
               </p>
             </div>
-            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A]">
+            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A] backdrop-blur-sm">
               <div className="mt-6 ml-6 bg-[#F257A0] rounded-[8px] w-[46px] h-[46px] md:block hidden"></div>
               <p className="text-[24px] md:text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
                 {totalCount.toLocaleString()}
@@ -378,7 +379,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                 Bets placed All Time
               </p>
             </div>
-            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A]">
+            <div className=" relative flex flex-col pb-5 w-[calc((100%-40px)/3)] rounded-[8px] border-[1.33px] border-[#FFFFFF1A] backdrop-blur-sm">
               <div className="mt-6 ml-6 bg-[#7A5AF8] rounded-[8px] w-[46px] h-[46px] md:block hidden"></div>
               <p className="text-[24px] md:text-[32px] text-white-100 font-bold leading-[52px] mt-[13.35px] ml-6">
                 {typeof data === "number"
@@ -395,7 +396,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
           </p>
 
           <div className="w-full overflow-x-auto">
-            <div className="min-w-[650px]">
+            <div className="min-w-[650px] backdrop-blur-sm">
               <div className="flex flex-row mt-[19px] mb-2 justify-between">
                 <p className="w-[200px] text-sm text-[#FFFFFFA8] text-center">
                   Game
