@@ -117,7 +117,6 @@ module.exports = {
         "drop-shadow": "0px 0px 49px rgba(0, 0, 0, 0.5)",
       },
       backgroundImage: {
-        'dicer': "url(/img/images.jfif)",
         'bg': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
         'bg1': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
         'bg2': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
