@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -134,7 +135,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   // const getTimes = useQuery(["getTimes"], async () => {
@@ -211,9 +212,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 1 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -231,9 +231,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 2 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -251,9 +250,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${
-                    betAmount === 3 ? "oapcity-100" : "opacity-30"
-                  }`}
+                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
+                    }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
