@@ -3,15 +3,18 @@ import moment from "moment";
 import { useState } from "react";
 import { base58ToGradient } from "../../utils/util";
 import { Downarrow, UserIcon } from "../Svglist";
+import { useRouter } from "next/router";
 export default function ChatItem(props: {
   name: string;
   time: number;
   message: string;
 }) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <div className="flex flex-col rounded-[8px] mb-7">
-      <div className="flex flex-row items-start p-4 bg-[#04134A] justify-between rounded-t-lg">
+      <div className={`flex flex-row items-start p-4 justify-between rounded-t-lg ${router.asPath !== "/room/grave" ? "bg-[#04134A]" : "bg-[#012326]"}`}>
         <div className="flex items-center">
           {/* <img className="w-10 h-10" src="/img/bear.png" alt="" /> */}
 
@@ -37,9 +40,8 @@ export default function ChatItem(props: {
         )}
       </div>
       <div
-        className={`px-4 pb-4 bg-[#03144E] rounded-b-lg ${
-          !open ? "h-8 overflow-hidden" : ""
-        }`}
+        className={`px-4 pb-4 rounded-b-lg ${!open ? "h-8 overflow-hidden" : ""
+          }  ${router.asPath !== "/room/grave" ? "bg-[#03144E]" : "bg-[#012326]"}`}
       >
         <p className="text-[14px] text-white">{props.message}</p>
       </div>

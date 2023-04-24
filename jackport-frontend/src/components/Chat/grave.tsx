@@ -80,11 +80,11 @@ export default function Chat(props: {
             />
           ))}
       </div>
-      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#06104d] border-[#FFFFFF3D]">
+      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#000f13] border-[#FFFFFF3D]">
         <div className="border-t-[1.33px] border-[#FFFFFF0F]"></div>
         <input
           type="text"
-          className="w-full mt-5 bg-[#03144E] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
+          className="w-full mt-5 bg-[#000f13] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
           value={message}
           onChange={(e: any) => handleMessage(e.target.value)}
           disabled={wallet.publicKey === null}
@@ -99,7 +99,7 @@ export default function Chat(props: {
             terms of service
           </button>
           <button
-            className="bg-[#03144E] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
+            className="bg-[#000f13] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
             onClick={() => handleSubmit()}
             disabled={wallet.publicKey === null}
           >

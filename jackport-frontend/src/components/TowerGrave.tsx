@@ -71,7 +71,7 @@ export default function Tower(props: {
   }, [gameData?.players]);
 
   return (
-    <div className="mx-auto xl:max-w-[500px] flex justify-center flex-col drop-shadow-lg w-full 2xl:w-[calc(100%-100px)] xl:mt-0 mt-10 border-[1px] rounded-3xl border-[#FFFFFF73] mb-10">
+    <div className="mx-auto xl:max-w-[500px] flex justify-center flex-col drop-shadow-lg w-full 2xl:w-[calc(100%-100px)] xl:mt-0 mt-10 border-[1px] rounded-3xl border-[#FFFFFF73] mb-10 backdrop-blur-md">
       <div className="relative rounded-[10px] bg-[#7e49f051] my-[26px] mx-6">
         <img
           className="absolute  left-[-24px] top-1"
@@ -145,7 +145,7 @@ export default function Tower(props: {
           {`No one has placed a bet, be the first to start the game!`}
         </div>
       )}
-      <div className="mx-8 rounded-xl py-2 my-6 text-[24px] text-[#6a71f8] font-bold text-center">
+      <div className="mx-8 rounded-xl py-2 my-6 text-[24px] text-[#fff] font-bold text-center">
         WIN %: {winPercent && (winPercent * 100).toFixed(2)}
       </div>
       <Sound
@@ -153,7 +153,6 @@ export default function Tower(props: {
         debug={false}
         playStatus={isBetSound ? "PLAYING" : "STOPPED"}
       />
-      ;
     </div>
   );
 }
