@@ -1,0 +1,54 @@
+.middle-pie {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(180deg);
+    height: 360px;
+    width: 360px;
+    border: double 60px transparent;
+    border-radius: 50%;
+    background-image: radial-gradient(#091c63, #091c63),
+        linear-gradient(270deg, #757fa3 15%, rgba(217, 217, 217, 0) 73.3%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    /* add a clipping path to show only 1/4 */
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+
+.moving-ball {
+    width: 360px;
+    height: 360px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: rotate(0deg);
+    padding: 4px;
+
+    &::before {
+        content: "";
+        margin-left: 150px;
+        background-color: #fff;
+        border-radius: 50%;
+        position: absolute;
+        width: 52px;
+        height: 52px;
+        box-shadow: -2px 4px 18px #00000057;
+    }
+}
+
+.pie {
+    &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 240px;
+        height: 240px;
+        transform: translate(-50%, -50%);
+        background: #091c63;
+        border-radius: 50%;
+    }
+}
+
+.pie-r {
+    transform: translate(-50%, -50%) rotateX(180deg);
+}

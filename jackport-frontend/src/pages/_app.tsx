@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import SocketProvider from "../context/SocketContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
@@ -8,6 +8,8 @@ import { AppProps } from "next/app";
 import { useState } from "react";
 import { SoundOffIcon, SoundOnIcon } from "../components/Svglist";
 import SocketProviderGrave from "../context/SocketContextGrave";
+
+import "../styles/infinite.scss";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {

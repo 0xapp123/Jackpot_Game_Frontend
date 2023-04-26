@@ -120,6 +120,7 @@ module.exports = {
         'bg': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
         'bg1': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
         'bg2': "linear-gradient(122.82deg, #431687 0.26%, #08025B 97.09%)",
+        'infinite': "linear-gradient(122.82deg, #091c63 0.26%, #150963 97.09%)",
         'gallery': "url('/img/gallery.png')",
         'ustaking': "url('/img/ustaking.png')",
         'mainstaking': "url('/img/mainstaking.png')",
