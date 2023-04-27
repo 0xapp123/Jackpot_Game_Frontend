@@ -15,6 +15,7 @@
 }
 
 .moving-ball {
+    pointer-events: none;
     width: 360px;
     height: 360px;
     position: absolute;
@@ -31,11 +32,18 @@
         position: absolute;
         width: 52px;
         height: 52px;
-        box-shadow: -2px 4px 18px #00000057;
+        box-shadow: -2px 4px 18px #00000040;
+    }
+    &.ball-border {
+        &::before {
+            background-color: transparent;
+            border: 2px dashed #ffffff80;
+        }
     }
 }
 
 .pie {
+    opacity: 1;
     &:after {
         content: "";
         position: absolute;
@@ -50,5 +58,7 @@
 }
 
 .pie-r {
-    transform: translate(-50%, -50%) rotateX(180deg);
+    opacity: 1;
+    // transform: translate(-50%, -50%) rotateX(180deg);
+    transform: translate(-50%, -50%) rotateY(180deg) rotate(90deg);
 }
