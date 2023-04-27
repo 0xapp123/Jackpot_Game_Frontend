@@ -1,8 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { SOL_PRICE_API } from "../config";
 
+// const colors = [
+//   {
+//     id: 1,
+//     color: "#82C861",
+//     value: 2
+//   },
+//   {
+//     id: 2,
+//     color: "#CDB767",
+//     value: 15
+//   },
+//   {
+//     id: 3,
+//     color: "#A367D2",
+//     value: 6
+//   },
+//   {
+//     id: 4,
+//     color: "#C05CAA",
+//     value: 10
+//   },
+//   {
+//     id: 5,
+//     color: "#93C4FF",
+//     value: 5
+//   },
+// ];
 export const useSolanaPrice = () => {
     try {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const { isLoading, isError, data, error } = useQuery(["solanaPrice"], async () => {
             const response = await fetch(SOL_PRICE_API);
             const data = await response.json();
@@ -29,6 +57,40 @@ export const base58ToColor = (publicKey: string) => {
 export const base58ToGradient = (publicKey: string) => {
     const intNumber = publicKey.slice(0, 3).split('').map(char => char.charCodeAt(0)).join('');
     return colors[parseInt(intNumber) % 18];
+}
+
+interface Pie {
+    color: string,
+    deg: number,
+}
+
+export const getPieData = (colors: { color: string, value: number }[]) => {
+    const potValue = colors.reduce((acc, curr) => acc + curr.value, 0);
+    let pies: Pie[] = [];
+
+    for (let i = 0; i < colors.length; i++) {
+        pies.push(
+            {
+                color: colors[i].color,
+                deg: colors[i].value / potValue * 720,
+            }
+        )
+    }
+
+    const resDegs = pies.reduce((acc: any, curr, i) => {
+        const lastValue = (acc[i - 1] && acc[i - 1].second) || 0;
+        return [
+            ...acc,
+            {
+                color: curr.color,
+                first: lastValue,
+                second: lastValue + curr.deg < 360 ? lastValue + curr.deg : 360
+            }
+        ]
+    }, []);
+
+    const data = resDegs.filter((item: any) => item.first !== 360);
+    return data
 }
 
 const colors = [
