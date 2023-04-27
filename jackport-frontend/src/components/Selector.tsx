@@ -82,21 +82,23 @@ export default function Selector(props: {
       increment = 1.2;
     } else if (timeDifference >= 200 && isTimerRunning) {
       increment = 1;
-    } else if (timeDifference >= 150 && isTimerRunning) {
-      increment = 0.5;
-    } else if (timeDifference >= 100 && isTimerRunning) {
-      increment = 0.3;
-    } else if (timeDifference >= 70 && isTimerRunning) {
-      increment = 0.15;
     } else if (timeDifference >= 50 && isTimerRunning) {
-      increment = 0.08;
-    } else if (timeDifference >= 30 && isTimerRunning) {
-      increment = 0.04;
-    } else if (timeDifference >= 10 && isTimerRunning) {
-      increment = 0.01;
-    } else if (timeDifference >= 1 && isTimerRunning) {
-      increment = 0.005;
+      increment = 0.7;
+    } else if (timeDifference >= 5 && isTimerRunning) {
+      increment = 0.3;
     }
+    // else if (timeDifference >= 70 && isTimerRunning) {
+    //   increment = 0.15;
+    // } else if (timeDifference >= 50 && isTimerRunning) {
+    //   increment = 0.08;
+    // } else if (timeDifference >= 30 && isTimerRunning) {
+    //   increment = 0.04;
+    // }
+    // else if (timeDifference >= 10 && isTimerRunning) {
+    //   increment = 0.01;
+    // } else if (timeDifference >= 1 && isTimerRunning) {
+    //   increment = 0.005;
+    // }
 
     intervalId = setInterval(() => {
       setTimer((count) => count + increment);

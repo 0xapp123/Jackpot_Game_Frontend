@@ -147,7 +147,6 @@ export default function Tower(props: {
       )}
       <div className="mx-8 rounded-xl py-2 my-6 text-[24px] text-[#6a71f8] font-bold text-center">
         WIN %: {winPercent && (winPercent * 100).toFixed(2)}
-
       </div>
       <Sound
         url="/sound/bet.mp3"

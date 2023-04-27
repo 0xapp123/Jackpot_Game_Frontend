@@ -29,6 +29,8 @@ interface Context {
   };
   gameEnded?: boolean;
   winner?: {
+    bet: number,
+    payout: number,
     winner: string;
     resultHeight: number;
   };
@@ -66,6 +68,8 @@ const SocketProviderGrave = (props: { children: any }) => {
 
   const [gameEnded, setGameEnded] = useState(false);
   const [winner, setWinner] = useState({
+    bet: 0,
+    payout: 0,
     winner: "",
     resultHeight: 0,
   });
@@ -81,6 +85,8 @@ const SocketProviderGrave = (props: { children: any }) => {
     if (gameEnded) {
       setGameStarting(1);
       setWinner({
+        bet: 0,
+        payout: 0,
         winner: "",
         resultHeight: 0,
       });
@@ -170,6 +176,8 @@ const SocketProviderGrave = (props: { children: any }) => {
         gameStarted: true,
       });
       setWinner({
+        bet: 0,
+        payout: 0,
         winner: "",
         resultHeight: 0,
       });
