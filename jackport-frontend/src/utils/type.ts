@@ -21,6 +21,8 @@ export interface ServerToClientEvents {
     currentPositionUpdated: (currentPosition: number) => void;
     endTimeUpdated: (pda: string, last_ts: number, players: Player[]) => void;
     gameEnded: (winner: {
+        bet: number,
+        payout: number,
         winner: string,
         resultHeight: number
     }) => void;

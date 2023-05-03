@@ -32,6 +32,8 @@ interface Context {
   winner?: {
     winner: string;
     resultHeight: number;
+    bet: number;
+    payout: number;
   };
   resultHeight?: number;
   getFirstGameData?: Function;
@@ -67,6 +69,8 @@ const SocketProvider = (props: { children: any }) => {
 
   const [gameEnded, setGameEnded] = useState(false);
   const [winner, setWinner] = useState({
+    bet: 0,
+    payout: 0,
     winner: "",
     resultHeight: 0,
   });
@@ -82,6 +86,8 @@ const SocketProvider = (props: { children: any }) => {
     if (gameEnded) {
       setGameStarting(1);
       setWinner({
+        bet: 0,
+        payout: 0,
         winner: "",
         resultHeight: 0,
       });
@@ -171,6 +177,8 @@ const SocketProvider = (props: { children: any }) => {
         gameStarted: true,
       });
       setWinner({
+        bet: 0,
+        payout: 0,
         winner: "",
         resultHeight: 0,
       });
@@ -191,20 +199,23 @@ const SocketProvider = (props: { children: any }) => {
         players
       );
       setTimeout(() => {
-        // if (isStarting)
-        //   setGameData({
-        //     players: players,
-        //     endTimestamp: time,
-        //     pda: "",
-        //     gameStarted: false,
-        //   });
         setGameEnded(true);
+        // setClearGame();
+        // if (isStarting)
+        setGameData({
+          players: players,
+          endTimestamp: time,
+          pda: "",
+          gameStarted: false,
+        });
         //   // reset game starting
         // setGameStarting(1);
-        // setWinner({
-        //   winner: "",
-        //   resultHeight: 0,
-        // });
+        setWinner({
+          payout: 0,
+          bet: 0,
+          winner: "",
+          resultHeight: 0,
+        });
         // setStarted(false);
       }, CLEAR_COOLDOWN);
     });

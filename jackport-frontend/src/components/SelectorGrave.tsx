@@ -94,21 +94,23 @@ export default function Selector(props: {
       increment = 1.2;
     } else if (timeDifference >= 200 && isTimerRunning) {
       increment = 1;
-    } else if (timeDifference >= 150 && isTimerRunning) {
-      increment = 0.5;
-    } else if (timeDifference >= 100 && isTimerRunning) {
-      increment = 0.3;
-    } else if (timeDifference >= 70 && isTimerRunning) {
-      increment = 0.15;
     } else if (timeDifference >= 50 && isTimerRunning) {
-      increment = 0.08;
-    } else if (timeDifference >= 30 && isTimerRunning) {
-      increment = 0.04;
-    } else if (timeDifference >= 10 && isTimerRunning) {
-      increment = 0.01;
-    } else if (timeDifference >= 1 && isTimerRunning) {
-      increment = 0.005;
+      increment = 0.7;
+    } else if (timeDifference >= 5 && isTimerRunning) {
+      increment = 0.3;
     }
+    // else if (timeDifference >= 70 && isTimerRunning) {
+    //   increment = 0.15;
+    // } else if (timeDifference >= 50 && isTimerRunning) {
+    //   increment = 0.08;
+    // } else if (timeDifference >= 30 && isTimerRunning) {
+    //   increment = 0.04;
+    // }
+    // else if (timeDifference >= 10 && isTimerRunning) {
+    //   increment = 0.01;
+    // } else if (timeDifference >= 1 && isTimerRunning) {
+    //   increment = 0.005;
+    // }
 
     intervalId = setInterval(() => {
       setTimer((count) => count + increment);
@@ -203,31 +205,28 @@ export default function Selector(props: {
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full left-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                  }px`,
               }}
             ></div>
             <div
               className="w-9 h-9 absolute bg-white blur-[9px] rounded-full right-[-60px]"
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? list[Math.floor(timer / 100) % 5]
                     : list[5 - (Math.floor(timer / 100) % 5)]
-                }px`,
+                  }px`,
               }}
             ></div>
             <div
               className={`w-full absolute border-t-4 border-dashed after:w-4 lg:after:w-5 after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-3 before:w-5 before:h-5 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-3`}
               style={{
-                top: `${
-                  Math.floor(timer / 500) % 2
+                top: `${Math.floor(timer / 500) % 2
                     ? timer % 500
                     : 500 - (timer % 500)
-                }px`,
+                  }px`,
               }}
             ></div>
           </>
@@ -251,7 +250,7 @@ export default function Selector(props: {
               className={`w-full absolute border-t-4 border-dashed after:w-3 after:h-3 lg:after:w-5 lg:after:h-5 after:bg-[#fff] after:absolute after:-right-2 after:rotate-45 after:-top-2 xl:after:-top-3 lg:before:w-5 lg:before:h-5 before:w-3 before:h-3 before:bg-[#fff] before:absolute before:-left-2 before:rotate-45 before:-top-2 xl:before:-top-3 opacity-20`}
               style={{ top: `0` }}
             >
-            {/* style={{ top: `${Math.floor(timerInfinite / 500) % 2 ? timerInfinite % 500 : 500 - (timerInfinite % 500)}px` }}  */}
+              {/* style={{ top: `${Math.floor(timerInfinite / 500) % 2 ? timerInfinite % 500 : 500 - (timerInfinite % 500)}px` }}  */}
             </div>
             <div className="w-full h-full rounded-xl relative z-10 pointer-events-none">
               <p className="text-white text-[18px] font-bold text-center pt-[90px]">

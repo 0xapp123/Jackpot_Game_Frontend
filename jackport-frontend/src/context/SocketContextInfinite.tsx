@@ -9,10 +9,9 @@ import {
   ServerToClientEvents,
 } from "../utils/type";
 import {
-  API_URL,
   CLEAR_COOLDOWN,
-  GRAVE_API_URL,
-  GRAVE_SOCKET_URL,
+  INFINITE_API_URL,
+  INFINITE_SOCKET_URL,
 } from "../config";
 import { useRouter } from "next/router";
 
@@ -29,10 +28,10 @@ interface Context {
   };
   gameEnded?: boolean;
   winner?: {
-    bet: number,
-    payout: number,
     winner: string;
     resultHeight: number;
+    bet: number;
+    payout: number;
   };
   resultHeight?: number;
   getFirstGameData?: Function;
@@ -49,7 +48,7 @@ const context = createContext<Context>({});
 
 export const useSocket = () => useContext(context);
 
-const SocketProviderGrave = (props: { children: any }) => {
+const SocketProviderInfinite = (props: { children: any }) => {
   const [socket, setSocket] = useState<SocketType>();
   const [started, setStarted] = useState(false);
   const [messages, setMessages] = useState<ChatType[]>();
@@ -96,7 +95,7 @@ const SocketProviderGrave = (props: { children: any }) => {
 
   const getFirstGameData = async () => {
     try {
-      const response = await fetch(`${GRAVE_API_URL}getRecentGame`);
+      const response = await fetch(`${INFINITE_API_URL}getRecentGame`);
       const data = await response.json();
       if (data?.pda && data?.pda !== "") {
         setGameData({
@@ -118,7 +117,7 @@ const SocketProviderGrave = (props: { children: any }) => {
 
   const getFirstMessages = async () => {
     try {
-      const response = await fetch(`${GRAVE_API_URL}getMessage`);
+      const response = await fetch(`${INFINITE_API_URL}getMessage`);
       const data = await response.json();
       if (data) {
         setMessages(data);
@@ -131,16 +130,16 @@ const SocketProviderGrave = (props: { children: any }) => {
 
   // init socket client object
   useEffect(() => {
-    const socket = io(GRAVE_SOCKET_URL, {
+    const socket = io(INFINITE_SOCKET_URL, {
       transports: ["websocket"],
     });
     socket.on("connect", async () => {
-      console.log(" --@ connected to backend (grave)", socket.id);
+      console.log(" --@ connected to backend", socket.id);
       await getFirstGameData();
       await getFirstMessages();
     });
     socket.on("disconnect", () => {
-      console.log(" --@ disconnected from backend (grave)", socket.id);
+      console.log(" --@ disconnected from backend", socket.id);
     });
     setSocket(socket);
     return () => {
@@ -198,20 +197,23 @@ const SocketProviderGrave = (props: { children: any }) => {
         players
       );
       setTimeout(() => {
-        // if (isStarting)
-        //   setGameData({
-        //     players: players,
-        //     endTimestamp: time,
-        //     pda: "",
-        //     gameStarted: false,
-        //   });
         setGameEnded(true);
+        // setClearGame();
+        // if (isStarting)
+        setGameData({
+          players: players,
+          endTimestamp: time,
+          pda: "",
+          gameStarted: false,
+        });
         //   // reset game starting
         // setGameStarting(1);
-        // setWinner({
-        //   winner: "",
-        //   resultHeight: 0,
-        // });
+        setWinner({
+          payout: 0,
+          bet: 0,
+          winner: "",
+          resultHeight: 0,
+        });
         // setStarted(false);
       }, CLEAR_COOLDOWN);
     });
@@ -259,4 +261,4 @@ const SocketProviderGrave = (props: { children: any }) => {
   );
 };
 
-export default SocketProviderGrave;
+export default SocketProviderInfinite;
