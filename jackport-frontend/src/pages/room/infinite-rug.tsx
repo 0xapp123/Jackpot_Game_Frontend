@@ -5,15 +5,15 @@ import React, { useEffect, useState } from "react";
 import { ChatIcon, InfiniteIcon, Leftarrow } from "../../components/Svglist";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { enterGame, playGame } from "../../context/solana/transaction";
-import Chat from "../../components/Chat";
-import { useSocket } from "../../context/SocketContext";
+import Chat from "../../components/Chat/infinite";
+import { useSocket } from "../../context/SocketContextInfinite";
 import { PublicKey } from "@solana/web3.js";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import MobileChat from "../../components/Chat/MobileChat";
+import MobileChat from "../../components/Chat/MobileChatInfinite";
 import Head from "next/head";
 import Playhistory from "../../components/Playhistory";
 import {
-    API_URL,
+    INFINITE_API_URL,
     NEXT_COOLDOWN,
     SOL_PRICE_API,
 } from "../../config";
@@ -88,8 +88,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                 await enterGame(
                     wallet,
                     new PublicKey(gameData.pda),
-                    0.001,
-                    // betAmount,
+                    // 0.001,
+                    betAmount,
                     setIsBetLoading,
                     gameData.endTimestamp,
                     "tower"
@@ -97,8 +97,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             } else {
                 await playGame(
                     wallet,
-                    // betAmount,
-                    0.001,
+                    betAmount,
+                    // 0.001,
                     setIsBetLoading,
                     "tower"
                 );
@@ -119,7 +119,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
 
     const getWinners = async () => {
         try {
-            const response = await fetch(API_URL + "getWinners");
+            const response = await fetch(INFINITE_API_URL + "getWinners");
             const data = await response.json();
             setRecentWinners(data?.slice(0, 3));
         } catch (error) {
@@ -129,7 +129,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
 
     const getSum = async () => {
         try {
-            const response = await fetch(API_URL + "getTotalSum");
+            const response = await fetch(INFINITE_API_URL + "getTotalSum");
             const data = await response.json();
             if (data) {
                 setTotalWins(data as number);
@@ -141,7 +141,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
 
     const getTotalCount = async () => {
         try {
-            const response = await fetch(API_URL + "getTimes");
+            const response = await fetch(INFINITE_API_URL + "getTimes");
             const data = await response.json();
             if (data) {
                 setTotalCount(data as number);

@@ -80,19 +80,21 @@ export default function Sidebar() {
           </a>
         </Link>
         <Link href="/room/infinite-rug" passHref>
-          <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
-            <img
-              src="/img/tower.png"
-              alt=""
-              className="w-6 h-6 mr-4 object-contain"
-            />
-            <p
-              className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
-                }`}
-            >
-              Infinite Rug
-            </p>
-          </div>
+          <a>
+            <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
+              <img
+                src="/img/tower.png"
+                alt=""
+                className="w-6 h-6 mr-4 object-contain"
+              />
+              <p
+                className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
+                  }`}
+              >
+                Infinite Rug
+              </p>
+            </div>
+          </a>
         </Link>
 
         <p
@@ -119,7 +121,7 @@ export default function Sidebar() {
             </div>
           </a>
         </Link>
-      </div>
-    </nav>
+      </div >
+    </nav >
   );
 }

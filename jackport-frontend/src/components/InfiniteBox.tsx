@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { base58ToGradient } from "../utils/util";
-import { useSocket } from "../context/SocketContext";
+import { useSocket } from "../context/SocketContextInfinite";
 import Sound from "react-sound";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import CountdownBar from "./CountdownBarInfinite";
