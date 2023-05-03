@@ -419,7 +419,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                 recentWinnders.map((item: any, key) => (
                   <Playhistory
                     key={key}
-                    game="The Tower"
+                    game="GraveYard"
                     user={item.user.slice(0, 4) + "..." + item.user.slice(-4)}
                     bet={`${item.bet_amount} SOL`}
                     payout={`${item.payout} SOL`}
