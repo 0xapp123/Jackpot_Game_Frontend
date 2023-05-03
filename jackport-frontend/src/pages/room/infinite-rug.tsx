@@ -92,7 +92,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                     betAmount,
                     setIsBetLoading,
                     gameData.endTimestamp,
-                    "tower"
+                    "infinite"
                 );
             } else {
                 await playGame(
@@ -100,7 +100,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                     betAmount,
                     // 0.001,
                     setIsBetLoading,
-                    "tower"
+                    "infinite"
                 );
             }
         } catch (error) {

@@ -21,9 +21,10 @@ import {
   TEAM_WALLET,
   VAULT_SEED,
   GRAVE_PROGRAM_ID,
+  INFINITE_PROGRAM_ID,
 } from "./types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { API_URL, GRAVE_API_URL, RPC_URL } from "../../config";
+import { API_URL, GRAVE_API_URL, INFINITE_API_URL, RPC_URL } from "../../config";
 import { errorAlert } from "../../components/ToastGroup";
 import { useSocket } from "../SocketContext";
 
@@ -43,10 +44,13 @@ export const playGame = async (
   if (type === "tower") {
     programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
     api = API_URL;
-  } 
+  }
   else if (type === "grave") {
     programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
     api = GRAVE_API_URL;
+  } else if (type === "infinite") {
+    programId = new anchor.web3.PublicKey(INFINITE_PROGRAM_ID);
+    api = INFINITE_API_URL
   }
   else return;
 
@@ -118,13 +122,16 @@ export const enterGame = async (
   // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
   let programId;
   let api;
-  console.log("TYYYPPEEE",  type);
   if (type === "tower") {
     programId = new anchor.web3.PublicKey(JACKPOT_PROGRAM_ID);
     api = API_URL;
-  } 
+  }
   else if (type === "grave") {
     programId = new anchor.web3.PublicKey(GRAVE_PROGRAM_ID);
+    api = GRAVE_API_URL;
+  }
+  else if (type === "infinite") {
+    programId = new anchor.web3.PublicKey(INFINITE_PROGRAM_ID);
     api = GRAVE_API_URL;
   }
   else return;

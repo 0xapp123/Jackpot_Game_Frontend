@@ -12,6 +12,9 @@ export const JACKPOT_PROGRAM_ID = new PublicKey(
 export const GRAVE_PROGRAM_ID = new PublicKey(
   "GK7byNYNbL8tubzevvKGBbp7yjACDW2YvzNNXNG5cDA3"
 );
+export const INFINITE_PROGRAM_ID = new PublicKey(
+  "A45GAJvGvR41EmsE1saw4zPsTECpYiD4mYCUvzSmMTrB"
+);
 export const CODY_WALLET = new PublicKey(
   "GBfam19CeWi6msbrgHxFPmEBZMu4zHavQyNchdZTDtNU"
 ); // 0.72%
