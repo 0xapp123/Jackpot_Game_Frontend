@@ -164,7 +164,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
     return (
         <>
             <Head>
-                <title>Tower</title>
+                <title>Infinite Rug</title>
                 <meta
                     name="description"
                     content="SlowRUG | Best Crypto PvP Gambling Website"
