@@ -132,7 +132,7 @@ export const enterGame = async (
   }
   else if (type === "infinite") {
     programId = new anchor.web3.PublicKey(INFINITE_PROGRAM_ID);
-    api = GRAVE_API_URL;
+    api = INFINITE_API_URL;
   }
   else return;
 
