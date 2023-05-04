@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../../components/ToastGroup";
 import { useRouter } from "next/router";
 import InfiniteBox from "../../components/InfiniteBox";
+import InfiniteBetBox from "../../components/InfiniteBetBox";
 
 export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
     const router = useRouter();
@@ -175,7 +176,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             <div
                 className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap bg-infinite`}
             >
-                <div className="absolute w-full left-0 top-0">
+                <div className="absolute top-0 left-0 w-full">
                     <button
                         className="absolute right-6 top-6 z-10 rounded-md border border-[#ffffff80] w-9 h-9 grid place-content-center md:hidden"
                         onClick={() => setIsMobileChat(true)}
@@ -186,7 +187,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                         <Link href={"/"}>
                             <a className="text-sm text-[#FFFFFF] ml-2 uppercase font-semibold flex items-center">
                                 <Leftarrow className="w-3 h-3" />
-                                <span className="ml-2 hidden md:block">Back Home</span>
+                                <span className="hidden ml-2 md:block">Back Home</span>
                             </a>
                         </Link>
                     </button>
@@ -202,163 +203,28 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                     </div>
                 </div>
 
-                <h1 className="font-bold text-[50px] text-[#5c64fa] mt-20 ml-5">Infinite Rug</h1>
-                <div className="px-6 mt-[80px] xl:mt-[40px] w-full lg:w-[calc(100%-300px)] mr-[300px] relative">
-                    <InfiniteBox
-                        isMute={props.isMute}
-                        setIsWonWindow={setIsWonWindow}
-                        setWonValue={setWonValue}
-                    />
+                <div className="2xl:mr-[300px] mt-[70px] xl:mt-[70px] w-full 2xl:w-[calc(100%-300px)]">
+                    <div className="relative flex flex-col-reverse items-start w-full px-6 xl:flex-row">
+                        <InfiniteBetBox
+                            className="w-[380px] mb-10 mt-6 mx-auto xl:mx-0"
+                            betAmount={betAmount}
+                            setBetAmount={setBetAmount}
+                            handleBetAmount={handleBetAmount}
+                            handleKeyDown={handleKeyDown}
+                            handleBet={handleBet}
+                            isBetLoading={isBetLoading}
+                        />
+                        <InfiniteBox
+                            className="w-[calc(100%-0px)] xl:w-[calc(100%-400px)] xl:ml-5 mt-5 xl:mt-0"
+                            isMute={props.isMute}
+                            setIsWonWindow={setIsWonWindow}
+                            setWonValue={setWonValue}
+                        />
 
-                    <div className="flex flex-col border-[1px] bg-[#091C63] border-[#FFFFFF24] rounded-3xl px-6 w-[460px] mx-auto mt-10">
-                        <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">
-                            Place a Bet in SOL
-                        </p>
-                        <div className="flex flex-row mt-[33px]">
-                            <button
-                                className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
-                                    }`}
-                                onClick={() => setBetAmount(1)}
-                            >
-                                <img
-                                    src="/img/solana.png"
-                                    alt=""
-                                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
-                                />
-                                <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
-                                    1 SOL
-                                </p>
-                                <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                                    {typeof data === "number"
-                                        ? "$" + (data * 1).toFixed(2) + "USD"
-                                        : "---"}
-                                </p>
-                            </button>
-                            <button
-                                className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
-                                    }`}
-                                onClick={() => setBetAmount(2)}
-                            >
-                                <img
-                                    src="/img/solana.png"
-                                    alt=""
-                                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
-                                />
-                                <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
-                                    2 SOL
-                                </p>
-                                <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                                    {typeof data === "number"
-                                        ? "$" + (data * 2).toFixed(2) + "USD"
-                                        : "---"}
-                                </p>
-                            </button>
-                            <button
-                                className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
-                                    }`}
-                                onClick={() => setBetAmount(3)}
-                            >
-                                <img
-                                    src="/img/solana.png"
-                                    alt=""
-                                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
-                                />
-                                <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
-                                    3 SOL
-                                </p>
-                                <p className="text-[16px] text-[#FFFFFFA8] leading-[19px] font-semibold mt-[5px]">
-                                    {typeof data === "number"
-                                        ? "$" + (data * 3).toFixed(2) + "USD"
-                                        : "---"}
-                                </p>
-                            </button>
-                        </div>
-                        <p className="text-white-60 text-[16px] leading-[19.32px] mt-7 whitespace-nowrap flex">
-                            Custom bet: (Min&nbsp;
-                            <span className="font-bold text-[#fff]">0.05 </span>&nbsp;SOL -
-                            Max&nbsp;
-                            <span>
-                                <InfiniteIcon />
-                            </span>
-                            &nbsp;SOL)
-                        </p>
-                        <div className="flex flex-row mt-[13px] items-center gap-3">
-                            <input
-                                type={"number"}
-                                value={betAmount}
-                                step={0.1}
-                                onChange={(e) =>
-                                    handleBetAmount(e.target.value as unknown as number)
-                                }
-                                onKeyDown={handleKeyDown}
-                                className="w-[calc(100%-118px)] h-12 border-[1px] bg-[#091C63] pl-5 border-white-10 rounded-xl text-[16px] text-[#FFFFFF]"
-                            />
-                            <button
-                                className="w-[48px] h-[48px] border-[1px] border-white-10 rounded-xl text-[16px] text-[#FFFFFF54]"
-                                disabled={betAmount / 2 < 0.05}
-                                onClick={() => setBetAmount(betAmount / 2)}
-                            >
-                                1/2
-                            </button>
-                            <button
-                                className="w-[48px] h-[48px] border-[1px] border-white-10 rounded-xl text-[16px] text-[#FFFFFF54]"
-                                onClick={() => setBetAmount(betAmount * 2)}
-                            >
-                                2x
-                            </button>
-                        </div>
-                        {(gameData?.players ?? []).length > 0 ? (
-                            <>
-                                {wallet.publicKey ? (
-                                    <button
-                                        className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
-                                        onClick={handleBet}
-                                        disabled={isBetLoading}
-                                    >
-                                        {isBetLoading ? (
-                                            <>Waiting...</>
-                                        ) : (
-                                            <>Add {betAmount} SOL to bet</>
-                                        )}
-                                    </button>
-                                ) : (
-                                    <div className="playground mx-auto">
-                                        <WalletMultiButton />
-                                    </div>
-                                )}
-                            </>
-                        ) : isStarting !== 0 ? (
-                            <>
-                                {wallet.publicKey ? (
-                                    <button
-                                        className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
-                                        onClick={handleBet}
-                                        disabled={isBetLoading}
-                                    >
-                                        {isBetLoading ? (
-                                            <>Waiting...</>
-                                        ) : (
-                                            <>Add {betAmount} SOL to bet</>
-                                        )}
-                                    </button>
-                                ) : (
-                                    <div className="playground mx-auto">
-                                        <WalletMultiButton />
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <button
-                                className="bg-[#7E49F0] xl:my-8 my-5 rounded-2xl text-[16px] xl:text-[20px] text-white-100 font-bold text-center xl:py-4 py-2"
-                                disabled
-                            >
-                                Waiting...
-                            </button>
-                        )}
                     </div>
                 </div>
                 <Chat
-                    className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] lg:flex"
+                    className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] 2xl:flex"
                     isOpen={isOpen}
                     isMute={props.isMute}
                     handleCloseModal={handleCloseModal}
@@ -372,7 +238,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                     handleCloseModal={handleCloseModal}
                     handleOpenModal={handleOpenModal}
                 />
-                <div className="pl-4 pr-4 w-full lg:w-[calc(100%-300px)] pb-20 mt-10">
+                <div className="pl-4 pr-4 w-full 2lg:w-[calc(100%-300px)] pb-20 mt-10">
                     <p className="font-font-mono text-[26.7px] font-normal mt-[0] text-white-100 leading-10">
                         Statistics
                     </p>
@@ -447,7 +313,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             {isWonWindow && (
                 <div className="fixed top-0 left-0 w-full h-full bg-[#16127aa8] backdrop-blur-lg flex items-center justify-center z-50">
                     <div className="text-center">
@@ -463,7 +329,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                         </button>
                     </div>
                 </div>
-            )}
+            )
+            }
             {isOpen && <Terms isOpen={isOpen} handleCloseModal={handleCloseModal} />}
         </>
     );

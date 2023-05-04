@@ -22,6 +22,7 @@ interface PieColor {
 
 export default function InfiniteBox(props: {
     isMute: boolean;
+    className: string;
     setIsWonWindow: Function;
     setWonValue: Function;
 }
@@ -106,7 +107,7 @@ export default function InfiniteBox(props: {
     useEffect(() => {
         let t = hiddenFlag;
         const modulo = ballDeg % 360;
-        if (Math.abs(modulo - 90) < 3) {
+        if (Math.abs(modulo - 90) < 4) {
             t++;
             setHiddenFlag(t);
         }
@@ -387,9 +388,10 @@ export default function InfiniteBox(props: {
     }, [gameData?.players, wallet.publicKey, wallet.connected]);
 
     return (
-        <>
-            <div className="grid place-content-center w-full">
-                <div className="relative rounded-[10px] bg-[#31258f] mx-6 w-[400px] h-[58px] -mb-[29px] z-20">
+        <div className={props.className}>
+            <h1 className="block xl:hidden text-center font-bold text-[50px] text-[#5c64fa] mb-5 ml-5">Infinite Rug</h1>
+            <div className="grid w-full place-content-center">
+                <div className="relative rounded-[10px] bg-[#31258f] mx-6 w-[300px] lg:w-[400px] h-[58px] -mb-[29px] z-20">
                     <img
                         className="absolute  left-[-24px] top-1"
                         src="/img/select 3.png"
@@ -410,7 +412,7 @@ export default function InfiniteBox(props: {
                 <div className="grid place-content-center">
                     <div className="h-[360px] relative w-[660px] -mx-20 md:mx-auto scale-50 md:scale-100 -my-20 md:my-0">
                         {!started &&
-                            <div className="absolute left-0 top-0 w-full h-full z-50 flex justify-center">
+                            <div className="absolute top-0 left-0 z-50 flex justify-center w-full h-full">
                                 <div className="text-white text-[18px] font-bold text-center pt-[90px] uppercase">
                                     waiting for users...
                                 </div>
@@ -524,7 +526,7 @@ export default function InfiniteBox(props: {
                                             </span>
                                         </div>
                                         <span
-                                            className="ml-3 flex items-center whitespace-nowrap"
+                                            className="flex items-center ml-3 whitespace-nowrap"
                                             style={{ color: `${base58ToGradient(item.player).color}` }}
                                         >
                                             {(item.amount / LAMPORTS_PER_SOL).toLocaleString()} SOL
@@ -558,6 +560,6 @@ export default function InfiniteBox(props: {
                 debug={false}
                 playStatus={isLoseSound ? "PLAYING" : "STOPPED"}
             />
-        </>
+        </div>
     )
 }
