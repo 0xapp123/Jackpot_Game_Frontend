@@ -10,7 +10,7 @@ export interface ChatType {
 }
 
 export interface ServerToClientEvents {
-    startGame: (pda: string, endTimestamp: number, players: Player[]) => void;
+    startGame: (pda: string, endTimestamp: number, players: Player[], startTimeStamp?: number) => void;
     connectionUpdated: (counter: number) => void;
     newGameReady: (endTimestamp: number, players: Player[]) => void;
     endGame: (random: number) => void;
@@ -35,6 +35,10 @@ export interface ServerToClientEvents {
     getWinners: (
         winners: any[]
     ) => void;
+    heartbeat: (
+        nowTimeStamp: number
+    ) => void;
+
 }
 
 export interface ClientToServerEvents {

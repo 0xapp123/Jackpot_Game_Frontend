@@ -98,8 +98,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             } else {
                 await playGame(
                     wallet,
-                    betAmount,
                     // 0.001,
+                    betAmount,
                     setIsBetLoading,
                     "infinite"
                 );
@@ -238,7 +238,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                     handleCloseModal={handleCloseModal}
                     handleOpenModal={handleOpenModal}
                 />
-                <div className="pl-4 pr-4 w-full 2lg:w-[calc(100%-300px)] pb-20 mt-10">
+                <div className="pl-4 pr-4 w-full 2xl:w-[calc(100%-300px)] pb-20 mt-10">
                     <p className="font-font-mono text-[26.7px] font-normal mt-[0] text-white-100 leading-10">
                         Statistics
                     </p>

@@ -7,27 +7,22 @@ export default function CountdownBar(props: {
   isMute: boolean;
   className?: string;
   setIsBetSound: Function,
-  ballAnimation: Function,
+  setHiddenFlag: Function,
 }) {
-  const { className, isMute, setIsBetSound } = props;
-  const { gameData, setStarted } = useSocket();
-  const [timeRemaining, setTimeRemaining] = useState<any>(
-    calculateTimeRemaining()
-  );
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeRemaining(calculateTimeRemaining());
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [gameData]);
+  const { className, isMute, setIsBetSound, setHiddenFlag } = props;
+  const [count, setCount] = useState(0);
+  const { gameData, setStarted, heartbeat } = useSocket();
+  const [force, setForce] = useState(false);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timer;
-    if (gameData) {
-      console.log("countdown: ", Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000))
+    if (gameData && heartbeat) {
+      if (Math.floor((gameData?.endTimestamp - heartbeat) / 1000) >= 0) {
+        setCount(Math.floor((gameData?.endTimestamp - heartbeat) / 1000));
+        setForce(!force);
+      }
       if (
-        Math.floor((gameData?.endTimestamp - new Date().getTime()) / 1000) === 0
+        Math.floor((gameData?.endTimestamp - heartbeat) / 1000) === 0
       ) {
         if (setStarted) {
           setStarted(true);
@@ -45,35 +40,20 @@ export default function CountdownBar(props: {
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [timeRemaining]);
+  }, [gameData, heartbeat]);
+
+  useEffect(() => {
+    console.log(count);
+  }, [count])
 
   useEffect(() => {
     if (gameData && setStarted && gameData.players) {
       if (!gameData.players.length || gameData.players.length < 2) {
         setStarted(false);
+        setHiddenFlag(false);
       }
     }
   }, [gameData]);
-
-  function calculateTimeRemaining() {
-    if (
-      gameData?.endTimestamp &&
-      gameData?.endTimestamp >= new Date().getTime()
-    ) {
-      return (
-        <div
-          className="absolute bg-[#4c49cc] h-2 rounded-3xl"
-          style={{
-            width: `${((FIRST_COOLDOWN - (gameData?.endTimestamp - new Date().getTime())) /
-              FIRST_COOLDOWN) *
-              100
-              }%`,
-          }}
-        >
-        </div>
-      );
-    }
-  }
 
   return (
     <div
@@ -82,16 +62,27 @@ export default function CountdownBar(props: {
     >
       <p className="font-semibold text-white ">Countdown</p>
       <div className="absolute w-full bg-[#050d36] h-2 rounded-3xl mt-4">
-        {timeRemaining}
-        {/* {gameData && (gameData.endTimestamp <= 0 || gameData.endTimestamp < new Date().getTime()) &&
-                    <div className="absolute h-2 bg-blue-600 rounded-3xl"></div>
-                } */}
+        <div
+          className="absolute bg-[#4c49cc] h-2 rounded-3xl"
+          style={{
+            width: `${(35 - count) / 35 * 100}%`,
+          }}
+        >
+        </div>
+        {/* {(gameData && gameData.endTimestamp !== 0) ?
+          <div
+            className="absolute bg-[#4c49cc] h-2 rounded-3xl"
+            style={{
+              width: `${(FIRST_COOLDOWN / 1000 - count) / FIRST_COOLDOWN / 1000 * 100}%`,
+            }}
+          >
+          </div>
+          :
+          <div
+            className="absolute bg-[#4c49cc] h-2 rounded-3xl"
+            style={{ width: 0 }}></div>
+        } */}
       </div>
-      {/* <Sound
-        url="/sound/bet.mp3"
-        debug={false}
-        playStatus={isBetSound ? "PLAYING" : "STOPPED"}
-      /> */}
     </div>
   );
 }

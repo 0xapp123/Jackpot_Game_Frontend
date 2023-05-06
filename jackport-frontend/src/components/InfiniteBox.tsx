@@ -107,6 +107,7 @@ export default function InfiniteBox(props: {
     useEffect(() => {
         let t = hiddenFlag;
         const modulo = ballDeg % 360;
+        console.log(modulo)
         if (Math.abs(modulo - 90) < 4) {
             t++;
             setHiddenFlag(t);
@@ -343,8 +344,8 @@ export default function InfiniteBox(props: {
     const [isBetSound, setIsBetSound] = useState(false);
 
     useEffect(() => {
-        console.log(gameData, "----- game data")
-        if (winner && winner.winner !== "" && started) {
+        console.log(gameData, "----- game data");
+        if (gameData && winner && winner.winner !== "" && started && gameData.players.length > 1) {
             console.log("winner is ready");
             console.log("Result Degree:", Math.ceil(720 * 2 + 720 * winner?.resultHeight + 90));
             ballAnimation(Math.ceil(720 * 2 + 720 * winner?.resultHeight + 90));
@@ -420,7 +421,7 @@ export default function InfiniteBox(props: {
                                     className="w-3/4"
                                     isMute={props.isMute}
                                     setIsBetSound={setIsBetSound}
-                                    ballAnimation={ballAnimation}
+                                    setHiddenFlag={setHiddenFlag}
                                 />
                             </div>
                         }

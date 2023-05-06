@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import io, { Socket } from "socket.io-client";
 import getConfig from "next/config";
 import {
@@ -42,6 +42,9 @@ interface Context {
   onlined?: number;
   isStarting?: number;
   recentWinners?: any[];
+  startTimeStamp?: number;
+  setStartTimeStamp?: Function;
+  heartbeat?: any;
 }
 
 const context = createContext<Context>({});
@@ -54,6 +57,7 @@ const SocketProviderInfinite = (props: { children: any }) => {
   const [messages, setMessages] = useState<ChatType[]>();
   const [onlined, setOnlined] = useState(0);
   const [isStarting, setGameStarting] = useState<number>(1);
+  const [startTimeStamp, setStartTimeStamp] = useState(0);
   const [gameData, setGameData] = useState<{
     players: Player[];
     endTimestamp: number;
@@ -150,7 +154,23 @@ const SocketProviderInfinite = (props: { children: any }) => {
     };
   }, [router]);
 
+  const [heartbeat, setHeartbeat] = useState(0);
+
+  // const heartbeat = useMemo(() => {
+  //   if (socket) {
+  //     socket?.on("heartbeat", async (now) => {
+  //       console.log(now, "heartbeat")
+  //       return now
+  //     })
+  //   }
+  // }, [socket])
+
   useEffect(() => {
+
+    socket?.on("heartbeat", async (now) => {
+      setHeartbeat(now);
+    })
+
     socket?.on("endTimeUpdated", async (pda, last_ts, players) => {
       console.log(" --@ endTimeUpdated:", pda, last_ts, players);
       setGameData({
@@ -166,8 +186,12 @@ const SocketProviderInfinite = (props: { children: any }) => {
       setOnlined(counter);
     });
 
-    socket?.on("startGame", async (pda, endTimestamp, players) => {
-      console.log(" --@ startGame:", pda, endTimestamp, players);
+    socket?.on("startGame", async (pda, endTimestamp, players, startTime) => {
+      console.log(" --@ startGame:", pda, endTimestamp, players, startTime);
+      if (startTime) {
+        console.log(new Date(startTime * 1000))
+      }
+      if (startTime) setStartTimeStamp(startTime)
       setGameData({
         pda: pda,
         endTimestamp,
@@ -251,9 +275,12 @@ const SocketProviderInfinite = (props: { children: any }) => {
         isStarting,
         started,
         setStarted,
+        heartbeat,
         messages,
         recentWinners,
         onlined,
+        startTimeStamp,
+        setStartTimeStamp
       }}
     >
       {props.children}

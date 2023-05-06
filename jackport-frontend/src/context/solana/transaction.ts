@@ -30,7 +30,6 @@ import { useSocket } from "../SocketContext";
 
 export const solConnection = new web3.Connection(RPC_URL);
 
-
 export const playGame = async (
   wallet: WalletContextState,
   amount: number,
