@@ -41,7 +41,7 @@ export default function InfiniteBox(props: {
     }, [confetti]);
 
     const [ballDeg, setBallDeg] = useState(90);
-    const [hiddenFlag, setHiddenFlag] = useState(0);
+    const [hiddenFlag, setHiddenFlag] = useState(1);
 
     const ballAnimation = (target: number) => {
         let currentDeg = 0;
@@ -107,7 +107,7 @@ export default function InfiniteBox(props: {
     useEffect(() => {
         let t = hiddenFlag;
         const modulo = ballDeg % 360;
-        console.log(modulo)
+        // console.log(modulo)
         if (Math.abs(modulo - 90) < 4) {
             t++;
             setHiddenFlag(t);
@@ -461,7 +461,7 @@ export default function InfiniteBox(props: {
                                     className="moving-ball"
                                     style={{
                                         transform: `rotate(${ballDeg % 360}deg)`,
-                                        opacity: hiddenFlag % 2 === 1 ? 1 : 0,
+                                        opacity: hiddenFlag % 2 === 0 ? 1 : 0,
                                         zIndex: (ballDeg % 360 <= 90 || ballDeg % 360 > 270) ? 13 : 10,
                                     }}
                                 ></div>
@@ -469,7 +469,7 @@ export default function InfiniteBox(props: {
                                     className="moving-ball ball-border"
                                     style={{
                                         transform: `rotate(${ballDeg % 360}deg)`,
-                                        opacity: hiddenFlag % 2 === 1 ? 1 : 0,
+                                        opacity: hiddenFlag % 2 === 0 ? 1 : 0,
                                         zIndex: 20,
                                     }}
                                 ></div>
@@ -477,7 +477,7 @@ export default function InfiniteBox(props: {
                                     className="moving-ball ml-[300px] shadow-sm"
                                     style={{
                                         transform: `rotate(${360 - ballDeg % 360}deg)`,
-                                        opacity: hiddenFlag % 2 === 1 ? 0 : 1,
+                                        opacity: hiddenFlag % 2 === 0 ? 0 : 1,
                                         zIndex: (360 - ballDeg % 360 < 270 && 360 - ballDeg % 360 > 150) ? 13 : 10,
                                     }}
                                 ></div>
@@ -485,7 +485,7 @@ export default function InfiniteBox(props: {
                                     className="moving-ball ml-[300px] shadow-sm ball-border"
                                     style={{
                                         transform: `rotate(${360 - ballDeg % 360}deg)`,
-                                        opacity: hiddenFlag % 2 === 1 ? 0 : 1,
+                                        opacity: hiddenFlag % 2 === 0 ? 0 : 1,
                                         zIndex: 20,
                                     }}
                                 ></div>
