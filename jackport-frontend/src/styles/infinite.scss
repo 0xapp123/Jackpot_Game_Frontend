@@ -4,7 +4,7 @@
     transform: translate(-50%, -50%) rotate(180deg);
     height: 360px;
     width: 360px;
-    border: double 60px transparent;
+    border: double 80px transparent;
     border-radius: 50%;
     background-image: radial-gradient(#091c63, #091c63),
         linear-gradient(270deg, #757fa3 15%, rgba(217, 217, 217, 0) 73.3%);
@@ -19,19 +19,20 @@
     width: 360px;
     height: 360px;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 8px;
+    top: 0px;
     transform: rotate(0deg);
-    padding: 4px;
+    padding: 8px;
+    // background-color: rgba(255, 0, 0, 0.42);
 
     &::before {
         content: "";
-        margin-left: 150px;
+        margin-left: 148px;
         background-color: #fff;
         border-radius: 50%;
         position: absolute;
-        width: 52px;
-        height: 52px;
+        width: 64px;
+        height: 64px;
         box-shadow: -2px 4px 18px #00000040;
     }
     &.ball-border {
@@ -49,8 +50,8 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 240px;
-        height: 240px;
+        width: 200px;
+        height: 200px;
         transform: translate(-50%, -50%);
         background: #091c63;
         border-radius: 50%;

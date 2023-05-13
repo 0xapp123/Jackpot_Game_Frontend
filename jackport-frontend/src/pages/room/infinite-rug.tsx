@@ -20,14 +20,12 @@ import {
 import Terms from "../../components/Terms";
 import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../../components/ToastGroup";
-import { useRouter } from "next/router";
 import InfiniteBox from "../../components/InfiniteBox";
 import InfiniteBetBox from "../../components/InfiniteBetBox";
 
 export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
-    const router = useRouter();
     const wallet = useWallet();
-    const { gameData, winner, isStarting, setStarted } = useSocket();
+    const { gameData, isStarting } = useSocket();
     const [betAmount, setBetAmount] = useState(0.05);
     const [isBetLoading, setIsBetLoading] = useState(false);
 

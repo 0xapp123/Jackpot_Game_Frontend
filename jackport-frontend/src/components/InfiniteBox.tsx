@@ -45,15 +45,15 @@ export default function InfiniteBox(props: {
 
     const ballAnimation = (target: number) => {
         let currentDeg = 0;
-        const animate = () => {
+        const intervalId = setInterval(() => {
             setBallDeg((prevState: number) => {
                 currentDeg = prevState;
-                let temp = 10;
+                let temp = 5;
                 const range = target - currentDeg;
                 if (range <= 300 && range > 200) {
-                    temp = 6
+                    temp = 4
                 } else if (range <= 200 && range > 160) {
-                    temp = 5
+                    temp = 4
                 } else if (range <= 160 && range > 80) {
                     temp = 3
                 } else if (range <= 80 && range > 30) {
@@ -63,10 +63,9 @@ export default function InfiniteBox(props: {
                 }
                 return prevState + temp;
             });
-            if (currentDeg < target) {
-                requestAnimationFrame(animate);
-            } else {
+            if (currentDeg >= target) {
                 console.log("end rotate!");
+                clearInterval(intervalId);
                 if (winner && winner.winner === wallet.publicKey?.toBase58()) {
                     throwConfetti();
                     props.setIsWonWindow(true);
@@ -100,9 +99,9 @@ export default function InfiniteBox(props: {
                     }
                 }
             }
-        };
-        animate();
+        }, 1000 / 40); // 60fps
     };
+
 
     useEffect(() => {
         let t = hiddenFlag;
@@ -258,8 +257,8 @@ export default function InfiniteBox(props: {
             if (data[data.length - 1]?.first < 325) {
                 return `
                     conic-gradient(
-                        transparent 0deg 325deg,
-                        ${data[data.length - 1].color} 325deg 360deg
+                        transparent 0deg 320deg,
+                        ${data[data.length - 1].color} 320deg 360deg
                     )
                 `
             } else {
@@ -313,11 +312,11 @@ export default function InfiniteBox(props: {
                     ${res.map((item: any) => `${item.color} ${item.first}deg ${item.second}deg`).join(', ')}
                 )
             `
-            if (res[0]?.second > 35) {
+            if (res[0]?.second > 40) {
                 return `
                     conic-gradient(
-                        ${res[0].color} 0deg 35deg,
-                        transparent 35deg 360deg
+                        ${res[0].color} 0deg 40deg,
+                        transparent 40deg 360deg
                     )
                 `
             } else {
@@ -347,8 +346,8 @@ export default function InfiniteBox(props: {
         console.log(gameData, "----- game data");
         if (gameData && winner && winner.winner !== "" && started && gameData.players.length > 1) {
             console.log("winner is ready");
-            console.log("Result Degree:", Math.ceil(720 * 2 + 720 * winner?.resultHeight + 90));
-            ballAnimation(Math.ceil(720 * 2 + 720 * winner?.resultHeight + 90));
+            console.log("Result Degree:", Math.ceil(720 * 1 + 720 * winner?.resultHeight + 90));
+            ballAnimation(Math.ceil(720 * 1 + 720 * winner?.resultHeight + 90));
         }
     }, [gameData, winner, started]);
 
@@ -430,26 +429,26 @@ export default function InfiniteBox(props: {
                                 style={{
                                     opacity: started ? 1 : 0.3
                                 }}>
-                                <div className="h-[360px] w-[360px] rounded-full absolute pie rotate-90 left-1/2 top-1/2 -translate-x-1/2  -translate-y-1/2 -ml-[150px]"
+                                <div className="h-[360px] w-[360px] rounded-full absolute pie rotate-90 left-1/2 top-1/2 -translate-x-1/2  -translate-y-1/2 -ml-[140px]"
                                     style={{
                                         backgroundImage: colorPieL,
                                         zIndex: 10
                                     }}>
                                 </div>
-                                <div className="h-[360px] w-[360px] rounded-full absolute pie rotate-90 left-1/2 top-1/2 -translate-x-1/2  -translate-y-1/2 -ml-[150px]"
+                                <div className="h-[360px] w-[360px] rounded-full absolute pie rotate-90 left-1/2 top-1/2 -translate-x-1/2  -translate-y-1/2 -ml-[140px]"
                                     style={{
                                         backgroundImage: middlePice,
                                         zIndex: 12,
                                         boxShadow: "0 0 0 2px #091c63",
                                     }}>
                                 </div>
-                                <div className="h-[360px]  w-[360px] rounded-full absolute pie left-1/2 top-1/2 ml-[150px] pie-r"
+                                <div className="h-[360px] w-[360px] rounded-full absolute pie left-1/2 top-1/2 ml-[140px] pie-r"
                                     style={{
                                         backgroundImage: colorPieR,
                                         zIndex: 10
                                     }}>
                                 </div>
-                                <div className="h-[360px] w-[360px] rounded-full absolute pie left-1/2 top-1/2 ml-[150px] pie-r"
+                                <div className="h-[360px] w-[360px] rounded-full absolute pie left-1/2 top-1/2 ml-[140px] pie-r"
                                     style={{
                                         backgroundImage: middleTwoPice,
                                         zIndex: 12,
@@ -457,6 +456,8 @@ export default function InfiniteBox(props: {
                                         clipPath: "polygon(50% -5%, 100% 0, 100% 100%, 50% 100%)"
                                     }}>
                                 </div>
+
+                                {/* Moving ball beginning*/}
                                 <div
                                     className="moving-ball"
                                     style={{
@@ -474,7 +475,7 @@ export default function InfiniteBox(props: {
                                     }}
                                 ></div>
                                 <div
-                                    className="moving-ball ml-[300px] shadow-sm"
+                                    className="moving-ball ml-[280px] shadow-sm"
                                     style={{
                                         transform: `rotate(${360 - ballDeg % 360}deg)`,
                                         opacity: hiddenFlag % 2 === 0 ? 0 : 1,
@@ -482,25 +483,57 @@ export default function InfiniteBox(props: {
                                     }}
                                 ></div>
                                 <div
-                                    className="moving-ball ml-[300px] shadow-sm ball-border"
+                                    className="moving-ball ml-[280px] shadow-sm ball-border"
                                     style={{
                                         transform: `rotate(${360 - ballDeg % 360}deg)`,
                                         opacity: hiddenFlag % 2 === 0 ? 0 : 1,
                                         zIndex: 20,
                                     }}
                                 ></div>
+
+                                {/* Moving ball end */}
                             </div>
                             :
                             <div className="opacity-40">
-                                <div className="absolute h-[360px] w-[360px] border-[60px] rounded-full -ml-[150px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-[#3f4e85] left-circle opacity-100"
-                                    style={{ zIndex: 2 }}></div>
-                                <div className="absolute h-[360px] w-[360px] border-[60px] rounded-full ml-[150px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-[#3f4e85] right-circle opacity-100"
-                                    style={{ zIndex: 2 }}>
-                                </div>
-                                <div className="absolute h-[360px] w-[360px] border-[60px] rounded-full ml-[150px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 middle-pie opacity-100"
+                                <div className="absolute h-[360px] w-[360px] border-[80px] rounded-full -ml-[140px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-[#3f4e85] left-circle opacity-100" style={{ zIndex: 2 }}></div>
+                                <div className="absolute h-[360px] w-[360px] border-[80px] rounded-full ml-[140px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-[#3f4e85] right-circle opacity-100" style={{ zIndex: 2 }}></div>
+                                <div className="absolute h-[360px] w-[360px] border-[80px] rounded-full ml-[140px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 middle-pie opacity-100"
                                     style={{ zIndex: 12 }}></div>
-                                <div className="absolute h-[360px] w-[360px] border-[60px] rounded-full -ml-[150px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 middle-pie !rotate-0 opacity-100"
-                                    style={{ zIndex: 12 }}></div>
+                                <div className="absolute h-[360px] w-[360px] border-[80px] rounded-full -ml-[140px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 middle-pie !rotate-0 opacity-100" style={{ zIndex: 12 }}></div>
+
+                                {/* <div
+                                    className="moving-ball"
+                                    style={{
+                                        transform: `rotate(${ballDeg % 360}deg)`,
+                                        opacity: hiddenFlag % 2 === 0 ? 1 : 0,
+                                        zIndex: (ballDeg % 360 <= 90 || ballDeg % 360 > 270) ? 13 : 10,
+                                    }}
+                                ></div>
+                                <div
+                                    className="moving-ball ball-border"
+                                    style={{
+                                        transform: `rotate(${ballDeg % 360}deg)`,
+                                        opacity: hiddenFlag % 2 === 0 ? 1 : 0,
+                                        zIndex: 20,
+                                    }}
+                                ></div> */}
+                                {/* <div
+                                    className="moving-ball ml-[280px] shadow-sm"
+                                    style={{
+                                        transform: `rotate(${360 - ballDeg % 360}deg)`,
+                                        // opacity: hiddenFlag % 2 === 0 ? 0 : 1,
+                                        zIndex: (360 - ballDeg % 360 < 270 && 360 - ballDeg % 360 > 150) ? 13 : 10,
+                                    }}
+                                ></div>
+                                <div
+                                    className="moving-ball ml-[280px] shadow-sm ball-border"
+                                    style={{
+                                        transform: `rotate(${360 - ballDeg % 360}deg)`,
+                                        // opacity: hiddenFlag % 2 === 0 ? 0 : 1,
+                                        zIndex: 20,
+                                    }}
+                                ></div> */}
+
                             </div>
                         }
                     </div>

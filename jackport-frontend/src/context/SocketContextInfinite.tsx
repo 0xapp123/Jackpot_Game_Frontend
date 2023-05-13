@@ -85,14 +85,14 @@ const SocketProviderInfinite = (props: { children: any }) => {
       pda: "",
       gameStarted: false,
     });
+    setWinner({
+      bet: 0,
+      payout: 0,
+      winner: "",
+      resultHeight: 0,
+    });
     if (gameEnded) {
       setGameStarting(1);
-      setWinner({
-        bet: 0,
-        payout: 0,
-        winner: "",
-        resultHeight: 0,
-      });
       setStarted(false);
     }
   };
