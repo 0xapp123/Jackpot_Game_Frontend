@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { SOL_PRICE_API } from "../config";
+import { SOL_PRICE_API, hexColors } from "../config";
 
 // const colors = [
 //   {
@@ -58,6 +58,12 @@ export const base58ToGradient = (publicKey: string) => {
     const intNumber = publicKey.slice(0, 3).split('').map(char => char.charCodeAt(0)).join('');
     return colors[parseInt(intNumber) % 18];
 }
+
+
+export const getUserColor = (address: string) => {
+    const intNumber = address.slice(0, 8).split('').map(char => char.charCodeAt(0)).join('');
+    return hexColors[parseInt(intNumber) % 90].hex;
+};
 
 interface Pie {
     color: string,
