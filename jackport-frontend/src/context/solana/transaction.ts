@@ -82,6 +82,7 @@ export const playGame = async (
         return;
       }
       const signedTx = await wallet.signTransaction(tx);
+      console.log("signedTx.serialize() play game =>", signedTx.serialize());
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -166,6 +167,7 @@ export const enterGame = async (
         return;
       }
       const signedTx = await wallet.signTransaction(tx);
+      console.log("signedTx.serialize() =>", signedTx.serialize());
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
