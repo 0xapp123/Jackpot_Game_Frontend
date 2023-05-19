@@ -83,7 +83,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
         await enterGame(
           wallet,
           new PublicKey(gameData.pda),
-          //   0.001,
+          // 0.001,
           betAmount,
           setIsBetLoading,
           gameData.endTimestamp,
@@ -92,7 +92,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
       } else {
         await playGame(
           wallet,
-          //   0.001,
+          // 0.001,
           betAmount,
           setIsBetLoading,
           "infinite"

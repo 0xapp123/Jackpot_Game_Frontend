@@ -82,7 +82,8 @@ export const playGame = async (
         return;
       }
       const signedTx = await wallet.signTransaction(tx);
-      console.log("signedTx.serialize() play game =>", signedTx.serialize());
+      console.log("signedTx.serialize() play game =>", Buffer.from(signedTx.serialize()).toString("base64"));
+      const encodedTx = Buffer.from(signedTx.serialize()).toString("base64");
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -93,8 +94,10 @@ export const playGame = async (
       );
       await axios.post(`${api}createGame/`, {
         txId: txId,
+        encodedTx: encodedTx
       });
-      console.log("Signature:", txId);
+
+      console.log("Signature:", encodedTx);
       // release mutex for processing request if success
       await axios.post(`${api}endRequest/`);
       setLoading(false);
@@ -118,7 +121,6 @@ export const enterGame = async (
   if (wallet.publicKey === null) return;
 
   /// Comment this because backend is processed such conflict
-  const now = new Date().getTime();
   // console.log(endTimestamp - now, "(endTimestamp - now)", endTimestamp);
   let programId;
   let api;
@@ -167,7 +169,7 @@ export const enterGame = async (
         return;
       }
       const signedTx = await wallet.signTransaction(tx);
-      console.log("signedTx.serialize() =>", signedTx.serialize());
+      const encodedTx = Buffer.from(signedTx.serialize()).toString("base64");
       const txId = await provider.connection.sendRawTransaction(
         signedTx.serialize(),
         {
@@ -178,6 +180,7 @@ export const enterGame = async (
       );
       await axios.post(`${api}enterGame/`, {
         txId: txId,
+        encodedTx: encodedTx
       });
       console.log("Signature:", txId);
       // release mutex for processing request if success
