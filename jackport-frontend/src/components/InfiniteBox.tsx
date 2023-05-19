@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { base58ToGradient, getUserColor } from "../utils/util";
 import { useSocket } from "../context/SocketContextInfinite";
 import Sound from "react-sound";
@@ -55,10 +55,10 @@ export default function InfiniteBox(props: {
     const intervalId = setInterval(() => {
       setBallDeg((prevState: number) => {
         currentDeg = prevState;
-        let temp = 5;
+        let temp = 6;
         const range = target - currentDeg;
         if (range <= 300 && range > 200) {
-          temp = 4;
+          temp = 5;
         } else if (range <= 200 && range > 160) {
           temp = 4;
         } else if (range <= 160 && range > 80) {
@@ -109,13 +109,19 @@ export default function InfiniteBox(props: {
     }, 1000 / 40); // 60fps
   };
 
+  const turnFlag = useRef(false);
   useEffect(() => {
     let t = hiddenFlag;
     const modulo = ballDeg % 360;
-    // console.log(modulo)
-    if (Math.abs(modulo - 90) < 4) {
-      t++;
+    console.log("ballDeg", ballDeg, modulo, turnFlag.current);
+    // console.log("modulo", modulo);
+    // console.log(modulo) 85-92
+    if (Math.abs(modulo - 90) < 4 && !turnFlag.current) {
+      t++; //
       setHiddenFlag(t);
+      turnFlag.current = true;
+    } else if (Math.abs(modulo - 90) >= 4) {
+      turnFlag.current = false;
     }
   }, [ballDeg]);
 
