@@ -28,15 +28,7 @@ export default function InfiniteBox(props: {
 }) {
   const wallet = useWallet();
 
-  const {
-    gameData,
-    started,
-    winner,
-    isStarting,
-    setStarted,
-    setClearGame,
-    gameEnded,
-  } = useSocket();
+  const { gameData, started, winner, setClearGame, gameEnded } = useSocket();
   const [isWonSound, setIsWonSound] = useState(false);
   const [isLoseSound, setIsLoseSound] = useState(false);
   const throwConfetti = useCallback(() => {
@@ -49,6 +41,25 @@ export default function InfiniteBox(props: {
 
   const [ballDeg, setBallDeg] = useState(90);
   const [hiddenFlag, setHiddenFlag] = useState(1);
+
+  const userColors = useMemo(() => {
+    let colors: { color: string; address: string }[] = [];
+    if (gameData && gameData && gameData.players) {
+      for (let item of gameData.players) {
+        const color = getUserColor(item.player);
+        colors.push({
+          color:
+            colors.filter((c) => c.color === color).length === 0
+              ? color
+              : getUserColor(item.player, true),
+          address: item.player,
+        });
+      }
+    } else {
+      colors = [];
+    }
+    return colors;
+  }, [gameData]);
 
   const ballAnimation = (target: number) => {
     let currentDeg = 0;
@@ -132,8 +143,12 @@ export default function InfiniteBox(props: {
       let c: { color: string; value: number }[] = [];
       if (gameData.players.length !== 0) {
         for (let player of gameData.players) {
+          const color = getUserColor(player.player);
           c.push({
-            color: getUserColor(player.player),
+            color:
+              userColors.filter((c) => c.color === color).length === 0
+                ? color
+                : getUserColor(player.player, true),
             value: player.amount,
           });
         }
@@ -599,12 +614,20 @@ export default function InfiniteBox(props: {
                       <div
                         className="w-5 h-5 rounded-md"
                         style={{
-                          background: `${getUserColor(item.player)}`,
+                          background: `${
+                            userColors.filter(
+                              (c) => c.address === item.player
+                            )[0].color
+                          }`,
                         }}
                       ></div>
                       <span
                         style={{
-                          color: `${getUserColor(item.player)}`,
+                          color: `${
+                            userColors.filter(
+                              (c) => c.address === item.player
+                            )[0].color
+                          }`,
                         }}
                         className="ml-2"
                       >
@@ -614,7 +637,10 @@ export default function InfiniteBox(props: {
                     <span
                       className="flex items-center ml-3 whitespace-nowrap"
                       style={{
-                        color: `${getUserColor(item.player)}`,
+                        color: `${
+                          userColors.filter((c) => c.address === item.player)[0]
+                            .color
+                        }`,
                       }}
                     >
                       {(item.amount / LAMPORTS_PER_SOL).toLocaleString()} SOL

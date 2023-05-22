@@ -59,10 +59,9 @@ export const base58ToGradient = (publicKey: string) => {
     return colors[parseInt(intNumber) % 18];
 }
 
-
-export const getUserColor = (address: string) => {
+export const getUserColor = (address: string, repeat?: boolean) => {
     const intNumber = address.slice(0, 8).split('').map(char => char.charCodeAt(0)).join('');
-    return hexColors[parseInt(intNumber) % 90].hex;
+    return hexColors[(parseInt(intNumber) + (repeat ? 1 : 0)) % 90].hex;
 };
 
 interface Pie {
