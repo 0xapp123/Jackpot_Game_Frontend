@@ -144,7 +144,9 @@ export default function InfiniteBox(props: {
       if (gameData.players.length !== 0) {
         for (let player of gameData.players) {
           c.push({
-            color: userColors.filter((user) => user.color)[0].color,
+            color: userColors.filter(
+              (user) => user.address === player.player
+            )[0].color,
             value: player.amount,
           });
         }
@@ -152,7 +154,7 @@ export default function InfiniteBox(props: {
       console.log(c);
       return c;
     }
-  }, [gameData, userColors]);
+  }, [gameData]);
 
   const colorPieL = useMemo(() => {
     if (colors) {
@@ -218,8 +220,6 @@ export default function InfiniteBox(props: {
           },
         ];
       }, []);
-
-      console.log(resDegs, "v resDegs");
 
       let res: PieColor[] = [];
       for (let i = 0; i < resDegs.length; i++) {
@@ -428,8 +428,8 @@ export default function InfiniteBox(props: {
   }, [gameData?.players, wallet.publicKey, wallet.connected]);
 
   useEffect(() => {
-    console.log("colorcolor", userColors);
-  }, [userColors]);
+    console.log("========================================colorcolor", colors);
+  }, [colors]);
 
   return (
     <div className={props.className}>
