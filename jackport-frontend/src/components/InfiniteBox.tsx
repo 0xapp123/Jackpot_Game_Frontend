@@ -387,7 +387,7 @@ export default function InfiniteBox(props: {
         "Result Degree:",
         Math.ceil(720 * 1 + 720 * winner?.resultHeight + 90)
       );
-      ballAnimation(Math.ceil(720 * 1 + 720 * winner?.resultHeight + 90));
+      ballAnimation(Math.ceil(720 * 3 + 720 * winner?.resultHeight + 90));
     }
   }, [gameData, winner, started]);
 
