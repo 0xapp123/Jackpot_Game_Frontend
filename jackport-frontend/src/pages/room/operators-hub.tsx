@@ -147,15 +147,21 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
-        className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap`}
+        className={`relative flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap`}
         // style={{ backgroundImage: "url(/img/grave-bg.webp)" }}
         style={{
-          background:
-            "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(39,144,140,1) 50%, rgba(252,176,69,1) 100%)",
+          background: "linear-gradient(180deg, #2C4E50 0%, #4CA3A5 100%)",
           // " rgb(131,58,180)"
         }}
       >
-        <div className="absolute w-full left-0 top-0">
+        <div className="fixed left-0 w-full h-screen">
+          <img
+            src="/img/grave-b.png"
+            className="absolute bottom-0 left-0"
+            alt=""
+          />
+        </div>
+        <div className="absolute top-0 left-0 w-full">
           <button
             className="absolute right-6 top-6 z-10 rounded-md border border-[#ffffff80] w-9 h-9 grid place-content-center md:hidden"
             onClick={() => setIsMobileChat(true)}
@@ -166,7 +172,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
             <Link href={"/"}>
               <a className="text-sm text-[#FFFFFF] ml-2 uppercase font-semibold flex items-center">
                 <Leftarrow className="w-3 h-3" />
-                <span className="ml-2 hidden md:block">Back Home</span>
+                <span className="hidden ml-2 md:block">Back Home</span>
               </a>
             </Link>
           </button>
@@ -184,8 +190,8 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
         </div>
         <div className="px-6 mt-[80px] xl:mt-[40px] flex flex-col xl:flex-row w-full xl:w-[calc(100%-300px)] mr-[300px]">
           <div className="w-full md:w-[calc(100%-300px)] xl:w-[450px] mt-6">
-            <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5 ">
-              GraveYard
+            <p className="xl:text-[36px] text-3xl text-[#FFFFFF] text-center font-bold xl:my-8 my-5">
+              Operators Hub
             </p>
             <div className="flex flex-col border-[1px] bg-[#30058c42] border-[#FFFFFF24] rounded-3xl px-6 backdrop-blur-md">
               <p className="xl:text-[26.6px] text-[18px] text-white-100 font-bold text-center xl:leading-[32px] xl:mt-5 mt-3">
@@ -201,7 +207,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   <img
                     src="/img/solana.png"
                     alt=""
-                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
+                    className="object-contain w-6 h-6 mx-auto lg:w-9 lg:h-9"
                   />
                   <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
                     1 SOL
@@ -221,7 +227,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   <img
                     src="/img/solana.png"
                     alt=""
-                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
+                    className="object-contain w-6 h-6 mx-auto lg:w-9 lg:h-9"
                   />
                   <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
                     2 SOL
@@ -241,7 +247,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   <img
                     src="/img/solana.png"
                     alt=""
-                    className="w-6 h-6 lg:w-9 lg:h-9 object-contain mx-auto"
+                    className="object-contain w-6 h-6 mx-auto lg:w-9 lg:h-9"
                   />
                   <p className="xl:text-[26.6px] text-[18px] text-white-100 leading-8 font-semibold mt-[5px]">
                     3 SOL
@@ -302,7 +308,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                       )}
                     </button>
                   ) : (
-                    <div className="playground mx-auto">
+                    <div className="mx-auto playground">
                       <WalletMultiButton />
                     </div>
                   )}
@@ -322,7 +328,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                       )}
                     </button>
                   ) : (
-                    <div className="playground mx-auto">
+                    <div className="mx-auto playground">
                       <WalletMultiButton />
                     </div>
                   )}
@@ -347,7 +353,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
           </div>
         </div>
         <Chat
-          className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex bg-[#000f13]"
+          className="fixed w-[300px] hidden flex-col px-4 pt-4 border-[1px] border-[#FFFFFF3D] right-0 top-0 h-[100vh] md:flex bg-[#397072]"
           isOpen={isOpen}
           isMute={props.isMute}
           handleCloseModal={handleCloseModal}

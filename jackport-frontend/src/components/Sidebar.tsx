@@ -62,7 +62,7 @@ export default function Sidebar() {
             </div>
           </a>
         </Link>
-        <Link href="/room/grave" passHref>
+        <Link href="/room/operators-hub" passHref>
           <a>
             <div className="flex my-4 hover:bg-[#ffffff12] hover:border-r-2 hover:border-[#D9D9D9] px-6 items-center">
               <img
@@ -74,7 +74,7 @@ export default function Sidebar() {
                 className={`lg:block cursor-pointer font-bold text-[#ffffff] py-[15px] ${mobilMenuState ? "hidden" : "block"
                   }`}
               >
-                GraveYard
+                Operators Hub
               </p>
             </div>
           </a>

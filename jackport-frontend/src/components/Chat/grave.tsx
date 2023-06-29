@@ -62,7 +62,7 @@ export default function Chat(props: {
 
   return (
     <div className={props.className}>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row items-center justify-between">
         {/* <p className="text-[18px] text-[#FFFFFFA8] font-normal uppercase">Welcome!</p> */}
       </div>
       <p className="text-[12px] text-[#ffffff] font-normal pb-3 pt-9 mt-3 leading-[29px] border-b-[1.33px] border-[#FFFFFF0F]">
@@ -80,18 +80,18 @@ export default function Chat(props: {
             />
           ))}
       </div>
-      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#000f13] border-[#FFFFFF3D]">
+      <div className="absolute -bottom-0.5 right-0 w-full px-4 border-t-[1px] bg-[#397072] border-[#FFFFFF3D]">
         <div className="border-t-[1.33px] border-[#FFFFFF0F]"></div>
         <input
           type="text"
-          className="w-full mt-5 bg-[#000f13] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
+          className="w-full mt-5 bg-[#397072] text-[14px] text-white-100 border-[1.33px] border-[#FFFFFF21] rounded-[8px] py-3 px-3"
           value={message}
           onChange={(e: any) => handleMessage(e.target.value)}
           disabled={wallet.publicKey === null}
           onKeyDown={handleKeyDown}
           placeholder="Say something in chat..."
         />
-        <div className="flex flex-row my-4 items-center justify-between">
+        <div className="flex flex-row items-center justify-between my-4">
           <button
             className="flex items-center uppercase text-[12px] text-white leading-3 ml-1"
             onClick={() => props.handleOpenModal()}
@@ -99,7 +99,7 @@ export default function Chat(props: {
             terms of service
           </button>
           <button
-            className="bg-[#000f13] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
+            className="bg-[#397072] rounded-[8px] border-[1px] border-[#FFFFFF42] h-8 items-center text-center text-[12px] text-white-100 px-3 font-bold"
             onClick={() => handleSubmit()}
             disabled={wallet.publicKey === null}
           >
