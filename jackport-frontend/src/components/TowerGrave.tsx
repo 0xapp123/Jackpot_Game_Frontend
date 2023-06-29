@@ -87,7 +87,7 @@ export default function Tower(props: {
           POT:&nbsp;{sumPots} SOL
         </p>
       </div>
-      <div className="flex rounded-2xl bg-[#0f0545] h-[500px] mx-4">
+      <div className="flex rounded-2xl bg-[#005774] h-[500px] mx-4">
         <div className="w-[50px] lg:w-20 flex flex-col justify-around items-center">
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
           <div className="lg:w-7 lg:h-7 w-5 h-5 rounded-full bg-[#fff] opacity-10"></div>
@@ -141,7 +141,7 @@ export default function Tower(props: {
             ))}
         </div>
       ) : (
-        <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#04134A] py-5 mt-[25px] text-[14px] text-[#6a71f8] font-bold text-center">
+        <div className="mx-8 rounded-xl border-[1px] border-[#ffffff50] bg-[#005774] py-5 mt-[25px] text-[14px] text-[#ffffff] font-bold text-center">
           {`No one has placed a bet, be the first to start the game!`}
         </div>
       )}

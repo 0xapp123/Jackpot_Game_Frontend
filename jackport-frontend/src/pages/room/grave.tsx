@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { errorAlert, warningAlert } from "../../components/ToastGroup";
 
 export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
-
   const wallet = useWallet();
   const { gameData, isStarting } = useSocket();
   const [betAmount, setBetAmount] = useState(0.05);
@@ -121,7 +120,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
       if (data) {
         setTotalCount(data as number);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -149,7 +148,12 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
       </Head>
       <div
         className={`flex flex-col xl:flex-row min-h-[100vh] bg-cover bg-no-repeat w-full overflow-x-hidden flex-wrap`}
-        style={{ backgroundImage: "url(/img/grave-bg.webp)" }}
+        // style={{ backgroundImage: "url(/img/grave-bg.webp)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(39,144,140,1) 50%, rgba(252,176,69,1) 100%)",
+          // " rgb(131,58,180)"
+        }}
       >
         <div className="absolute w-full left-0 top-0">
           <button
@@ -189,8 +193,9 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
               </p>
               <div className="flex flex-row mt-[33px]">
                 <button
-                  className={`w-1/3 text-center ${betAmount === 1 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 1 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(1)}
                 >
                   <img
@@ -208,8 +213,9 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 2 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 2 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(2)}
                 >
                   <img
@@ -227,8 +233,9 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
                   </p>
                 </button>
                 <button
-                  className={`w-1/3 text-center ${betAmount === 3 ? "oapcity-100" : "opacity-30"
-                    }`}
+                  className={`w-1/3 text-center ${
+                    betAmount === 3 ? "oapcity-100" : "opacity-30"
+                  }`}
                   onClick={() => setBetAmount(3)}
                 >
                   <img
