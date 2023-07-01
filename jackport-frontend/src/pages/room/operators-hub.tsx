@@ -138,7 +138,7 @@ export default function Rooms(props: { isMute: boolean; setIsMute: Function }) {
   return (
     <>
       <Head>
-        <title>Grave</title>
+        <title>Operators Hub</title>
         <meta
           name="description"
           content="SlowRUG | Best Crypto PvP Gambling Website"
