@@ -14,7 +14,7 @@ export default function ChatItem(props: {
 
   return (
     <div className="flex flex-col rounded-[8px] mb-7">
-      <div className={`flex flex-row items-start p-4 justify-between rounded-t-lg ${router.asPath !== "/room/grave" ? "bg-[#04134A]" : "bg-[#012326]"}`}>
+      <div className={`flex flex-row items-start p-4 justify-between rounded-t-lg ${router.asPath !== "/room/operators-hub" ? "bg-[#04134A]" : "bg-[#0c5c63]"}`}>
         <div className="flex items-center">
 
           <UserIcon color={base58ToGradient(props.name).color} />
@@ -40,7 +40,7 @@ export default function ChatItem(props: {
       </div>
       <div
         className={`px-4 pb-4 rounded-b-lg ${!open ? "h-8 overflow-hidden" : ""
-          }  ${router.asPath !== "/room/grave" ? "bg-[#03144E]" : "bg-[#012326]"}`}
+          }  ${router.asPath !== "/room/operators-hub" ? "bg-[#03144E]" : "bg-[#0c5c63]"}`}
       >
         <p className="text-[14px] text-white">{props.message}</p>
       </div>
