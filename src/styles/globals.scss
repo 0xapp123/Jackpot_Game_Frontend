@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -174,7 +172,8 @@
     height: 2em;
     width: 2em;
     box-sizing: border-box;
-    animation: anti-clockwise 1s linear infinite, opacity 2s linear -1000ms infinite;
+    animation: anti-clockwise 1s linear infinite,
+      opacity 2s linear -1000ms infinite;
   }
 }
 
@@ -222,7 +221,8 @@
     height: 2em;
     width: 2em;
     box-sizing: border-box;
-    animation: anti-clockwise 1s linear infinite, opacity 2s linear -1500ms infinite;
+    animation: anti-clockwise 1s linear infinite,
+      opacity 2s linear -1500ms infinite;
   }
 }
 
@@ -267,4 +267,15 @@
 
 .left-circle {
   z-index: 3;
+}
+
+.wallet-adapter-button.wallet-adapter-button-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-adapter-button-trigger {
+  background-color: #1b074c !important;
+  border: 1px solid !important;
 }

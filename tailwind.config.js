@@ -141,7 +141,7 @@ module.exports = {
       },
       fontFamily: {
         'font-inter': 'Inter',
-        'font-mono': 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;'
+        'font-mono': 'Roboto Mono'
       },
     }
   },
